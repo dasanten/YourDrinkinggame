@@ -1,4 +1,4 @@
-package de.dasanten.YourDrinkgame.Repository;
+package de.dasanten.YourDrinkgame.controller.dto;
 
 import lombok.Data;
 
