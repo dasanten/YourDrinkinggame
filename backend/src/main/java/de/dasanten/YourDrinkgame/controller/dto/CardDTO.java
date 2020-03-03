@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class CardDTO {
 
-String id;
-String content;
-String type;
-String cardSetId;
-boolean isReported;
-int reports;
+    private Long id;
+    private String content;
+    private String type;
+    private String cardSetId;
+    private boolean isReported;
+    private int reports;
 }
