@@ -1,6 +1,5 @@
 package de.dasanten.YourDrinkgame;
 
-import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

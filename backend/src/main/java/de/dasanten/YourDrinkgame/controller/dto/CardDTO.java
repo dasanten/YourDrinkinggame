@@ -2,7 +2,10 @@ package de.dasanten.YourDrinkgame.controller.dto;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+
 @Data
+@Entity
 public class CardDTO {
 
     private Long id;
