@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CardSetService {
 
-//    @Autowired
-//    CardSetRepository cardSetRepository;
+    @Autowired
+    CardSetRepository cardSetRepository;
 
     public CardSetDTO e (){
        return null;
