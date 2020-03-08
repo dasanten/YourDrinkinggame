@@ -31,4 +31,11 @@ public class CardSetService {
         return cardSetDTO;
     }
 
+    public void reportCardSet(long cardSetId){
+        CardSetDTO reportedCardSet = cardSetRepository.findById(cardSetId);
+        reportedCardSet.setReported(true);
+        reportedCardSet.setReports(reportedCardSet.getReports() + 1);
+        cardSetRepository.save(reportedCardSet);
+    }
+
 }
