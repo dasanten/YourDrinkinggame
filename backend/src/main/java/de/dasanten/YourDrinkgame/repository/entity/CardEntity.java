@@ -2,10 +2,11 @@ package de.dasanten.YourDrinkgame.repository.entity;
 
 import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 public class CardEntity {

@@ -17,4 +17,18 @@ public class CardSetService {
        return cardSetRepository.findAll();
     }
 
+    public  CardSetDTO addExample(){
+        CardSetDTO c = new CardSetDTO();
+        c.setReported(true);
+        c.setReports(2);
+        c.setType("test");
+        cardSetRepository.save(c);
+        return c;
+    }
+
+    public CardSetDTO addCardSet(CardSetDTO cardSetDTO){
+        cardSetRepository.save(cardSetDTO);
+        return cardSetDTO;
+    }
+
 }

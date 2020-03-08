@@ -4,9 +4,7 @@ import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.service.CardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,16 @@ public class CardSetController {
     @GetMapping("/cardsets")
     public List<CardSetDTO> getCardSetsById(){
         return cardSetService.list();
+    }
+
+    @GetMapping("/addExample")
+    public CardSetDTO addExample(){
+        return cardSetService.addExample();
+    }
+
+    @PostMapping("/addCardSet")
+    public CardSetDTO addCardSet(@RequestBody CardSetDTO cardSetDTO){
+        return cardSetService.addCardSet(cardSetDTO);
     }
 
 }
