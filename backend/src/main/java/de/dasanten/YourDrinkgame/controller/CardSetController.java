@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @CrossOrigin
 @RestController
@@ -16,8 +18,8 @@ public class CardSetController {
     CardSetService cardSetService;
 
     @GetMapping("/cardsets")
-    public ResponseEntity<CardSetDTO> getCardSetsById(){
-        return null;
+    public List<CardSetDTO> getCardSetsById(){
+        return cardSetService.list();
     }
 
 }
