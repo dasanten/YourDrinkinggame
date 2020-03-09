@@ -13,6 +13,9 @@ public class CardSetDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToMany
+    private List<CardDTO> cards;
+
     private String type;
 
     private boolean isReported;

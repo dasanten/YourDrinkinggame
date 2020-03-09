@@ -13,7 +13,7 @@ public class CardDTO {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "card_Set_Id")
     private CardSetDTO cardSetDTO;
 
     private String content;

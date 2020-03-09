@@ -18,24 +18,8 @@ public class CardSetService {
     @Autowired
     CardRepository cardRepository;
 
-    public List<CardSetDTO> list (){
+    public List<CardSetDTO> getCardSets (){
        return cardSetRepository.findAll();
-    }
-
-    public  CardSetDTO addExample(){
-        CardSetDTO c = new CardSetDTO();
-        c.setReported(true);
-        c.setReports(2);
-        c.setType("test");
-        CardDTO card = new CardDTO();
-        card.setContent("Alle Trinken gleich");
-        card.setReported(false);
-        card.setReports(0);
-        card.setType("testNr1");
-        card.setCardSetDTO(c);
-        cardSetRepository.save(c);
-        cardRepository.save(card);
-        return c;
     }
 
     public CardSetDTO addCardSet(CardSetDTO cardSetDTO){

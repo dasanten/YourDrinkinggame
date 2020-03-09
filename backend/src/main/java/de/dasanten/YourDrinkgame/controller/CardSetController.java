@@ -17,12 +17,7 @@ public class CardSetController {
 
     @GetMapping("/cardsets")
     public List<CardSetDTO> getCardSetsById(){
-        return cardSetService.list();
-    }
-
-    @GetMapping("/addExample")
-    public CardSetDTO addExample(){
-        return cardSetService.addExample();
+        return cardSetService.getCardSets();
     }
 
     @PostMapping("/addCardSet")
