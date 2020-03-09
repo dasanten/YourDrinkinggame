@@ -30,7 +30,7 @@ public class CardSetController {
         return cardSetService.addCardSet(cardSetDTO);
     }
 
-    @PutMapping("/report")
+    @GetMapping("/report")
     public void reportCardSet(@RequestParam Long cardSetId) {
         cardSetService.reportCardSet(cardSetId);
     }
