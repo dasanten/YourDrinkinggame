@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardSetRepository extends JpaRepository<CardSetDTO, Long> {
 
-    CardSetDTO findById(long id);
+    CardSetDTO findById(String id);
 }

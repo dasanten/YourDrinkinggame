@@ -1,23 +1,35 @@
 package de.dasanten.YourDrinkgame.controller.dto;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
-@Entity(name = "cards")
+@Entity(name = "card")
 public class CardDTO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid2")
+    private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "card_Set_Id")
+    @ManyToOne()
+    @JoinColumn(name = "card_set_id")
     private CardSetDTO cardSetDTO;
 
     private String content;
     private String type;
     private boolean isReported;
     private int reports;
+
+    public CardDTO(){
+
+    }
+
+    public CardDTO(CardSetDTO c){
+        this.cardSetDTO = c;
+    }
+
 }
