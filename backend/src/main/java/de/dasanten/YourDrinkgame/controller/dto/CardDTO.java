@@ -23,13 +23,4 @@ public class CardDTO {
     private String type;
     private boolean isReported;
     private int reports;
-
-    public CardDTO(){
-
-    }
-
-    public CardDTO(CardSetDTO c){
-        this.cardSetDTO = c;
-    }
-
 }

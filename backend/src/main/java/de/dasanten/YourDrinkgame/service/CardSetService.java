@@ -40,15 +40,15 @@ public class CardSetService {
         cardSet.setReported(false);
         cardSet.setReports(0);
         cardSet.setType("Test");
+        cardSet.setVersion(0);
 
         card.setContent("Malte trinkt!");
         card.setReported(true);
         card.setReports(2);
         card.setType("super tolle Karte");
-        cardSet.addCard(card);
-        //card.setCardSetDTO(cardSet);
-        
+
         cardSetRepository.save(cardSet);
+        card.setCardSetDTO(cardSet);
         cardRepository.save(card);
 
         return cardSet;
