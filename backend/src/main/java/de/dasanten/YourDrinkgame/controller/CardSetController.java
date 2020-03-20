@@ -5,6 +5,7 @@ import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,55 +20,73 @@ public class CardSetController {
     CardSetService cardSetService;
 
     //GETTER
-    @GetMapping("/getCardsetCardsById")
+    @GetMapping("/getCardSetCardsById")
     public ResponseEntity <List<CardDTO>> getCardsetById(@RequestParam String cardSetId) {
-        cardSetService.getCardSetCardsById(cardSetId);
-        return null;
+        List<CardDTO> cardDTOList = cardSetService.getCardSetCardsById(cardSetId);
+        if (cardDTOList != null) {
+            return new ResponseEntity<>(cardDTOList, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/getCardSetById")
-    public ResponseEntity<CardSetDTO> getCardSetById(){
-        return null;
+    public ResponseEntity<CardSetDTO> getCardSetById(@RequestParam String cardSetId){
+        CardSetDTO cardSetDTO = cardSetService.getCardSetById(cardSetId);
+        if (cardSetDTO != null){
+            return new ResponseEntity<>(cardSetDTO, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getCardOfCardSetById")
-    public ResponseEntity<CardDTO> getCardById(){
-        return null;
+    @GetMapping("/getCardById")
+    public ResponseEntity<CardDTO> getCardById(@RequestParam String cardId){
+        CardDTO cardDTO = cardSetService.getCardById(cardId);
+        if (cardDTO != null) {
+            return new ResponseEntity<>(cardDTO, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
+
 
     //SETTER
     @PostMapping("/addCardSet")
-    public ResponseEntity<CardSetEntity> addCardSet(@RequestBody CardSetEntity cardSetDTO){
-        cardSetService.addCardSet(cardSetDTO);
-        return null;
+    public ResponseEntity<CardSetDTO> addCardSet(@RequestBody CardSetDTO cardSetDTO){
+        CardSetDTO addedCardSet = cardSetService.addCardSet(cardSetDTO);;
+        return new ResponseEntity<>(addedCardSet, HttpStatus.OK);
     }
 
     @PostMapping("/addCards")
-    public ResponseEntity<List<CardDTO>> addCards(){
-        return null;
+    public ResponseEntity<List<CardDTO>> addCards(@RequestBody List<CardDTO> cardDTOList){
+        List<CardDTO> addedCards = cardSetService.addCards(cardDTOList);
+        return new ResponseEntity<>(addedCards, HttpStatus.OK);
     }
 
 
     //EDIT
     @PutMapping("/editCardSet")
-    public  ResponseEntity<CardSetDTO> editCardSet(){
-        return null;
+    public  ResponseEntity<CardSetDTO> editCardSet(@RequestBody CardSetDTO cardSetDTO){
+        CardSetDTO editedCardSet = cardSetService.editCardSet(cardSetDTO);
+        return new ResponseEntity<>(editedCardSet, HttpStatus.OK);
     }
 
     @PutMapping("/editCard")
-    public ResponseEntity<CardDTO> editCard(){
-        return null;
+    public ResponseEntity<CardDTO> editCard(@RequestBody CardDTO cardDTO){
+        CardDTO editedCard = cardSetService.editCard(cardDTO);
+        return new ResponseEntity<>(editedCard, HttpStatus.OK);
     }
+
 
     //DELETE
     @DeleteMapping("/deleteCardSet")
-    public ResponseEntity<CardSetDTO> deleteCardSet(){
-        return null;
+    public ResponseEntity<CardSetDTO> deleteCardSet(@RequestBody CardSetDTO cardSetDTO){
+        CardSetDTO deletedCardSet = cardSetService.deleteCardSet(cardSetDTO);
+        return new ResponseEntity<>(deletedCardSet, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteCard")
-    public ResponseEntity<CardDTO> deleteCard(){
-        return null;
+    public ResponseEntity<CardDTO> deleteCard(@RequestBody CardDTO cardDTO){
+        CardDTO deletedCard = cardSetService.deleteCard(cardDTO);
+        return new ResponseEntity<>(deletedCard, HttpStatus.OK);
     }
 
 
@@ -79,8 +98,11 @@ public class CardSetController {
 
     @GetMapping("/reportCard")
     public void reportCard(@RequestParam String cardId){
-
+        cardSetService.reportCard(cardId);
     }
+
+
+
 
 
     //TEST
