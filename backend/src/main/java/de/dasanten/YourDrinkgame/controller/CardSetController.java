@@ -2,13 +2,14 @@ package de.dasanten.YourDrinkgame.controller;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
+
 
 
 @CrossOrigin
@@ -17,29 +18,75 @@ public class CardSetController {
     @Autowired
     CardSetService cardSetService;
 
-    @GetMapping("/cardsets")
-    public List<CardSetDTO> getCardSetsById(){
-        return cardSetService.getCardSets();
+    //GETTER
+    @GetMapping("/getCardsetCardsById")
+    public ResponseEntity <List<CardDTO>> getCardsetById(@RequestParam String cardSetId) {
+        cardSetService.getCardSetCardsById(cardSetId);
+        return null;
     }
 
+    @GetMapping("/getCardSetById")
+    public ResponseEntity<CardSetDTO> getCardSetById(){
+        return null;
+    }
+
+    @GetMapping("/getCardOfCardSetById")
+    public ResponseEntity<CardDTO> getCardById(){
+        return null;
+    }
+
+    //SETTER
     @PostMapping("/addCardSet")
-    public CardSetDTO addCardSet(@RequestBody CardSetDTO cardSetDTO){
-        return cardSetService.addCardSet(cardSetDTO);
+    public ResponseEntity<CardSetEntity> addCardSet(@RequestBody CardSetEntity cardSetDTO){
+        cardSetService.addCardSet(cardSetDTO);
+        return null;
     }
 
-    @GetMapping("/report")
+    @PostMapping("/addCards")
+    public ResponseEntity<List<CardDTO>> addCards(){
+        return null;
+    }
+
+
+    //EDIT
+    @PutMapping("/editCardSet")
+    public  ResponseEntity<CardSetDTO> editCardSet(){
+        return null;
+    }
+
+    @PutMapping("/editCard")
+    public ResponseEntity<CardDTO> editCard(){
+        return null;
+    }
+
+    //DELETE
+    @DeleteMapping("/deleteCardSet")
+    public ResponseEntity<CardSetDTO> deleteCardSet(){
+        return null;
+    }
+
+    @DeleteMapping("/deleteCard")
+    public ResponseEntity<CardDTO> deleteCard(){
+        return null;
+    }
+
+
+    //REPORTS
+    @GetMapping("/reportCardSet")
     public void reportCardSet(@RequestParam String cardSetId) {
         cardSetService.reportCardSet(cardSetId);
     }
 
-    @GetMapping("/addExample")
-    public CardSetDTO addExample(){
-        return cardSetService.addExample();
+    @GetMapping("/reportCard")
+    public void reportCard(@RequestParam String cardId){
+
     }
 
-    @GetMapping("/getCardsetCardsById")
-    public List<CardDTO> getCardsetById(@RequestParam String cardSetId) {
-        return cardSetService.getCardsetCardsById(cardSetId);
+
+    //TEST
+    @GetMapping("/addExample")
+    public CardSetEntity addExample(){
+        return cardSetService.addExample();
     }
 }
 
