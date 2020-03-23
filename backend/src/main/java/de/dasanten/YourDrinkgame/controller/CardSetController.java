@@ -56,6 +56,11 @@ public class CardSetController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/checkToken")
+    public ResponseEntity<Boolean> checkToken(@RequestBody CardSetDTO cardSetDTO){
+        Boolean tokenIs = cardSetService.checkToken(cardSetDTO);
+        return new ResponseEntity<>(tokenIs, HttpStatus.OK);
+    }
 
     //SETTER
     @PostMapping("/addCardSet")

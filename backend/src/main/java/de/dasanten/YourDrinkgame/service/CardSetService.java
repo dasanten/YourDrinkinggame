@@ -72,6 +72,14 @@ public class CardSetService {
         return null;
     }
 
+    public boolean checkToken(CardSetDTO cardSetDTO){
+        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
+        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getAdminToken() == cardSetDTO.getToken() || cardSetEntityOptional.get().getEditorToken() == cardSetDTO.getToken()){
+            return true;
+        }
+        return false;
+    }
+
 
     //SETTER
     public CardSetDTO addCardSet(CardSetDTO cardSetDTO){
@@ -144,12 +152,10 @@ public class CardSetService {
     public CardDTO deleteCard(CardDTO cardDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTO.getCardSetDTO().getId());
         if (cardSetEntityOptional.isPresent() && cardDTO.getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getAdminToken()) || cardDTO.getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getEditorToken())) {
-            System.out.println("erfolgreiche if abfrage");
             CardEntity cardEntity = cardMapper.cardDTOToCardEntity(cardDTO);
             cardRepository.delete(cardEntity);
             return cardMapper.cardEntityToCardDTO(cardEntity);
         }
-        System.out.println("if abfrage nicht erfolgreich");
         return null;
     }
 
