@@ -18,8 +18,11 @@ public class CardSetEntity {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
+    private String name;
     private String type;
     private int version;
     private boolean isReported;
     private int reports;
+    private String adminToken;
+    private String editorToken;
 }

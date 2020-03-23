@@ -47,18 +47,33 @@ public class CardSetController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/getCardSetByCardId")
+    public ResponseEntity<CardSetDTO> getCardSetByCardId(@RequestParam String cardId){
+        CardSetDTO cardSetDTO = cardSetService.getCardSetByCardId(cardId);
+        if (cardSetDTO != null) {
+            return new ResponseEntity<>(cardSetDTO, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
     //SETTER
     @PostMapping("/addCardSet")
     public ResponseEntity<CardSetDTO> addCardSet(@RequestBody CardSetDTO cardSetDTO){
-        CardSetDTO addedCardSet = cardSetService.addCardSet(cardSetDTO);;
+        CardSetDTO addedCardSet = cardSetService.addCardSet(cardSetDTO);
         return new ResponseEntity<>(addedCardSet, HttpStatus.OK);
     }
 
     @PostMapping("/addCards")
-    public ResponseEntity<List<CardDTO>> addCards(@RequestBody List<CardDTO> cardDTOList){
+    public ResponseEntity<List<CardDTO>> addCards(@RequestBody List<CardDTO> cardDTOList, @RequestParam String token){
         List<CardDTO> addedCards = cardSetService.addCards(cardDTOList);
         return new ResponseEntity<>(addedCards, HttpStatus.OK);
+    }
+
+    @PostMapping("/setEditorToken")
+    public ResponseEntity<CardSetDTO> setEditorToken(@RequestBody CardSetDTO cardSetDTO, @RequestParam String editorToken){
+        CardSetDTO cardSetWithToken = cardSetService.setEditorToken(cardSetDTO, editorToken);
+        return new ResponseEntity<>(cardSetWithToken, HttpStatus.OK);
     }
 
 
@@ -66,13 +81,19 @@ public class CardSetController {
     @PutMapping("/editCardSet")
     public  ResponseEntity<CardSetDTO> editCardSet(@RequestBody CardSetDTO cardSetDTO){
         CardSetDTO editedCardSet = cardSetService.editCardSet(cardSetDTO);
-        return new ResponseEntity<>(editedCardSet, HttpStatus.OK);
+        if (editedCardSet != null){
+            return new ResponseEntity<>(editedCardSet, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/editCard")
     public ResponseEntity<CardDTO> editCard(@RequestBody CardDTO cardDTO){
         CardDTO editedCard = cardSetService.editCard(cardDTO);
-        return new ResponseEntity<>(editedCard, HttpStatus.OK);
+        if (editedCard != null){
+            return new ResponseEntity<>(editedCard, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
