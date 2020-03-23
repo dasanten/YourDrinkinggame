@@ -74,7 +74,7 @@ public class CardSetService {
 
     public boolean checkToken(CardSetDTO cardSetDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getAdminToken() == cardSetDTO.getToken() || cardSetEntityOptional.get().getEditorToken() == cardSetDTO.getToken()){
+        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getAdminToken().equals(cardSetDTO.getToken()) || cardSetEntityOptional.get().getEditorToken().equals(cardSetDTO.getToken())){
             return true;
         }
         return false;
