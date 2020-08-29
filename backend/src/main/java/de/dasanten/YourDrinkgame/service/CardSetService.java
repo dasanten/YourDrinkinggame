@@ -36,7 +36,7 @@ public class CardSetService {
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(id);
         List<CardDTO> cardDTOList = new ArrayList<>();
         if (cardSetEntityOptional.isPresent()) {
-            List<CardEntity> cardEntityList = cardRepository.findByCardSetEntity(cardSetEntityOptional.get());
+            List<CardEntity> cardEntityList = cardRepository.findByCardSet(cardSetEntityOptional.get());
             for (CardEntity cardEntity : cardEntityList) {
                 cardDTOList.add(cardMapper.cardEntityToCardDTO(cardEntity));
             }
@@ -143,7 +143,6 @@ public class CardSetService {
         if (cardSetToken.isPresent() && cardSetToken.get().getAdminToken().equals(cardSetDTO.getToken())) {
             CardSetEntity cardSetEntity = cardSetMapper.cardSetDTOToCardSetEntity(cardSetDTO);
             cardSetRepository.deleteById(cardSetEntity.getId());
-            cardRepository.deleteByCardSetEntity(cardSetEntity);
             return cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntity, cardSetDTO.getToken());
         }
         return null;
@@ -203,7 +202,7 @@ public class CardSetService {
         card.setType("super tolle Karte");
 
         cardSetRepository.save(cardSet);
-        card.setCardSetEntity(cardSet);
+        card.setCardSet(cardSet);
         cardRepository.save(card);
 
         return cardSet;

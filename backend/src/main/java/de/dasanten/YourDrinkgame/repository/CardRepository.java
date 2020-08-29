@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<CardEntity, String> {
 
-    List<CardEntity> findByCardSetEntity(CardSetEntity cardSetEntity);
+    List<CardEntity> findByCardSet(CardSetEntity cardSet);
 
-    CardEntity deleteByCardSetEntity(CardSetEntity cardSetEntity);
 }

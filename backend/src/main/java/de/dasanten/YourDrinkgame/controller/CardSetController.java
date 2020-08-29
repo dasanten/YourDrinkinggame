@@ -4,9 +4,11 @@ import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +16,11 @@ import java.util.List;
 
 
 @CrossOrigin
-@RestController
+@Controller
+@AllArgsConstructor
 public class CardSetController {
-    @Autowired
-    CardSetService cardSetService;
+
+    private CardSetService cardSetService;
 
     //GETTER
     @GetMapping("/getCardSetCardsById")
