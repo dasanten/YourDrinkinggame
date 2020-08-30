@@ -24,7 +24,7 @@ public class CardSetController {
 
     //GETTER
     @GetMapping("/getCardSetCardsById")
-    public ResponseEntity <List<CardDTO>> getCardsetById(@RequestParam String cardSetId) {
+    public ResponseEntity <List<CardDTO>> getCardsByCardSetId(@RequestParam String cardSetId) {
         List<CardDTO> cardDTOList = cardSetService.getCardSetCardsById(cardSetId);
         if (cardDTOList != null) {
             return new ResponseEntity<>(cardDTOList, HttpStatus.OK);
@@ -107,9 +107,11 @@ public class CardSetController {
 
     //DELETE
     @DeleteMapping("/deleteCardSet")
-    public ResponseEntity<CardSetDTO> deleteCardSet(@RequestBody CardSetDTO cardSetDTO){
-        CardSetDTO deletedCardSet = cardSetService.deleteCardSet(cardSetDTO);
-        return new ResponseEntity<>(deletedCardSet, HttpStatus.OK);
+    public ResponseEntity<Void> deleteCardSet(@RequestParam String cardSetId, String token){
+        if (cardSetService.deleteCardSet(cardSetId, token)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/deleteCard")

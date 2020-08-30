@@ -6,9 +6,9 @@ import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import de.dasanten.YourDrinkgame.repository.CardRepository;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
-import de.dasanten.YourDrinkgame.util.CardMapper;
-import de.dasanten.YourDrinkgame.util.CardSetMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.dasanten.YourDrinkgame.util.mapper.CardMapper;
+import de.dasanten.YourDrinkgame.util.mapper.CardSetMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,16 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class CardSetService {
 
-    @Autowired
-    CardSetRepository cardSetRepository;
-    @Autowired
-    CardRepository cardRepository;
-    @Autowired
-    CardSetMapper cardSetMapper;
-    @Autowired
-    CardMapper cardMapper;
+    private CardSetRepository cardSetRepository;
+    private CardRepository cardRepository;
+
+    private CardSetMapper cardSetMapper;
+    private CardMapper cardMapper;
 
 
 
@@ -138,14 +136,13 @@ public class CardSetService {
 
 
     //DELETE
-    public CardSetDTO deleteCardSet(CardSetDTO cardSetDTO){
-        Optional <CardSetEntity> cardSetToken = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetToken.isPresent() && cardSetToken.get().getAdminToken().equals(cardSetDTO.getToken())) {
-            CardSetEntity cardSetEntity = cardSetMapper.cardSetDTOToCardSetEntity(cardSetDTO);
-            cardSetRepository.deleteById(cardSetEntity.getId());
-            return cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntity, cardSetDTO.getToken());
+    public boolean deleteCardSet(String cardSetId, String token){
+        Optional <CardSetEntity> cardSet = cardSetRepository.findById(cardSetId);
+        if (cardSet.isPresent() && cardSet.get().getAdminToken().equals(token)) {
+            cardSetRepository.deleteById(cardSetId);
+            return true;
         }
-        return null;
+        return false;
     }
 
     public CardDTO deleteCard(CardDTO cardDTO){

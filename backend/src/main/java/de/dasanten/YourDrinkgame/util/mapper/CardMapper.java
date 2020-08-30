@@ -1,9 +1,9 @@
-package de.dasanten.YourDrinkgame.util;
+package de.dasanten.YourDrinkgame.util.mapper;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 
-import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
+import de.dasanten.YourDrinkgame.util.mapper.CardSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

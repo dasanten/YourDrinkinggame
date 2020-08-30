@@ -1,4 +1,4 @@
-package de.dasanten.YourDrinkgame.util;
+package de.dasanten.YourDrinkgame.util.mapper;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.CardSetRepository;
