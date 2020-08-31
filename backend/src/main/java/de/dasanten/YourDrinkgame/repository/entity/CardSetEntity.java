@@ -1,6 +1,5 @@
 package de.dasanten.YourDrinkgame.repository.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;

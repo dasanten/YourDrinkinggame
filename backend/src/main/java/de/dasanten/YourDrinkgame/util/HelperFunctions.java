@@ -1,21 +1,20 @@
 package de.dasanten.YourDrinkgame.util;
 
+import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
+
 public class HelperFunctions {
 
-    static boolean cardCheckForAllTokens() {
-        return true;
+    static String moderationToken = "testAdminToken";
+
+    public static boolean tokenCheckForAllTokens(CardSetEntity cardSetEntity, String token) {
+        return token.equals(cardSetEntity.getAdminToken()) || token.equals(cardSetEntity.getEditorToken()) || token.equals(moderationToken);
     }
 
-    static boolean cardCheckForEditorTokens() {
-        return true;
+    public static boolean tokenCheckForAdminToken(CardSetEntity cardSetEntity, String token) {
+        return cardSetEntity.getAdminToken().equals(token) || token.equals(moderationToken);
     }
 
-    static boolean cardSetCheckForAllTokens() {
+    public static boolean test() {
         return true;
     }
-
-    static boolean cardSetCheckForEditorTokens() {
-        return true;
-    }
-
 }

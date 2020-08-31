@@ -115,9 +115,11 @@ public class CardSetController {
     }
 
     @DeleteMapping("/deleteCard")
-    public ResponseEntity<CardDTO> deleteCard(@RequestBody CardDTO cardDTO){
-        CardDTO deletedCard = cardSetService.deleteCard(cardDTO);
-        return new ResponseEntity<>(deletedCard, HttpStatus.OK);
+    public ResponseEntity<Void> deleteCard(@RequestParam String cardId, String token){
+        if (cardSetService.deleteCard(cardId, token)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 
