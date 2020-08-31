@@ -1,9 +1,9 @@
-package de.dasanten.YourDrinkgame.util;
+package de.dasanten.YourDrinkgame.util.mapper;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 
-import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
+import de.dasanten.YourDrinkgame.util.mapper.CardSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class CardMapper {
     public CardDTO cardEntityToCardDTO(CardEntity cardEntity){
         CardDTO cardDTO = new CardDTO();
         cardDTO.setId(cardEntity.getId());
-        cardDTO.setCardSetDTO(cardSetMapper.cardSetEntityToCardSetDTO(cardEntity.getCardSetEntity()));
+        cardDTO.setCardSetDTO(cardSetMapper.cardSetEntityToCardSetDTO(cardEntity.getCardSet()));
         cardDTO.setReported(cardEntity.isReported());
         cardDTO.setReports(cardEntity.getReports());
         cardDTO.setContent(cardEntity.getContent());
@@ -29,7 +29,7 @@ public class CardMapper {
         if (cardDTO.getId() != null){
             cardEntity.setId(cardDTO.getId());
         }
-        cardEntity.setCardSetEntity(cardSetMapper.cardSetDTOToCardSetEntity(cardDTO.getCardSetDTO()));
+        cardEntity.setCardSet(cardSetMapper.cardSetDTOToCardSetEntity(cardDTO.getCardSetDTO()));
         cardEntity.setContent(cardDTO.getContent());
         cardEntity.setReported(cardDTO.isReported());
         cardEntity.setReports(cardDTO.getReports());

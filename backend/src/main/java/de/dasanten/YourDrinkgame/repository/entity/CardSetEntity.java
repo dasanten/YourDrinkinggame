@@ -1,15 +1,15 @@
 package de.dasanten.YourDrinkgame.repository.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 
-@Data
+@Getter
+@Setter
 @Entity(name = "cardSet")
 public class CardSetEntity {
 
@@ -17,6 +17,9 @@ public class CardSetEntity {
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
+
+    @OneToMany( mappedBy = "cardSet", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    private Set<CardEntity> cards;
 
     private String name;
     private String type;

@@ -2,31 +2,31 @@ package de.dasanten.YourDrinkgame.service;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
-import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import de.dasanten.YourDrinkgame.repository.CardRepository;
+import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
-import de.dasanten.YourDrinkgame.util.CardMapper;
-import de.dasanten.YourDrinkgame.util.CardSetMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.dasanten.YourDrinkgame.util.mapper.CardMapper;
+import de.dasanten.YourDrinkgame.util.mapper.CardSetMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import static de.dasanten.YourDrinkgame.util.HelperFunctions.*;
+
 @Service
+@AllArgsConstructor
 public class CardSetService {
 
-    @Autowired
-    CardSetRepository cardSetRepository;
-    @Autowired
-    CardRepository cardRepository;
-    @Autowired
-    CardSetMapper cardSetMapper;
-    @Autowired
-    CardMapper cardMapper;
+    private final CardSetRepository cardSetRepository;
+    private final CardRepository cardRepository;
 
+    private final CardSetMapper cardSetMapper;
+    private final CardMapper cardMapper;
 
 
 
@@ -36,7 +36,7 @@ public class CardSetService {
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(id);
         List<CardDTO> cardDTOList = new ArrayList<>();
         if (cardSetEntityOptional.isPresent()) {
-            List<CardEntity> cardEntityList = cardRepository.findByCardSetEntity(cardSetEntityOptional.get());
+            List<CardEntity> cardEntityList = cardRepository.findByCardSet(cardSetEntityOptional.get());
             for (CardEntity cardEntity : cardEntityList) {
                 cardDTOList.add(cardMapper.cardEntityToCardDTO(cardEntity));
             }
@@ -47,18 +47,12 @@ public class CardSetService {
 
     public CardSetDTO getCardSetById(String id){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(id);
-        if (cardSetEntityOptional.isPresent()){
-            return cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntityOptional.get());
-        }
-        return null;
+        return cardSetEntityOptional.map(cardSetMapper::cardSetEntityToCardSetDTO).orElse(null);
     }
 
     public CardDTO getCardById(String id){
         Optional<CardEntity> cardEntityOptional = cardRepository.findById(id);
-        if (cardEntityOptional.isPresent()){
-            return cardMapper.cardEntityToCardDTO(cardEntityOptional.get());
-        }
-        return null;
+        return cardEntityOptional.map(cardMapper::cardEntityToCardDTO).orElse(null);
     }
 
     public CardSetDTO getCardSetByCardId(String id){
@@ -74,10 +68,7 @@ public class CardSetService {
 
     public boolean checkToken(CardSetDTO cardSetDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getAdminToken().equals(cardSetDTO.getToken()) || cardSetEntityOptional.get().getEditorToken().equals(cardSetDTO.getToken())){
-            return true;
-        }
-        return false;
+        return cardSetEntityOptional.filter(cardSetEntity -> tokenCheckForAllTokens(cardSetEntity, cardSetDTO.getToken())).isPresent();
     }
 
 
@@ -90,8 +81,8 @@ public class CardSetService {
     }
 
     public List<CardDTO> addCards(List<CardDTO> cardDTOS){
-        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTOS.get(0).getId());
-        if (cardSetEntityOptional.isPresent() && cardDTOS.get(0).getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getEditorToken()) || cardDTOS.get(0).getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getAdminToken())) {
+        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTOS.get(0).getCardSetDTO().getId());
+        if (cardSetEntityOptional.isPresent() && tokenCheckForAllTokens(cardSetEntityOptional.get(), cardDTOS.get(0).getCardSetDTO().getToken())) {
             List<CardEntity> cardEntityList = new ArrayList<>();
             for (CardDTO cardDTO : cardDTOS) {
                 cardEntityList.add(cardMapper.cardDTOToCardEntity(cardDTO));
@@ -104,7 +95,7 @@ public class CardSetService {
 
     public CardSetDTO setEditorToken(CardSetDTO cardSetDTO, String token){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetEntityOptional.isPresent() && cardSetDTO.getToken().equals(cardSetEntityOptional.get().getAdminToken())){
+        if (cardSetEntityOptional.isPresent() && tokenCheckForAdminToken(cardSetEntityOptional.get(), token)){
             CardSetEntity cardSetEntity = cardSetEntityOptional.get();
             cardSetEntity.setEditorToken(token);
             cardSetRepository.save(cardSetEntity);
@@ -115,9 +106,8 @@ public class CardSetService {
     //EDIT
     public CardSetDTO editCardSet(CardSetDTO cardSetDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getAdminToken().equals(cardSetDTO.getToken())) {
+        if (cardSetEntityOptional.isPresent() && tokenCheckForAdminToken(cardSetEntityOptional.get(), cardSetDTO.getToken())) {
             CardSetEntity cardSetEntity = cardSetMapper.cardSetDTOToCardSetEntity(cardSetDTO);
-                //cardSetEntity.setAdminToken(cardSetDTO.getToken());
                 cardSetEntity.setVersion(cardSetEntity.getVersion() + 1);
                     cardSetRepository.save(cardSetEntity);
             return cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntity);
@@ -127,7 +117,7 @@ public class CardSetService {
 
     public CardDTO editCard(CardDTO cardDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTO.getCardSetDTO().getId());
-        if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getEditorToken().equals(cardDTO.getCardSetDTO().getToken()) || cardSetEntityOptional.get().getAdminToken().equals(cardDTO.getCardSetDTO().getToken())){
+        if (cardSetEntityOptional.isPresent() && tokenCheckForAllTokens(cardSetEntityOptional.get(), cardDTO.getCardSetDTO().getToken())){
             CardEntity cardEntity = cardRepository.save(cardMapper.cardDTOToCardEntity(cardDTO));
             cardSetEntityOptional.get().setVersion(cardSetEntityOptional.get().getVersion() +1);
             cardSetRepository.save(cardSetEntityOptional.get());
@@ -138,25 +128,25 @@ public class CardSetService {
 
 
     //DELETE
-    public CardSetDTO deleteCardSet(CardSetDTO cardSetDTO){
-        Optional <CardSetEntity> cardSetToken = cardSetRepository.findById(cardSetDTO.getId());
-        if (cardSetToken.isPresent() && cardSetToken.get().getAdminToken().equals(cardSetDTO.getToken())) {
-            CardSetEntity cardSetEntity = cardSetMapper.cardSetDTOToCardSetEntity(cardSetDTO);
-            cardSetRepository.deleteById(cardSetEntity.getId());
-            cardRepository.deleteByCardSetEntity(cardSetEntity);
-            return cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntity, cardSetDTO.getToken());
+    public boolean deleteCardSet(String cardSetId, String token){
+        Optional <CardSetEntity> cardSet = cardSetRepository.findById(cardSetId);
+        if (cardSet.isPresent() && tokenCheckForAdminToken(cardSet.get(), token)) {
+            cardSetRepository.deleteById(cardSetId);
+            return true;
         }
-        return null;
+        return false;
     }
 
-    public CardDTO deleteCard(CardDTO cardDTO){
-        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTO.getCardSetDTO().getId());
-        if (cardSetEntityOptional.isPresent() && cardDTO.getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getAdminToken()) || cardDTO.getCardSetDTO().getToken().equals(cardSetEntityOptional.get().getEditorToken())) {
-            CardEntity cardEntity = cardMapper.cardDTOToCardEntity(cardDTO);
-            cardRepository.delete(cardEntity);
-            return cardMapper.cardEntityToCardDTO(cardEntity);
+    public boolean deleteCard(String cardId, String token){
+        Optional<CardEntity> cardEntityOptional = cardRepository.findById(cardId);
+        if (cardEntityOptional.isPresent()) {
+            CardSetEntity cardSetEntity = cardSetRepository.findCardSetByCards(cardEntityOptional.get());
+            if (tokenCheckForAllTokens(cardSetEntity, token)) {
+                cardRepository.deleteById(cardId);
+                return true;
+            }
         }
-        return null;
+        return false;
     }
 
 
@@ -180,6 +170,7 @@ public class CardSetService {
             cardEntity = cardEntityOptional.get();
             cardEntity.setReported(true);
             cardEntity.setReports(cardEntity.getReports() + 1);
+            cardRepository.save(cardEntity);
         }
     }
 
@@ -202,9 +193,10 @@ public class CardSetService {
         card.setReports(2);
         card.setType("super tolle Karte");
 
+        cardSet.setCards(new HashSet<>());
+        cardSet.getCards().add(card);
+        card.setCardSet(cardSet);
         cardSetRepository.save(cardSet);
-        card.setCardSetEntity(cardSet);
-        cardRepository.save(card);
 
         return cardSet;
     }

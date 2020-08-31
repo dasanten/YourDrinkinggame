@@ -4,9 +4,11 @@ import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,14 +16,15 @@ import java.util.List;
 
 
 @CrossOrigin
-@RestController
+@Controller
+@AllArgsConstructor
 public class CardSetController {
-    @Autowired
-    CardSetService cardSetService;
+
+    private final CardSetService cardSetService;
 
     //GETTER
     @GetMapping("/getCardSetCardsById")
-    public ResponseEntity <List<CardDTO>> getCardsetById(@RequestParam String cardSetId) {
+    public ResponseEntity <List<CardDTO>> getCardsByCardSetId(@RequestParam String cardSetId) {
         List<CardDTO> cardDTOList = cardSetService.getCardSetCardsById(cardSetId);
         if (cardDTOList != null) {
             return new ResponseEntity<>(cardDTOList, HttpStatus.OK);
@@ -104,15 +107,19 @@ public class CardSetController {
 
     //DELETE
     @DeleteMapping("/deleteCardSet")
-    public ResponseEntity<CardSetDTO> deleteCardSet(@RequestBody CardSetDTO cardSetDTO){
-        CardSetDTO deletedCardSet = cardSetService.deleteCardSet(cardSetDTO);
-        return new ResponseEntity<>(deletedCardSet, HttpStatus.OK);
+    public ResponseEntity<Void> deleteCardSet(@RequestParam String cardSetId, String token){
+        if (cardSetService.deleteCardSet(cardSetId, token)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/deleteCard")
-    public ResponseEntity<CardDTO> deleteCard(@RequestBody CardDTO cardDTO){
-        CardDTO deletedCard = cardSetService.deleteCard(cardDTO);
-        return new ResponseEntity<>(deletedCard, HttpStatus.OK);
+    public ResponseEntity<Void> deleteCard(@RequestParam String cardId, String token){
+        if (cardSetService.deleteCard(cardId, token)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.badRequest().build();
     }
 
 
