@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CardSetController {
 
-    private CardSetService cardSetService;
+    private final CardSetService cardSetService;
 
     //GETTER
     @GetMapping("/getCardSetCardsById")
