@@ -103,7 +103,7 @@ class _PlayerInputState extends State<PlayerInput> {
       setState(() {
         _players.add(input);
       });
-      _controller.text = " ";
+      _controller.text = "";
     }
   }
 
