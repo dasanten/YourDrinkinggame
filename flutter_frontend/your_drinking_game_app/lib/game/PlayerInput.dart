@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/game/CardDisplay.dart';
 
 
 class PlayerInput extends StatefulWidget {
@@ -61,8 +62,7 @@ class _PlayerInputState extends State<PlayerInput> {
                     Container(
                       padding: EdgeInsets.all(10),
                       child: RaisedButton(
-                        onPressed: () {
-                        },
+                        onPressed: () => startGame(context),
                         child: Text('START!'),
                       ),
                     ),
@@ -93,18 +93,27 @@ class _PlayerInputState extends State<PlayerInput> {
             });
           },
         );
-      }) ,
+      }),
     );
   }
 
   addPlayer() {
-    String input = _controller.value.text;
+    String input = _controller.value.text.trim();
     if(input.isNotEmpty) {
       setState(() {
         _players.add(input);
       });
       _controller.text = "";
     }
+  }
+
+  startGame(BuildContext context) {
+    addPlayer();
+    Navigator.pushNamed(
+        context,
+        CardDisplay.routeName,
+        arguments: _players
+    );
   }
 
 
