@@ -14,23 +14,45 @@ class CardDisplay extends StatefulWidget {
 class _CardDisplayState extends State<CardDisplay> {
 
   List<String> _players = [];
+  String _displayedCard;
 
   @override
   Widget build(BuildContext context) {
     _players = ModalRoute.of(context).settings.arguments;
 
+
     return Scaffold(
       body: Center(
-        child: GestureDetector(
-          child: Text(_players.toString(),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: GestureDetector(
+            child: Text(_displayedCard,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
             ),
+            onTap: () => updateDisplayedCard(),
           ),
-          onTap: () {},
-        )
+        ),
       ),
     );
+  }
+
+
+
+  List<String> _cards = MockCards.cards;
+
+  updateDisplayedCard() {
+
+    setState(() {
+      var rdm = new Random();
+      String pickedCard = _cards[rdm.nextInt(_cards.length)];
+      while(pickedCard.contains("#")) {
+        _displayedCard = pickedCard.replaceFirst("#", _players[rdm.nextInt(_players.length)]);
+      }
+      _cards.remove(pickedCard);
+    });
   }
 }
