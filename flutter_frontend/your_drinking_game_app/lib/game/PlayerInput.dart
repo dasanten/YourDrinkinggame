@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/game/CardDisplay.dart';
 
-
 class PlayerInput extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() => _PlayerInputState();
-
 }
 
 class _PlayerInputState extends State<PlayerInput> {
-
   TextEditingController _controller;
-
 
   @override
   void initState() {
@@ -20,18 +15,18 @@ class _PlayerInputState extends State<PlayerInput> {
     _controller = TextEditingController();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Spieler Auswahl"),
-        ),
-        body: Center(
+      appBar: AppBar(
+        title: Text("Spieler Auswahl"),
+      ),
+      body: Builder(
+        builder: (context) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container (
+              Container(
                 child: playerChips(),
               ),
               Container(
@@ -40,10 +35,7 @@ class _PlayerInputState extends State<PlayerInput> {
                   decoration: InputDecoration(
                       labelText: 'Spieler Namen',
                       border: OutlineInputBorder(),
-                      suffixIcon: Icon(
-                          Icons.error
-                      )
-                  ),
+                      suffixIcon: Icon(Icons.error)),
                   controller: _controller,
                   maxLength: 10,
                 ),
@@ -56,7 +48,7 @@ class _PlayerInputState extends State<PlayerInput> {
                       padding: EdgeInsets.all(10),
                       child: RaisedButton(
                         child: Text("Spieler hinzufügen"),
-                        onPressed: () =>  addPlayer(),
+                        onPressed: () => addPlayer(),
                       ),
                     ),
                     Container(
@@ -71,12 +63,10 @@ class _PlayerInputState extends State<PlayerInput> {
               ),
             ],
           ),
-        )
+        ),
+      ),
     );
   }
-
-
-
 
   List<String> _players = [];
 
@@ -99,7 +89,7 @@ class _PlayerInputState extends State<PlayerInput> {
 
   addPlayer() {
     String input = _controller.value.text.trim();
-    if(input.isNotEmpty) {
+    if (input.isNotEmpty) {
       setState(() {
         _players.add(input);
       });
@@ -109,12 +99,17 @@ class _PlayerInputState extends State<PlayerInput> {
 
   startGame(BuildContext context) {
     addPlayer();
-    Navigator.pushNamed(
-        context,
-        CardDisplay.routeName,
-        arguments: _players
-    );
+    if (_players.length >= 2) {
+      Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
+    } else {
+      Scaffold.of(context).showSnackBar(notEnoughPlayerSnackBar());
+    }
   }
 
-
+  Widget notEnoughPlayerSnackBar() {
+    return SnackBar(
+      content: Text("Füge mindestens 2 Spieler hinzu"),
+      behavior: SnackBarBehavior.floating,
+    );
+  }
 }
