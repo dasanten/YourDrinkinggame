@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
 import 'package:your_drinking_game_app/game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
 
@@ -14,6 +15,7 @@ void main() {
       primaryColorDark: Colors.blueAccent,
       accentColor: Colors.orangeAccent,
       buttonColor: Colors.orangeAccent,
+      bottomAppBarColor: Colors.grey.shade300,
     ),
     darkTheme: ThemeData.dark(),
   ));
@@ -57,7 +59,12 @@ class Menu extends StatelessWidget {
                 margin: EdgeInsets.all(menuMargin),
                 child: RaisedButton(
                   child: Text('Karten Sets'.toUpperCase()),
-                  onPressed: () {},
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CardSetsTabView()),
+                    );
+                  },
                 )
             ),
             Container(
