@@ -8,6 +8,7 @@ class PlayerInput extends StatefulWidget {
 
 class _PlayerInputState extends State<PlayerInput> {
   TextEditingController _controller;
+  final FocusNode _playerInputField = FocusNode();
 
   @override
   void initState() {
@@ -38,6 +39,12 @@ class _PlayerInputState extends State<PlayerInput> {
                   ),
                   controller: _controller,
                   maxLength: 10,
+                  textInputAction: TextInputAction.done,
+                  focusNode: _playerInputField,
+                  onFieldSubmitted: (value) {
+                    _playerInputField.requestFocus();
+                    addPlayer();
+                  },
                 ),
               ),
               Center(
@@ -87,7 +94,7 @@ class _PlayerInputState extends State<PlayerInput> {
     );
   }
 
-  addPlayer() {
+  void addPlayer() {
     String input = _controller.value.text.trim();
     if (input.isNotEmpty) {
       setState(() {
