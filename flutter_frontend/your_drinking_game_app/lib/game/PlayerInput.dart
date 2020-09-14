@@ -35,7 +35,7 @@ class _PlayerInputState extends State<PlayerInput> {
                   decoration: InputDecoration(
                       labelText: 'Spieler Namen',
                       border: OutlineInputBorder(),
-                      suffixIcon: Icon(Icons.error)),
+                  ),
                   controller: _controller,
                   maxLength: 10,
                 ),
