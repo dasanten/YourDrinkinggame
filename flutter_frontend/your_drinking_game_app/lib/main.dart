@@ -35,7 +35,7 @@ class Menu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
-              'images/logoTransparent.jpg',
+              'assets/images/logoTransparent.jpg',
               width: 300,
               height: 300,
             ),

@@ -40,7 +40,12 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
       itemCount: cardSetList.length,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
-        return _buildCardSet(cardSetList[i]);
+        return Column(
+          children: [
+            _buildCardSet(cardSetList[i]),
+            Divider(),
+          ],
+        );
       },
     );
   }
