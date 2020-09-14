@@ -30,12 +30,12 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
     cardSetList.add(cardSet2);
 
     return Scaffold (
-      body: CardSets()
+      body: cardSets()
     );
   }
 
 
-  Widget CardSets() {
+  Widget cardSets() {
     return ListView.builder(
       itemCount: cardSetList.length,
       padding: EdgeInsets.all(16.0),

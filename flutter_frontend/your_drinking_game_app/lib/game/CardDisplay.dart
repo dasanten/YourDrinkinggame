@@ -46,6 +46,7 @@ class _CardDisplayState extends State<CardDisplay> {
 
   @override
   void initState() {
+    super.initState();
     MockCards mockCards = new MockCards();
     _cards = mockCards.cards;
   }
