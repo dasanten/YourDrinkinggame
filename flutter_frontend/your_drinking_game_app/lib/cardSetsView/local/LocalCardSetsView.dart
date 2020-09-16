@@ -26,11 +26,46 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
       ..description = "test2"
       ..name = "Test Beschreibung";
 
-    cardSetList.add(cardSet1);
-    cardSetList.add(cardSet2);
+    CardSet cardSet3 = new CardSet();
+    cardSet3
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet4 = new CardSet();
+    cardSet4
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet5 = new CardSet();
+    cardSet5
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet6 = new CardSet();
+    cardSet6
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet7 = new CardSet();
+    cardSet7
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet8 = new CardSet();
+    cardSet8
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet9 = new CardSet();
+    cardSet9
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    CardSet cardSet10 = new CardSet();
+    cardSet10
+      ..description = "test2"
+      ..name = "Test Beschreibung";
+    cardSetList.addAll([cardSet1, cardSet2, cardSet3, cardSet4, cardSet5, cardSet6, cardSet7, cardSet8, cardSet9, cardSet10]);
 
     return Scaffold (
-      body: cardSets()
+      body: cardSets(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        child: Icon(Icons.add),
+      )
     );
   }
 
