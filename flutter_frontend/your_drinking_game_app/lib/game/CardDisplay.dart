@@ -82,7 +82,7 @@ class _CardDisplayState extends State<CardDisplay> {
       });
       _cards.removeAt(pickedCardNum);
     } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+      Navigator.pop(context);
     }
 
   }

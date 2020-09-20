@@ -1,5 +1,3 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardSet.dart';
@@ -18,7 +16,6 @@ class CustomCardSetTile extends StatefulWidget {
 class _CustomCardSetTile extends State<CustomCardSetTile> {
 
   final CardSet cardSet;
-
   _CustomCardSetTile(this.cardSet);
 
   @override

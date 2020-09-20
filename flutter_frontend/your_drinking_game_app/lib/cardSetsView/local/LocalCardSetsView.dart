@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:your_drinking_game_app/cardSetsView/CustomCardSetTile.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/CardSetForm.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardSet.dart';
 
@@ -17,14 +18,12 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
 
   @override
   Widget build(BuildContext context) {
-
+    getCardSets();
     return Scaffold (
       body: cardSets(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          CardSetDB.cardSetDB.insertCardSet(
-            new CardSet("name", "description", "workshopId", true)
-          ).then((value) => setState(() => this.cardSetList.add(value)))
+        onPressed:() {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CardSetForm()));
         },
         child: Icon(Icons.add),
       )
@@ -35,7 +34,6 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
   @override
   void initState() {
     super.initState();
-    getCardSets();
   }
 
   Widget cardSets() {
@@ -62,7 +60,7 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
 
   getCardSets() {
     CardSetDB.cardSetDB.getCardSets().then(
-            (cardSetList) => {
+        (cardSetList) => {
           setState(
                 () => this.cardSetList = cardSetList,
           )
