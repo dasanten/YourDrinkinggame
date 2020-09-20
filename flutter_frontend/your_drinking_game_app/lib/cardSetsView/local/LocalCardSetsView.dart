@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:your_drinking_game_app/cardSetsView/CustomCardSetTile.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardSet.dart';
 
@@ -53,9 +54,8 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
   }
 
   Widget _buildCardSet(CardSet cardSet) {
-    return ListTile (
-      title: Text(cardSet.name),
-      subtitle: Text(cardSet.description),
+    return CustomCardSetTile(
+      cardSet: cardSet,
     );
   }
 

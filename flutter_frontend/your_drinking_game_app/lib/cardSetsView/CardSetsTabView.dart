@@ -5,12 +5,6 @@ import 'package:your_drinking_game_app/cardSetsView/workshop/WorkshopCardSetsVie
 
 class CardSetsTabView extends StatelessWidget {
 
-  final tabs = [
-    "Local",
-    "Workshop",
-  ];
-
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -20,14 +14,23 @@ class CardSetsTabView extends StatelessWidget {
           title: Text("Card Sets"),
           bottom: TabBar(
             isScrollable: false,
-            tabs: [ for (final tab in tabs) Tab(text: tab,) ],
+            tabs: [
+              Tab(
+                text: "Privat",
+                icon: Icon(Icons.folder),
+              ),
+              Tab(
+                text: "Workshop",
+                icon: Icon(Icons.wifi),
+              )
+            ],
           ),
         ),
         body: TabBarView(
-            children: [
-              LocalCardSetsView(),
-              WorkshopCardSetsView(),
-            ]
+          children: [
+            LocalCardSetsView(),
+            WorkshopCardSetsView(),
+          ]
         ),
       ),
     );

@@ -62,9 +62,30 @@ class CardSetDB {
   }
 
   Future<CardSet> insertCardSet(CardSet cardSet) async {
-    Database db = await database;
+    final db = await database;
     cardSet.id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
     return cardSet;
+  }
+
+  Future<int> delete(int id) async {
+    final db = await database;
+
+    return await db.delete(
+      TABLE_CARD_SET,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> update(CardSet cardSet) async{
+    final db = await database;
+
+    return await db.update(
+        TABLE_CARD_SET,
+        cardSet.toMap(),
+        where: "id =  ?",
+        whereArgs: [cardSet.id],
+    );
   }
 
   Future<CardSet> getCardSetById(String id) async {
