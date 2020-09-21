@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:your_drinking_game_app/cardSetsView/CustomCardSetTile.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/CardSetForm.dart';
+import 'file:///D:/app/flutter_frontend/your_drinking_game_app/lib/cardSetsView/local/CustomLocalCardSetTile.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/LocalCardSetForm.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardSet.dart';
 
@@ -14,11 +13,12 @@ class LocalCardSetsView extends StatefulWidget {
 
 class _LocalCardSetsView extends State<LocalCardSetsView> {
 
-  List<CardSet> cardSetList = [];
+  List<CardSet> _cardSetList = [];
 
   @override
   Widget build(BuildContext context) {
     getCardSets();
+
     return Scaffold (
       body: cardSets(),
       floatingActionButton: FloatingActionButton(
@@ -38,12 +38,12 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
 
   Widget cardSets() {
     return ListView.builder(
-      itemCount: cardSetList.length,
+      itemCount: _cardSetList.length,
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
         return Column(
           children: [
-            _buildCardSet(cardSetList[i]),
+            _buildCardSet(_cardSetList[i]),
             Divider(),
           ],
         );
@@ -62,7 +62,7 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
     CardSetDB.cardSetDB.getCardSets().then(
         (cardSetList) => {
           setState(
-                () => this.cardSetList = cardSetList,
+                () => this._cardSetList = cardSetList,
           )
         }
     );

@@ -48,7 +48,7 @@ class _CustomCardSetTile extends State<CustomCardSetTile> {
                 onChanged: (value){
                   setState(() {
                     cardSet.active = value;
-                    CardSetDB.cardSetDB.update(cardSet);
+                    CardSetDB.cardSetDB.updateCardSet(cardSet);
                   });
                 }
             )
