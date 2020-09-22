@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardView.dart';
 import 'package:your_drinking_game_app/game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
 
@@ -9,6 +11,8 @@ void main() {
     home: Menu(),
     routes: {
       CardDisplay.routeName: (context) => CardDisplay(),
+      LocalCardView.routeName: (context) => LocalCardView(),
+      LocalCardForm.routeName: (context) => LocalCardForm(),
     },
     theme: ThemeData(
       primaryColor: Colors.blue,
