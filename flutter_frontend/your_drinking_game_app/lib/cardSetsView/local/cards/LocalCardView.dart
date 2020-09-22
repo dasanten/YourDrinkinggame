@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
 import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
 import '../cards/CustomLocalCardTile.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
@@ -27,6 +29,12 @@ class _LocalCardView extends State<LocalCardView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_cardSet.name),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () => Navigator.pushNamed(context, CardSetEditForm.routeName, arguments: _cardSet),
+          ),
+        ],
       ),
       body: cards(),
       floatingActionButton: FloatingActionButton(
@@ -40,11 +48,14 @@ class _LocalCardView extends State<LocalCardView> {
         itemCount: _cardList.length,
         padding: EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
-          return Column(
-            children: [
-              _buildCard(_cardList[i]),
-              Divider(),
-            ],
+          return GestureDetector(
+            onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]),
+            child: Column(
+              children: [
+                _buildCard(_cardList[i]),
+                Divider(),
+              ],
+            ),
           );
         }
     );
