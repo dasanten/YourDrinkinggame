@@ -1,6 +1,6 @@
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 
-class CardSet {
+class CardSetEntity {
   int id;
   String name;
   String description;
@@ -8,7 +8,7 @@ class CardSet {
   bool active;
 
 
-  CardSet(this.name, this.description, this.workshopId, this.active);
+  CardSetEntity(this.name, this.description, this.workshopId, this.active);
 
   Map<String, dynamic> toMap() {
     var map = {
@@ -23,7 +23,7 @@ class CardSet {
     return map;
   }
 
-  CardSet.fromMap(Map<String, dynamic> cardSetMap) {
+  CardSetEntity.fromMap(Map<String, dynamic> cardSetMap) {
     id = cardSetMap[CardSetDB.COLUMN_CARD_SET_ID];
     name = cardSetMap[CardSetDB.COLUMN_CARD_SET_NAME];
     description = cardSetMap[CardSetDB.COLUMN_CARD_SET_DESCRIPTION];

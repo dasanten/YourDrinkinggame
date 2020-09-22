@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/LocalCardSetsView.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardSet.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 class CardSetForm extends StatefulWidget {
   @override
@@ -19,6 +18,7 @@ class _CardSetForm extends State<CardSetForm>{
 
   @override
   void initState() {
+    super.initState();
     _nameController = new TextEditingController();
     _descriptionController = new TextEditingController();
   }
@@ -71,7 +71,7 @@ class _CardSetForm extends State<CardSetForm>{
 
   saveCardSet(BuildContext context){
     if(_formKey.currentState.validate()) {
-      CardSet cardSet = new CardSet(_nameController.text, _descriptionController.text, null, true);
+      CardSetEntity cardSet = new CardSetEntity(_nameController.text, _descriptionController.text, null, true);
       CardSetDB.cardSetDB.insertCardSet(cardSet);
       Navigator.pop(context);
     }

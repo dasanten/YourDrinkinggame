@@ -1,10 +1,14 @@
-
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/CustomLocalCardTile.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
+import '../cards/CustomLocalCardTile.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardEntity.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 class LocalCardView extends StatefulWidget{
+
+  static const routeName = '/LocalCardDisplay';
+
   @override
   State<StatefulWidget> createState() => _LocalCardView();
 
@@ -12,12 +16,22 @@ class LocalCardView extends StatefulWidget{
 
 class _LocalCardView extends State<LocalCardView> {
 
+  CardSetEntity _cardSet;
   List<CardEntity> _cardList = [];
 
   @override
   Widget build(BuildContext context) {
+    _cardSet = ModalRoute.of(context).settings.arguments;
+    getCards();
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_cardSet.name),
+      ),
       body: cards(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()=> Navigator.pushNamed(context, LocalCardForm.routeName, arguments: _cardSet),
+      ),
     );
   }
 
@@ -44,7 +58,7 @@ class _LocalCardView extends State<LocalCardView> {
   }
 
   getCards() {
-    CardSetDB.cardSetDB.getCards().then(
+    CardSetDB.cardSetDB.getCards(_cardSet.id).then(
         (cardList) => {
           setState(
                 () => this._cardList = cardList,
