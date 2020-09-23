@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'file:///D:/app/flutter_frontend/your_drinking_game_app/lib/cardSetsView/local/cardSet/LocalCardSetsView.dart';
 import 'package:your_drinking_game_app/cardSetsView/workshop/WorkshopCardSetsView.dart';
+
+import 'local/cardSet/LocalCardSetsView.dart';
 
 
 class CardSetsTabView extends StatelessWidget {
