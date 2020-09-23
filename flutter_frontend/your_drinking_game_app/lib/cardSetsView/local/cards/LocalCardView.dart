@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
 import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
 import '../cards/CustomLocalCardTile.dart';
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
@@ -23,15 +25,22 @@ class _LocalCardView extends State<LocalCardView> {
   Widget build(BuildContext context) {
     _cardSet = ModalRoute.of(context).settings.arguments;
     getCards();
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(_cardSet.name),
+        title: Text("Kartenset: ${_cardSet.name}"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => Navigator.pushNamed(context, CardSetEditForm.routeName, arguments: _cardSet),
+          ),
+        ],
       ),
       body: cards(),
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> Navigator.pushNamed(context, LocalCardForm.routeName, arguments: _cardSet),
+        child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -40,16 +49,23 @@ class _LocalCardView extends State<LocalCardView> {
         itemCount: _cardList.length,
         padding: EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
-          return Column(
-            children: [
-              _buildCard(_cardList[i]),
-              Divider(),
-            ],
+          return GestureDetector(
+            onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]),
+            child: Column(
+              children: [
+                _buildCard(_cardList[i]),
+                Divider(),
+              ],
+            ),
           );
         }
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Widget _buildCard(CardEntity card) {
     return CustomLocalCardTile(

@@ -24,7 +24,7 @@ class _LocalCardForm extends State<LocalCardForm> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Karte für " + _cardSet.name),
+        title: Text("Karte für ${_cardSet.name}"),
       ),
       body: Form(
         key: _formKey,
