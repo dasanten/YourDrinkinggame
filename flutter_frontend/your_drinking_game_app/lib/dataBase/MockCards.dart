@@ -1,4 +1,7 @@
 
+import 'package:your_drinking_game_app/models/CardEntity.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+
 class MockCards {
   final List<String> cards  =[
     "# und # trinken",
@@ -29,4 +32,13 @@ class MockCards {
     "Wenn # einfriert, müssen die anderen ihm/ihr nachmachen. Der/die letzte trinkt 2 Schlücke",
     "Kategorien! Wem nichts mehr einfällt, der trinkt 2 Schlücke. # fängt an.",
   ];
+
+  static CardSetEntity _standardCardSet = new CardSetEntity("Standard Set", "Standard Karten set", null, true);
+  List<CardEntity> _cardEntityList = new List<CardEntity>();
+
+  MockCards(int cardSetId) {
+    cards.forEach((element) {
+      _cardEntityList.add(new CardEntity(null, element, true, null, cardSetId));
+    });
+  }
 }

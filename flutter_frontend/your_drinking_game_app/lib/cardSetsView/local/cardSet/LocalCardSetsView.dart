@@ -44,11 +44,14 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
       itemBuilder: (context, i) {
         return GestureDetector(
           onTap: ()=> Navigator.pushNamed(context, LocalCardView.routeName, arguments: _cardSetList[i]),
-          child: Column(
-            children: [
-              _buildCardSet(_cardSetList[i]),
-              Divider(),
-            ],
+          child: Container(
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                _buildCardSet(_cardSetList[i]),
+                Divider(),
+              ],
+            ),
           ),
         );
       },

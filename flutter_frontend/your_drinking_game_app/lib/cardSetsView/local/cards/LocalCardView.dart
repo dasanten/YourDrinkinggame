@@ -51,12 +51,15 @@ class _LocalCardView extends State<LocalCardView> {
         itemBuilder: (context, i) {
           return GestureDetector(
             onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]),
-            child: Column(
-              children: [
-                _buildCard(_cardList[i]),
-                Divider(),
-              ],
-            ),
+            child: Container(
+              color: Colors.transparent,
+              child: Column(
+                children: [
+                  _buildCard(_cardList[i]),
+                  Divider(),
+                ],
+              ),
+            )
           );
         }
     );
