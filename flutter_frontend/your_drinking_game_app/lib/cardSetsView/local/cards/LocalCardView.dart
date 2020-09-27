@@ -11,20 +11,24 @@ class LocalCardView extends StatefulWidget{
 
   static const routeName = '/LocalCardDisplay';
 
+  final CardSetEntity cardSet;
+  LocalCardView(this.cardSet);
+
   @override
-  State<StatefulWidget> createState() => _LocalCardView();
+  State<StatefulWidget> createState() => _LocalCardView(this.cardSet);
 
 }
 
 class _LocalCardView extends State<LocalCardView> {
+
+  _LocalCardView(this._cardSet);
 
   CardSetEntity _cardSet;
   List<CardEntity> _cardList = [];
 
   @override
   Widget build(BuildContext context) {
-    _cardSet = ModalRoute.of(context).settings.arguments;
-    getCards();
+    //_cardSet = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Kartenset: ${_cardSet.name}"),
@@ -68,6 +72,7 @@ class _LocalCardView extends State<LocalCardView> {
   @override
   void initState() {
     super.initState();
+    getCards();
   }
 
   Widget _buildCard(CardEntity card) {

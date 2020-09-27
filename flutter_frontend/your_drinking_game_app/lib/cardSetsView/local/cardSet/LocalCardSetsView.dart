@@ -19,12 +19,11 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
 
   @override
   Widget build(BuildContext context) {
-    getCardSets();
     return Scaffold (
       body: cardSets(),
       floatingActionButton:
         FloatingActionButton(
-          onPressed:()=> Navigator.push(context, MaterialPageRoute(builder: (context) => CardSetForm())),
+          onPressed:()=> Navigator.push(context, MaterialPageRoute(builder: (context) => CardSetForm())).then((value) => getCardSets()),
           child: Icon(Icons.add),
         ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -35,6 +34,7 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
   @override
   void initState() {
     super.initState();
+    getCardSets();
   }
 
   Widget cardSets() {
@@ -43,7 +43,7 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
       padding: EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
         return GestureDetector(
-          onTap: ()=> Navigator.pushNamed(context, LocalCardView.routeName, arguments: _cardSetList[i]),
+          onTap: ()=> Navigator.pushNamed(context, LocalCardView.routeName, arguments: _cardSetList[i]).then((value) => getCardSets()),
           child: Container(
             color: Colors.transparent,
             child: Column(

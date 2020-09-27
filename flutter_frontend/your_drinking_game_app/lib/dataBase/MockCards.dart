@@ -33,12 +33,12 @@ class MockCards {
     "Kategorien! Wem nichts mehr einfällt, der trinkt 2 Schlücke. # fängt an.",
   ];
 
-  static CardSetEntity _standardCardSet = new CardSetEntity("Standard Set", "Standard Karten set", null, true);
-  List<CardEntity> _cardEntityList = new List<CardEntity>();
+  static CardSetEntity standardCardSet = new CardSetEntity("Standard Set", "Standard Karten set", null, true);
+  List<CardEntity> cardEntityList = new List<CardEntity>();
 
   MockCards(int cardSetId) {
     cards.forEach((element) {
-      _cardEntityList.add(new CardEntity(null, element, true, null, cardSetId));
+      cardEntityList.add(new CardEntity(null, element, true, null, cardSetId));
     });
   }
 }

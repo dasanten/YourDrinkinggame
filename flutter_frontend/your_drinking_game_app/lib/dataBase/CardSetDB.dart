@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:your_drinking_game_app/dataBase/MockCards.dart';
 import 'package:your_drinking_game_app/models/CardEntity.dart';
 import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
@@ -138,6 +139,14 @@ class CardSetDB {
 
     card.id = await db.insert(TABLE_CARD, card.toMap());
     return card;
+  }
+
+  Future<List<CardEntity>> insertCardList(List<CardEntity> cardEntityList) async {
+
+    cardEntityList.forEach((card) async{
+      card = await insertCard(card);
+    });
+    return cardEntityList;
   }
 
   Future<int> deleteCard(int id) async {

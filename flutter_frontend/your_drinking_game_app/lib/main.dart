@@ -14,10 +14,16 @@ void main() {
     home: Menu(),
     routes: {
       CardDisplay.routeName: (context) => CardDisplay(),
-      LocalCardView.routeName: (context) => LocalCardView(),
       LocalCardForm.routeName: (context) => LocalCardForm(),
       CardSetEditForm.routeName: (context) => CardSetEditForm(),
       CardEditForm.routeName: (context) => CardEditForm(),
+    },
+    onGenerateRoute: (RouteSettings settings){
+      var routes = <String, dynamic> {
+        LocalCardView.routeName: (context) => LocalCardView(settings.arguments),
+      };
+      WidgetBuilder builder = routes[settings.name];
+      return MaterialPageRoute(builder: (context) => builder(context));
     },
     theme: ThemeData(
       primaryColor: Colors.blue,
