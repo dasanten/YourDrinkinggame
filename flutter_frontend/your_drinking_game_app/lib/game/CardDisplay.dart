@@ -2,8 +2,10 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/dataBase/MockCards.dart';
 import 'package:your_drinking_game_app/main.dart';
+import 'package:your_drinking_game_app/models/CardEntity.dart';
 
 class CardDisplay extends StatefulWidget {
   static const routeName = '/CardDisplay';
@@ -47,11 +49,10 @@ class _CardDisplayState extends State<CardDisplay> {
   @override
   void initState() {
     super.initState();
-    MockCards mockCards = new MockCards(10);
-    _cards = mockCards.cards;
+    CardSetDB.cardSetDB.getActiveCards().then((value) => _cards = value);
   }
 
-  List<String> _cards = [];
+  List<CardEntity> _cards = [];
 
   updateDisplayedCard() {
     List<String> playersCopy = List.from(_players);
@@ -65,7 +66,7 @@ class _CardDisplayState extends State<CardDisplay> {
           return;
         } else {
           pickedCardNum = rdm.nextInt(_cards.length);
-          pickedCard = _cards[pickedCardNum];
+          pickedCard = _cards[pickedCardNum].content;
           if ("#".allMatches(pickedCard).length > _players.length) {
             _cards.removeAt(pickedCardNum);
           }

@@ -170,4 +170,38 @@ class CardSetDB {
     );
   }
 
+  Future<List<CardEntity>> getActiveCards() async {
+    final db = await database;
+    var cards = new List();
+    List<CardEntity> cardList = new List<CardEntity>();
+    bool finished = false;
+
+    await db.query(
+      TABLE_CARD_SET,
+      columns: [COLUMN_CARD_SET_ID, COLUMN_CARD_SET_NAME, COLUMN_CARD_SET_DESCRIPTION, COLUMN_CARD_SET_ACTIVE, COLUMN_CARD_SET_WORKSHOP_ID],
+      where: "$COLUMN_CARD_SET_ACTIVE = ?",
+      whereArgs: [1],
+    ).then((value) =>
+      value.forEach((cardSet) async {
+        var newCards = await db.query(
+          TABLE_CARD,
+          columns: [COLUMN_CARD_ID, COLUMN_CARD_CONTENT, COLUMN_CARD_ACTIVE, COLUMN_CARD_WORKSHOP_ID, COLUMN_CARD_CARD_SET_ID],
+          where: "$COLUMN_CARD_CARD_SET_ID = ? AND $COLUMN_CARD_ACTIVE = ?",
+          whereArgs: [cardSet[COLUMN_CARD_SET_ID], 1],
+        );
+        if(newCards.isNotEmpty)
+          newCards.forEach((card) {
+            cards.add(card);
+            cardList.add(CardEntity.fromMap(card));
+            print("TEST 1");
+          });
+      })
+    ).whenComplete(() => {finished = true});
+
+    while (finished) return cardList;
+
+
+
+  }
+
 }
