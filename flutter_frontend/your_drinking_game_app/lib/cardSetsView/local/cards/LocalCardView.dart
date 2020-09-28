@@ -28,20 +28,21 @@ class _LocalCardView extends State<LocalCardView> {
 
   @override
   Widget build(BuildContext context) {
-    //_cardSet = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text("Kartenset: ${_cardSet.name}"),
         actions: [
           IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () => Navigator.pushNamed(context, CardSetEditForm.routeName, arguments: _cardSet),
+              onPressed: () => Navigator.pushNamed(context, CardSetEditForm.routeName, arguments: _cardSet).then((value) =>
+                setState((){})
+              ),
           ),
         ],
       ),
       body: cards(),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> Navigator.pushNamed(context, LocalCardForm.routeName, arguments: _cardSet),
+        onPressed: ()=> Navigator.pushNamed(context, LocalCardForm.routeName, arguments: _cardSet).then((value) => getCards()),
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -54,7 +55,7 @@ class _LocalCardView extends State<LocalCardView> {
         padding: EdgeInsets.all(16.0),
         itemBuilder: (context, i) {
           return GestureDetector(
-            onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]),
+            onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]).then((value) => getCards()),
             child: Container(
               color: Colors.transparent,
               child: Column(
