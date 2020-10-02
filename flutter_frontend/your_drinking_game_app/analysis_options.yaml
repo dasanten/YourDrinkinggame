@@ -15,6 +15,6 @@ analyzer:
 
 linter:
   rules:
-    # return_of_invalid_type: false
+    return_of_invalid_type: false
     # argument_type_not_assignable: false
     public_member_api_docs: false
