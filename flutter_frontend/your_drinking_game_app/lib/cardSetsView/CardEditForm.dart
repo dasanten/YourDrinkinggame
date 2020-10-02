@@ -83,7 +83,7 @@ class _CardEditForm extends State<CardEditForm> {
 
   Future<void> updateCard(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      _card.content = _contentController.text;
+      _card = _card.copyWith(content: _contentController.text);
       await CardSetDB.cardSetDB.updateCard(_card);
       Navigator.pop(context);
     }

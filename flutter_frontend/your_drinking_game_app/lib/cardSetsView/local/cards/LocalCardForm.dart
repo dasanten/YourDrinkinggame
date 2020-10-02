@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardEntity.dart';
 import 'package:your_drinking_game_app/models/CardSetEntity.dart';
@@ -59,7 +59,7 @@ class _LocalCardForm extends State<LocalCardForm> {
             ),
             Center(
               child: RaisedButton(
-                onPressed: () => saveCard(context),
+                onPressed: () async => saveCard(context),
                 child: const Text("Karte hinzufügen!"),
               ),
             )
@@ -69,16 +69,14 @@ class _LocalCardForm extends State<LocalCardForm> {
     );
   }
 
-  void saveCard(BuildContext context) {
+  Future<void> saveCard(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       final card = CardEntity(
-        null,
-        _contentController.text,
-        true,
-        null,
-        _cardSet.id,
+        active: true,
+        cardSetId: _cardSet.id,
+        content: _contentController.text,
       );
-      CardSetDB.cardSetDB.insertCard(card);
+      await CardSetDB.cardSetDB.insertCard(card);
       Navigator.pop(context);
     }
   }

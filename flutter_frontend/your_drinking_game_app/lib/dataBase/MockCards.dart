@@ -39,7 +39,12 @@ class MockCards {
   MockCards(int cardSetId) {
     cardEntityList = cards
         .map<CardEntity>(
-            (element) => CardEntity(null, element, true, null, cardSetId))
+          (element) => CardEntity(
+            content: element,
+            active: true,
+            cardSetId: cardSetId,
+          ),
+        )
         .toList();
   }
 }

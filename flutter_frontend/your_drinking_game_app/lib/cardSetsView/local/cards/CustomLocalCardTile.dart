@@ -40,9 +40,9 @@ class _CustomCardTile extends State<CustomLocalCardTile> {
             value: card.active,
             onChanged: (value) {
               setState(() {
-                card.active = value;
-                CardSetDB.cardSetDB.updateCard(card);
+                card = card.copyWith(active: value);
               });
+              CardSetDB.cardSetDB.updateCard(card);
             },
           ),
         ],
