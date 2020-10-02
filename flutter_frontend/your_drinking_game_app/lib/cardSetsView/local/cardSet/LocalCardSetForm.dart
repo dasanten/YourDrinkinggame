@@ -65,7 +65,7 @@ class _CardSetForm extends State<CardSetForm> {
             ),
             Center(
               child: RaisedButton(
-                onPressed: () => saveCardSet(context),
+                onPressed: () async => saveCardSet(context),
                 child: const Text("CardSet erstellen!"),
               ),
             )
@@ -75,15 +75,14 @@ class _CardSetForm extends State<CardSetForm> {
     );
   }
 
-  void saveCardSet(BuildContext context) {
+  Future<void> saveCardSet(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       final cardSet = CardSetEntity(
-        _nameController.text,
-        _descriptionController.text,
-        null,
-        true,
+        name: _nameController.text,
+        description: _descriptionController.text,
+        active: true,
       );
-      CardSetDB.cardSetDB.insertCardSet(cardSet);
+      await CardSetDB.cardSetDB.insertCardSet(cardSet);
       Navigator.pop(context);
     }
   }

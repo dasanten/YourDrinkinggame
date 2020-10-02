@@ -44,12 +44,12 @@ class _CustomCardSetTile extends State<CustomCardSetTile> {
             ),
           ),
           Switch(
-            value: cardSet.active,
+            value: widget.cardSet.active,
             onChanged: (value) {
               setState(() {
-                cardSet.active = value;
-                CardSetDB.cardSetDB.updateCardSet(cardSet);
+                cardSet = cardSet.copyWith(active: value);
               });
+              CardSetDB.cardSetDB.updateCardSet(widget.cardSet);
             },
           ),
         ],

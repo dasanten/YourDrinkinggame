@@ -93,8 +93,11 @@ class CardSetDB {
 
   Future<CardSetEntity> insertCardSet(CardSetEntity cardSet) async {
     final db = await database;
-    cardSet.id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
-    return cardSet;
+    final id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
+
+    return cardSet.copyWith(
+      id: id,
+    );
   }
 
   Future<int> deleteCardSet(int id) async {

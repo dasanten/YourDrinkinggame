@@ -32,8 +32,11 @@ class MockCards {
     "Kategorien! Wem nichts mehr einfällt, der trinkt 2 Schlücke. # fängt an.",
   ];
 
-  static CardSetEntity standardCardSet =
-      CardSetEntity("Standard Set", "Standard Karten set", null, true);
+  static const CardSetEntity standardCardSet = CardSetEntity(
+    name: "Standard Set",
+    description: "Standard Karten set",
+    active: true,
+  );
   List<CardEntity> cardEntityList = <CardEntity>[];
 
   MockCards(int cardSetId) {

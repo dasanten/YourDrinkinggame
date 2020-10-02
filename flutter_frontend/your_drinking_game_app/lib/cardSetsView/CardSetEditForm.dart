@@ -103,12 +103,13 @@ class _CardSetEditForm extends State<CardSetEditForm> {
     }
   }
 
-  void updateCardSet(BuildContext context) {
+  Future<void> updateCardSet(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      _cardSet
-        ..name = _nameController.text
-        ..description = _descriptionController.text;
-      CardSetDB.cardSetDB.updateCardSet(_cardSet);
+      _cardSet = _cardSet.copyWith(
+        name: _nameController.text,
+        description: _descriptionController.text,
+      );
+      await CardSetDB.cardSetDB.updateCardSet(_cardSet);
       Navigator.pop(context);
     }
   }
