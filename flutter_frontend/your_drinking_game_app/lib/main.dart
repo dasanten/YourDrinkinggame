@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
 import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
 import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
 import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
@@ -18,8 +18,8 @@ void main() {
       CardSetEditForm.routeName: (context) => CardSetEditForm(),
       CardEditForm.routeName: (context) => CardEditForm(),
     },
-    onGenerateRoute: (RouteSettings settings){
-      var routes = <String, dynamic> {
+    onGenerateRoute: (RouteSettings settings) {
+      final routes = <String, dynamic>{
         LocalCardView.routeName: (context) => LocalCardView(settings.arguments),
       };
       WidgetBuilder builder = routes[settings.name];
@@ -43,11 +43,10 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menu'),
+        title: const Text('Menu'),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
               'assets/images/logoTransparent.jpg',
@@ -59,50 +58,50 @@ class Menu extends StatelessWidget {
               height: 50,
               margin: EdgeInsets.all(menuMargin),
               child: RaisedButton(
-                child: Text('Spielen'.toUpperCase()),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PlayerInput()),
                   );
                 },
+                child: const Text('SPIELEN'),
               ),
             ),
             Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
-                  child: Text('Karten Sets'.toUpperCase()),
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CardSetsTabView()),
-                    );
-                  },
-                )
+              width: 200,
+              height: 50,
+              margin: EdgeInsets.all(menuMargin),
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CardSetsTabView()),
+                  );
+                },
+                child: const Text('KARTEN SETS'),
+              ),
             ),
             Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
-                  child: Text('Optionen'.toUpperCase()),
-                  onPressed: () {},
-                )
+              width: 200,
+              height: 50,
+              margin: EdgeInsets.all(menuMargin),
+              child: RaisedButton(
+                onPressed: () {},
+                child: const Text('OPTIONEN'),
+              ),
             ),
             Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
-                  child: Text('Feedback'.toUpperCase()),
-                  onPressed: () {},
-                )
+              width: 200,
+              height: 50,
+              margin: EdgeInsets.all(menuMargin),
+              child: RaisedButton(
+                onPressed: () {},
+                child: const Text('FEEDBACK'),
+              ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 }

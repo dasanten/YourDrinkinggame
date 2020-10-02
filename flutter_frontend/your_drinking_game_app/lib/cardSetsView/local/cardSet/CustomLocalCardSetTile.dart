@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+
 import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
 import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 class CustomCardSetTile extends StatefulWidget {
-
   final CardSetEntity cardSet;
 
   const CustomCardSetTile({Key key, this.cardSet}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CustomCardSetTile(cardSet);
+  State<StatefulWidget> createState() => _CustomCardSetTile();
 }
 
-
 class _CustomCardSetTile extends State<CustomCardSetTile> {
+  CardSetEntity cardSet;
 
-  final CardSetEntity cardSet;
-  _CustomCardSetTile(this.cardSet);
+  @override
+  void initState() {
+    super.initState();
+    cardSet = widget.cardSet;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,35 +29,31 @@ class _CustomCardSetTile extends State<CustomCardSetTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cardSet.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    Text(cardSet.description),
-                  ],
-                )
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  cardSet.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                  ),
+                ),
+                Text(cardSet.description),
+              ],
             ),
-            flex: 1,
           ),
           Switch(
-              value: cardSet.active,
-              onChanged: (value){
-                setState(() {
-                  cardSet.active = value;
-                  CardSetDB.cardSetDB.updateCardSet(cardSet);
-                });
-              }
-          )
+            value: cardSet.active,
+            onChanged: (value) {
+              setState(() {
+                cardSet.active = value;
+                CardSetDB.cardSetDB.updateCardSet(cardSet);
+              });
+            },
+          ),
         ],
       ),
     );
   }
-
 }

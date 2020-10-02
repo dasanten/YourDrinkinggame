@@ -27,7 +27,7 @@ class _PlayerInputState extends State<PlayerInput> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Spieler Auswahl"),
+        title: const Text("Spieler Auswahl"),
       ),
       body: Builder(
         builder: (context) => Center(
@@ -38,9 +38,9 @@ class _PlayerInputState extends State<PlayerInput> {
                 child: playerChips(),
               ),
               Container(
-                padding: EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(30.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Spieler Namen',
                     border: OutlineInputBorder(),
                   ),
@@ -59,17 +59,17 @@ class _PlayerInputState extends State<PlayerInput> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: RaisedButton(
-                        child: Text("Spieler hinzufügen"),
                         onPressed: () => addPlayer(),
+                        child: const Text("Spieler hinzufügen"),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: RaisedButton(
                         onPressed: () => startGame(context),
-                        child: Text('START!'),
+                        child: const Text('START!'),
                       ),
                     ),
                   ],
