@@ -4,16 +4,13 @@ import 'package:your_drinking_game_app/main.dart';
 import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 class CardSetEditForm extends StatefulWidget {
-
   static const routeName = '/editCardSet';
 
   @override
   State<StatefulWidget> createState() => _CardSetEditForm();
-
 }
 
 class _CardSetEditForm extends State<CardSetEditForm> {
-
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController;
   TextEditingController _descriptionController;
@@ -30,14 +27,14 @@ class _CardSetEditForm extends State<CardSetEditForm> {
         title: Text("Kartenset ${_cardSet.name} bearbeiten"),
       ),
       body: Form(
-        key: _formKey,
+          key: _formKey,
           child: Column(
             children: [
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
-                  if(value.isEmpty) {
+                  if (value.isEmpty) {
                     return 'Bitte gebe einen Namen ein!';
                   }
                   return null;
@@ -62,19 +59,18 @@ class _CardSetEditForm extends State<CardSetEditForm> {
                 children: [
                   RaisedButton(
                     child: Text("Karte löschen!"),
-                    onPressed: ()=> deleteCardSet(context),
+                    onPressed: () => deleteCardSet(context),
                     color: Colors.red,
                   ),
                   Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
                   RaisedButton(
                     child: Text("Karte updaten!"),
-                    onPressed: ()=> updateCardSet(context),
+                    onPressed: () => updateCardSet(context),
                   ),
                 ],
               ),
             ],
-          )
-      ),
+          )),
     );
   }
 
@@ -85,25 +81,25 @@ class _CardSetEditForm extends State<CardSetEditForm> {
     _descriptionController = new TextEditingController();
   }
 
-  deleteCardSet(BuildContext context) async{
+  Future<void> deleteCardSet(BuildContext context) async {
     bool confirmed = await _deleteDialog();
-    if(confirmed) {
+    if (confirmed) {
       CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }
 
-  updateCardSet(BuildContext context) {
-    if(_formKey.currentState.validate()) {
+  void updateCardSet(BuildContext context) {
+    if (_formKey.currentState.validate()) {
       _cardSet
-          ..name = _nameController.text
-          ..description = _descriptionController.text;
+        ..name = _nameController.text
+        ..description = _descriptionController.text;
       CardSetDB.cardSetDB.updateCardSet(_cardSet);
       Navigator.pop(context);
     }
   }
 
-  Future<bool> _deleteDialog() async{
+  Future<bool> _deleteDialog() async {
     return showDialog<bool>(
         context: context,
         barrierDismissible: false,
@@ -113,16 +109,14 @@ class _CardSetEditForm extends State<CardSetEditForm> {
             actions: [
               RaisedButton(
                 child: Text("Abbruch".toUpperCase()),
-                onPressed: ()=> Navigator.pop(context, false),
+                onPressed: () => Navigator.pop(context, false),
               ),
               RaisedButton(
                 child: Text("Bestätigen".toUpperCase()),
-                onPressed: ()=> Navigator.pop(context, true),
+                onPressed: () => Navigator.pop(context, true),
               ),
             ],
           );
-        }
-    );
+        });
   }
-
 }

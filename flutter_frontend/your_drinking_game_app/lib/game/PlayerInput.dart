@@ -77,7 +77,7 @@ class _PlayerInputState extends State<PlayerInput> {
 
   List<String> _players = [];
 
-  playerChips() {
+  Widget playerChips() {
     return Wrap(
       spacing: 6.0,
       runSpacing: 6.0,
@@ -104,7 +104,7 @@ class _PlayerInputState extends State<PlayerInput> {
     }
   }
 
-  startGame(BuildContext context) {
+  void startGame(BuildContext context) {
     addPlayer();
     if (_players.length >= 2) {
       Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);

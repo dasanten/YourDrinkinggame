@@ -82,7 +82,7 @@ class _LocalCardView extends State<LocalCardView> {
     );
   }
 
-  getCards() {
+  void getCards() {
     CardSetDB.cardSetDB.getCards(_cardSet.id).then(
         (cardList) => {
           setState(

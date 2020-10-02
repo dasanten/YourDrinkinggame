@@ -54,7 +54,7 @@ class _CardDisplayState extends State<CardDisplay> {
 
   List<CardEntity> _cards = [];
 
-  updateDisplayedCard() {
+  void updateDisplayedCard() {
     List<String> playersCopy = List.from(_players);
     if(_cards.isNotEmpty) {
       var rdm = new Random();

@@ -65,7 +65,7 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
   }
 
 
-  getCardSets() {
+  void getCardSets() {
     CardSetDB.cardSetDB.getCardSets().then(
         (cardSetList) => {
           setState(

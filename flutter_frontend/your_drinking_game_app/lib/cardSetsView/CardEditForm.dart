@@ -75,7 +75,7 @@ class _CardEditForm extends State<CardEditForm> {
     _contentController = new TextEditingController();
   }
 
-  updateCard(BuildContext context) {
+  void updateCard(BuildContext context) {
     if(_formKey.currentState.validate()) {
       _card.content = _contentController.text;
       CardSetDB.cardSetDB.updateCard(_card);
@@ -83,7 +83,7 @@ class _CardEditForm extends State<CardEditForm> {
     }
   }
 
-  deleteCard(BuildContext context) async{
+  Future<void> deleteCard(BuildContext context) async{
     bool confirmed = await _deleteDialog();
     if(confirmed) {
       CardSetDB.cardSetDB.deleteCard(_card.id);

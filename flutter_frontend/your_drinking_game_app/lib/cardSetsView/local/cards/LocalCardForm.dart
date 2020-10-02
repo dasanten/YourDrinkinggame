@@ -63,7 +63,7 @@ class _LocalCardForm extends State<LocalCardForm> {
     _contentController = new TextEditingController();
   }
 
-  saveCard(BuildContext context) {
+  void saveCard(BuildContext context) {
     if(_formKey.currentState.validate()) {
       CardEntity card = new CardEntity(null, _contentController.text, true, null, _cardSet.id);
       CardSetDB.cardSetDB.insertCard(card);
