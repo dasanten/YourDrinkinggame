@@ -167,8 +167,12 @@ class CardSetDB {
   Future<int> updateCard(CardEntity card) async {
     final db = await database;
 
-    return db.update(TABLE_CARD, card.toMap(),
-        where: "$COLUMN_CARD_ID = ?", whereArgs: [card.id]);
+    return db.update(
+      TABLE_CARD,
+      card.toMap(),
+      where: "$COLUMN_CARD_ID = ?",
+      whereArgs: [card.id],
+    );
   }
 
   Future<List<CardEntity>> getActiveCards() async {

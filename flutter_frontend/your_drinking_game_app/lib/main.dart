@@ -9,31 +9,34 @@ import 'package:your_drinking_game_app/game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
 
 void main() {
-  runApp(MaterialApp(
-    title: 'Dein Trinkspiel',
-    home: Menu(),
-    routes: {
-      CardDisplay.routeName: (context) => CardDisplay(),
-      LocalCardForm.routeName: (context) => LocalCardForm(),
-      CardSetEditForm.routeName: (context) => CardSetEditForm(),
-      CardEditForm.routeName: (context) => CardEditForm(),
-    },
-    onGenerateRoute: (RouteSettings settings) {
-      final routes = <String, dynamic>{
-        LocalCardView.routeName: (context) => LocalCardView(settings.arguments),
-      };
-      WidgetBuilder builder = routes[settings.name];
-      return MaterialPageRoute(builder: (context) => builder(context));
-    },
-    theme: ThemeData(
-      primaryColor: Colors.blue,
-      primaryColorDark: Colors.blueAccent,
-      accentColor: Colors.orangeAccent,
-      buttonColor: Colors.orangeAccent,
-      bottomAppBarColor: Colors.grey.shade300,
+  runApp(
+    MaterialApp(
+      title: 'Dein Trinkspiel',
+      home: Menu(),
+      routes: {
+        CardDisplay.routeName: (context) => CardDisplay(),
+        LocalCardForm.routeName: (context) => LocalCardForm(),
+        CardSetEditForm.routeName: (context) => CardSetEditForm(),
+        CardEditForm.routeName: (context) => CardEditForm(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        final routes = <String, dynamic>{
+          LocalCardView.routeName: (context) =>
+              LocalCardView(settings.arguments),
+        };
+        WidgetBuilder builder = routes[settings.name];
+        return MaterialPageRoute(builder: (context) => builder(context));
+      },
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        primaryColorDark: Colors.blueAccent,
+        accentColor: Colors.orangeAccent,
+        buttonColor: Colors.orangeAccent,
+        bottomAppBarColor: Colors.grey.shade300,
+      ),
+      darkTheme: ThemeData.dark(),
     ),
-    darkTheme: ThemeData.dark(),
-  ));
+  );
 }
 
 class Menu extends StatelessWidget {
