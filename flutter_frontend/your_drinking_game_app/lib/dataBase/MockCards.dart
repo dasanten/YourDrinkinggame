@@ -1,5 +1,5 @@
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+import '../models/CardEntity.dart';
+import '../models/CardSetEntity.dart';
 
 class MockCards {
   final List<String> cards = [

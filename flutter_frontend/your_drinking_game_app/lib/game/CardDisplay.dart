@@ -2,10 +2,10 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/dataBase/MockCards.dart';
-import 'package:your_drinking_game_app/main.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
+
+import '../dataBase/CardSetDB.dart';
+import '../main.dart';
+import '../models/CardEntity.dart';
 
 class CardDisplay extends StatefulWidget {
   static const routeName = '/CardDisplay';
@@ -30,7 +30,7 @@ class _CardDisplayState extends State<CardDisplay> {
     _players = ModalRoute.of(context).settings.arguments;
 
     return GestureDetector(
-      onTap: () => updateDisplayedCard(),
+      onTap: updateDisplayedCard,
       child: Scaffold(
         body: Center(
           child: Container(
@@ -53,7 +53,7 @@ class _CardDisplayState extends State<CardDisplay> {
     final playersCopy = List<String>.from(_players);
     if (_cards.isNotEmpty) {
       final rdm = Random();
-      String pickedCard = "";
+      var pickedCard = "";
       int pickedCardNum;
       do {
         if (_cards.isEmpty) {

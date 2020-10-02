@@ -19,3 +19,4 @@ linter:
     # argument_type_not_assignable: false
     public_member_api_docs: false
     file_names: false
+    prefer_relative_imports: true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/game/CardDisplay.dart';
+
+import 'CardDisplay.dart';
 
 class PlayerInput extends StatefulWidget {
   @override
@@ -61,7 +62,7 @@ class _PlayerInputState extends State<PlayerInput> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       child: RaisedButton(
-                        onPressed: () => addPlayer(),
+                        onPressed: addPlayer,
                         child: const Text("Spieler hinzufügen"),
                       ),
                     ),
@@ -86,16 +87,19 @@ class _PlayerInputState extends State<PlayerInput> {
     return Wrap(
       spacing: 6.0,
       runSpacing: 6.0,
-      children: List<Widget>.generate(_players.length, (int index) {
-        return Chip(
-          label: Text(_players[index]),
-          onDeleted: () {
-            setState(() {
-              _players.removeAt(index);
-            });
-          },
-        );
-      }),
+      children: List<Widget>.generate(
+        _players.length,
+        (index) {
+          return Chip(
+            label: Text(_players[index]),
+            onDeleted: () {
+              setState(() {
+                _players.removeAt(index);
+              });
+            },
+          );
+        },
+      ),
     );
   }
 

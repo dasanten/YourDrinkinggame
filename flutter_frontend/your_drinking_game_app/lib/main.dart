@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardView.dart';
-import 'package:your_drinking_game_app/game/CardDisplay.dart';
+import 'cardSetsView/CardEditForm.dart';
+import 'cardSetsView/CardSetEditForm.dart';
+import 'cardSetsView/CardSetsTabView.dart';
+import 'cardSetsView/local/cards/LocalCardForm.dart';
+import 'cardSetsView/local/cards/LocalCardView.dart';
+import 'game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
 
 void main() {
@@ -19,7 +19,7 @@ void main() {
         CardSetEditForm.routeName: (context) => CardSetEditForm(),
         CardEditForm.routeName: (context) => CardEditForm(),
       },
-      onGenerateRoute: (RouteSettings settings) {
+      onGenerateRoute: (settings) {
         final routes = <String, dynamic>{
           LocalCardView.routeName: (context) =>
               LocalCardView(settings.arguments),

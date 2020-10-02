@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:your_drinking_game_app/dataBase/MockCards.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+
+import '../models/CardEntity.dart';
+import '../models/CardSetEntity.dart';
 
 class CardSetDB {
   // ignore_for_file: constant_identifier_names
@@ -34,9 +34,7 @@ class CardSetDB {
       return _database;
     }
 
-    _database = await createDataBase();
-
-    return _database;
+    return _database = await createDataBase();
   }
 
   Future<Database> createDataBase() async {
@@ -45,7 +43,7 @@ class CardSetDB {
     return openDatabase(
       join(dbPath, 'card_set_database.db'),
       version: 1,
-      onCreate: (Database database, int version) async {
+      onCreate: (database, version) async {
         await database.execute(
           """
           CREATE TABLE $TABLE_CARD_SET (

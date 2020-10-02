@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
+import '../dataBase/CardSetDB.dart';
+import '../models/CardEntity.dart';
 
 class CardEditForm extends StatefulWidget {
   static const routeName = '/editCard';
@@ -101,7 +101,7 @@ class _CardEditForm extends State<CardEditForm> {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           title: const Text("Wirklich löschen ?"),
           actions: [

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
+import '../dataBase/CardSetDB.dart';
 
 @immutable
 class CardEntity {

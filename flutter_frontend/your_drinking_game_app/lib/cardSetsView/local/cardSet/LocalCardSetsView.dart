@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardView.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+import '../../../dataBase/CardSetDB.dart';
+import '../../../models/CardSetEntity.dart';
+import '../cards/LocalCardView.dart';
 import 'CustomLocalCardSetTile.dart';
 import 'LocalCardSetForm.dart';
 

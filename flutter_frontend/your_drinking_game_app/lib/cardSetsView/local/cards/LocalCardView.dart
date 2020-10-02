@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
-
+import '../../../dataBase/CardSetDB.dart';
+import '../../../models/CardEntity.dart';
+import '../../../models/CardSetEntity.dart';
+import '../../CardEditForm.dart';
+import '../../CardSetEditForm.dart';
 import '../cards/CustomLocalCardTile.dart';
+import 'LocalCardForm.dart';
 
 class LocalCardView extends StatefulWidget {
   static const routeName = '/LocalCardDisplay';

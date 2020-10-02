@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+import '../../../dataBase/CardSetDB.dart';
+import '../../../models/CardEntity.dart';
+import '../../../models/CardSetEntity.dart';
 
 class LocalCardForm extends StatefulWidget {
   static const routeName = '/CreateLocalCard';
