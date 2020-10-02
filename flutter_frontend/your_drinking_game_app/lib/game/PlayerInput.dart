@@ -7,13 +7,20 @@ class PlayerInput extends StatefulWidget {
 }
 
 class _PlayerInputState extends State<PlayerInput> {
-  TextEditingController _controller;
   final FocusNode _playerInputField = FocusNode();
+  final List<String> _players = [];
+  TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,8 +41,8 @@ class _PlayerInputState extends State<PlayerInput> {
                 padding: EdgeInsets.all(30.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: 'Spieler Namen',
-                      border: OutlineInputBorder(),
+                    labelText: 'Spieler Namen',
+                    border: OutlineInputBorder(),
                   ),
                   controller: _controller,
                   maxLength: 10,
@@ -75,8 +82,6 @@ class _PlayerInputState extends State<PlayerInput> {
     );
   }
 
-  List<String> _players = [];
-
   Widget playerChips() {
     return Wrap(
       spacing: 6.0,
@@ -95,7 +100,7 @@ class _PlayerInputState extends State<PlayerInput> {
   }
 
   void addPlayer() {
-    String input = _controller.value.text.trim();
+    final input = _controller.value.text.trim();
     if (input.isNotEmpty) {
       setState(() {
         _players.add(input);
@@ -109,14 +114,12 @@ class _PlayerInputState extends State<PlayerInput> {
     if (_players.length >= 2) {
       Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
     } else {
-      Scaffold.of(context).showSnackBar(notEnoughPlayerSnackBar());
+      Scaffold.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Füge mindestens 2 Spieler hinzu"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
-  }
-
-  Widget notEnoughPlayerSnackBar() {
-    return SnackBar(
-      content: Text("Füge mindestens 2 Spieler hinzu"),
-      behavior: SnackBarBehavior.floating,
-    );
   }
 }

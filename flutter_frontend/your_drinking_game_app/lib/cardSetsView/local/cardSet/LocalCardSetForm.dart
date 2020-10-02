@@ -68,7 +68,7 @@ class _CardSetForm extends State<CardSetForm>{
     );
   }
 
-  saveCardSet(BuildContext context){
+  void saveCardSet(BuildContext context){
     if(_formKey.currentState.validate()) {
       CardSetEntity cardSet = new CardSetEntity(_nameController.text, _descriptionController.text, null, true);
       CardSetDB.cardSetDB.insertCardSet(cardSet);
