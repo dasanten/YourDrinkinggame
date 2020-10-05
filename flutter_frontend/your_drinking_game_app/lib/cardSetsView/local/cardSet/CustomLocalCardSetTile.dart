@@ -16,29 +16,11 @@ class CustomCardSetTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  cardSet.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0,
-                  ),
-                ),
-                Text(cardSet.description),
-              ],
-            ),
-          ),
-          Switch(
-            value: cardSet.active,
-            onChanged: onActiveChanged,
-          ),
-        ],
+      child: SwitchListTile(
+        title: Text(cardSet.name),
+        subtitle: Text(cardSet.description),
+        value: cardSet.active,
+        onChanged: onActiveChanged,
       ),
     );
   }
