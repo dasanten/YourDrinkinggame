@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../models/CardEntity.dart';
 import '../models/CardSetEntity.dart';
@@ -180,45 +182,22 @@ class CardSetDB {
 
   Future<List<CardEntity>> getActiveCards() async {
     final db = await database;
-    final cardList = <CardEntity>[];
 
-    await db
-        .query(
-          TABLE_CARD_SET,
-          columns: [
-            COLUMN_CARD_SET_ID,
-            COLUMN_CARD_SET_NAME,
-            COLUMN_CARD_SET_DESCRIPTION,
-            COLUMN_CARD_SET_ACTIVE,
-            COLUMN_CARD_SET_WORKSHOP_ID
-          ],
-          where: "$COLUMN_CARD_SET_ACTIVE = ?",
-          whereArgs: [1],
-        )
-        .then(
-          (value) => value.forEach(
-            (cardSet) async {
-              final newCards = await db.query(
-                TABLE_CARD,
-                columns: [
-                  COLUMN_CARD_ID,
-                  COLUMN_CARD_CONTENT,
-                  COLUMN_CARD_ACTIVE,
-                  COLUMN_CARD_WORKSHOP_ID,
-                  COLUMN_CARD_CARD_SET_ID
-                ],
-                where:
-                    "$COLUMN_CARD_CARD_SET_ID = ? AND $COLUMN_CARD_ACTIVE = ?",
-                whereArgs: [cardSet[COLUMN_CARD_SET_ID], 1],
-              );
-              if (newCards.isNotEmpty) {
-                cardList.addAll(newCards.map((e) => CardEntity.fromMap(e)));
-                debugPrint("TEST 1");
-              }
-            },
-          ),
-        );
+    final newCards = await db.rawQuery(
+      "SELECT C.$COLUMN_CARD_ID, "
+      "       C.$COLUMN_CARD_CONTENT, "
+      "       C.$COLUMN_CARD_ACTIVE, "
+      "       C.$COLUMN_CARD_WORKSHOP_ID, "
+      "       C.$COLUMN_CARD_CARD_SET_ID "
+      "FROM $TABLE_CARD_SET CS "
+      " JOIN $TABLE_CARD C "
+      "   ON C.$COLUMN_CARD_CARD_SET_ID = CS.$COLUMN_CARD_SET_ID "
+      "WHERE C.$COLUMN_CARD_ACTIVE = 1",
+    );
+    if (newCards.isNotEmpty) {
+      return newCards.map((e) => CardEntity.fromMap(e)).toList();
+    }
 
-    return cardList;
+    return <CardEntity>[];
   }
 }
