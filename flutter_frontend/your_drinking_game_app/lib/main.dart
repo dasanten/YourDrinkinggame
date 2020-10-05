@@ -49,60 +49,63 @@ class Menu extends StatelessWidget {
         title: const Text('Menu'),
       ),
       body: Center(
-        child: Column(
-          children: [
-            Image.asset(
-              'assets/images/logoTransparent.jpg',
-              width: 300,
-              height: 300,
-            ),
-            Container(
-              width: 200,
-              height: 50,
-              margin: EdgeInsets.all(menuMargin),
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PlayerInput()),
-                  );
-                },
-                child: const Text('SPIELEN'),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/logoTransparent.jpg',
+                width: 300,
+                height: 300,
               ),
-            ),
-            Container(
-              width: 200,
-              height: 50,
-              margin: EdgeInsets.all(menuMargin),
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CardSetsTabView()),
-                  );
-                },
-                child: const Text('KARTEN SETS'),
+              Container(
+                width: 200,
+                height: 50,
+                margin: EdgeInsets.all(menuMargin),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PlayerInput()),
+                    );
+                  },
+                  child: const Text('SPIELEN'),
+                ),
               ),
-            ),
-            Container(
-              width: 200,
-              height: 50,
-              margin: EdgeInsets.all(menuMargin),
-              child: RaisedButton(
-                onPressed: () {},
-                child: const Text('OPTIONEN'),
+              Container(
+                width: 200,
+                height: 50,
+                margin: EdgeInsets.all(menuMargin),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CardSetsTabView()),
+                    );
+                  },
+                  child: const Text('KARTEN SETS'),
+                ),
               ),
-            ),
-            Container(
-              width: 200,
-              height: 50,
-              margin: EdgeInsets.all(menuMargin),
-              child: RaisedButton(
-                onPressed: () {},
-                child: const Text('FEEDBACK'),
+              Container(
+                width: 200,
+                height: 50,
+                margin: EdgeInsets.all(menuMargin),
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: const Text('OPTIONEN'),
+                ),
               ),
-            ),
-          ],
+              Container(
+                width: 200,
+                height: 50,
+                margin: EdgeInsets.all(menuMargin),
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: const Text('FEEDBACK'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
