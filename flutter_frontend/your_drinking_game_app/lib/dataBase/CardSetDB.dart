@@ -189,7 +189,7 @@ class CardSetDB {
       "FROM $TABLE_CARD_SET CS "
       " JOIN $TABLE_CARD C "
       "   ON C.$COLUMN_CARD_CARD_SET_ID = CS.$COLUMN_CARD_SET_ID "
-      "WHERE C.$COLUMN_CARD_ACTIVE = 1",
+      "WHERE CS.$COLUMN_CARD_SET_ACTIVE = 1 AND C.$COLUMN_CARD_ACTIVE = 1",
     );
     if (newCards.isNotEmpty) {
       return newCards.map((e) => CardEntity.fromMap(e)).toList();
