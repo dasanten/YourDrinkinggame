@@ -16,11 +16,13 @@ class CustomCardSetTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: SwitchListTile(
+      child: ListTile(
         title: Text(cardSet.name),
         subtitle: Text(cardSet.description),
-        value: cardSet.active,
-        onChanged: onActiveChanged,
+        trailing: Switch(
+          value: cardSet.active,
+          onChanged: onActiveChanged,
+        ),
       ),
     );
   }
