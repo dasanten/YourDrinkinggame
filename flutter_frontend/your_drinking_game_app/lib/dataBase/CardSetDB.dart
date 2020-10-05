@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common/sqlite_api.dart';
@@ -27,7 +27,12 @@ class CardSetDB {
   static const String COLUMN_CARD_WORKSHOP_ID = "workshop_id";
   static const String COLUMN_CARD_CARD_SET_ID = "card_set_id";
 
-  CardSetDB._();
+  CardSetDB._() {
+    if (Platform.isWindows) {
+      // Init ffi loader if needed.
+      sqfliteFfiInit();
+    }
+  }
   static final CardSetDB cardSetDB = CardSetDB._();
   Database _database;
 
@@ -40,35 +45,67 @@ class CardSetDB {
   }
 
   Future<Database> createDataBase() async {
-    final dbPath = await getDatabasesPath();
+    if (Platform.isWindows) {
+      return databaseFactoryFfi.openDatabase(
+        inMemoryDatabasePath,
+        options: OpenDatabaseOptions(
+          version: 1,
+          onCreate: (database, version) async {
+            await database.execute(
+              """
+                CREATE TABLE $TABLE_CARD_SET (
+                  $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
+                  $COLUMN_CARD_SET_NAME TEXT,
+                  $COLUMN_CARD_SET_DESCRIPTION TEXT,
+                  $COLUMN_CARD_SET_ACTIVE INTEGER,
+                  $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
+              """,
+            );
+            await database.execute(
+              """
+                CREATE TABLE $TABLE_CARD (
+                  $COLUMN_CARD_ID INTEGER PRIMARY KEY,
+                  $COLUMN_CARD_CONTENT TEXT,
+                  $COLUMN_CARD_ACTIVE INTEGER,
+                  $COLUMN_CARD_WORKSHOP_ID TEXT,
+                  $COLUMN_CARD_CARD_SET_ID INTEGER,
+                  FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
+                    ON DELETE NO ACTION ON UPDATE NO ACTION)""",
+            );
+          },
+        ),
+      );
+    } else {
+      final dbPath = await getDatabasesPath();
 
-    return openDatabase(
-      join(dbPath, 'card_set_database.db'),
-      version: 1,
-      onCreate: (database, version) async {
-        await database.execute(
-          """
-          CREATE TABLE $TABLE_CARD_SET (
-              $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
-              $COLUMN_CARD_SET_NAME TEXT,
-              $COLUMN_CARD_SET_DESCRIPTION TEXT,
-              $COLUMN_CARD_SET_ACTIVE INTEGER,
-              $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
-        """,
-        );
-        await database.execute(
-          """
-            CREATE TABLE $TABLE_CARD (
-              $COLUMN_CARD_ID INTEGER PRIMARY KEY,
-              $COLUMN_CARD_CONTENT TEXT,
-              $COLUMN_CARD_ACTIVE INTEGER,
-              $COLUMN_CARD_WORKSHOP_ID TEXT,
-              $COLUMN_CARD_CARD_SET_ID INTEGER,
-              FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
-                ON DELETE NO ACTION ON UPDATE NO ACTION)""",
-        );
-      },
-    );
+      return openDatabase(
+        join(dbPath, 'card_set_database.db'),
+        version: 1,
+        onCreate: (database, version) async {
+          await database.execute(
+            """
+              CREATE TABLE $TABLE_CARD_SET (
+                $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
+                $COLUMN_CARD_SET_NAME TEXT,
+                $COLUMN_CARD_SET_DESCRIPTION TEXT,
+                $COLUMN_CARD_SET_ACTIVE INTEGER,
+                $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
+            """,
+          );
+          await database.execute(
+            """
+              CREATE TABLE $TABLE_CARD (
+                $COLUMN_CARD_ID INTEGER PRIMARY KEY,
+                $COLUMN_CARD_CONTENT TEXT,
+                $COLUMN_CARD_ACTIVE INTEGER,
+                $COLUMN_CARD_WORKSHOP_ID TEXT,
+                $COLUMN_CARD_CARD_SET_ID INTEGER,
+                FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
+                  ON DELETE NO ACTION ON UPDATE NO ACTION)""",
+          );
+        },
+      );
+    }
   }
 
   //CARD SET DB ACTIONS
