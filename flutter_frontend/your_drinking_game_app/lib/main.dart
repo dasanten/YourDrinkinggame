@@ -22,7 +22,7 @@ void main() {
       onGenerateRoute: (settings) {
         final routes = <String, dynamic>{
           LocalCardView.routeName: (context) =>
-              LocalCardView(settings.arguments),
+              LocalCardView(cardSet: settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (context) => builder(context));
@@ -80,7 +80,8 @@ class Menu extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CardSetsTabView()),
+                      MaterialPageRoute(
+                          builder: (context) => CardSetsTabView()),
                     );
                   },
                   child: const Text('KARTEN SETS'),
