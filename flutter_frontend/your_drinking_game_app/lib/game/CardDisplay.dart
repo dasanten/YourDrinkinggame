@@ -2,10 +2,10 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/dataBase/MockCards.dart';
-import 'package:your_drinking_game_app/main.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
+
+import '../dataBase/CardSetDB.dart';
+import '../main.dart';
+import '../models/CardEntity.dart';
 
 class CardDisplay extends StatefulWidget {
   static const routeName = '/CardDisplay';
@@ -15,36 +15,9 @@ class CardDisplay extends StatefulWidget {
 }
 
 class _CardDisplayState extends State<CardDisplay> {
-
   List<String> _players = [];
+  List<CardEntity> _cards = [];
   String _displayedCard = "Don't drink and drive";
-
-
-  @override
-  Widget build(BuildContext context) {
-    _players = ModalRoute.of(context).settings.arguments;
-
-    return GestureDetector(
-      child: Scaffold(
-        body: Center(
-          child: Container(
-            padding: EdgeInsets.all(10),
-            child: Text(_displayedCard,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-          ),
-        ),
-      ),
-      onTap: () => updateDisplayedCard(),
-    );
-
-
-  }
-
 
   @override
   void initState() {
@@ -52,17 +25,42 @@ class _CardDisplayState extends State<CardDisplay> {
     CardSetDB.cardSetDB.getActiveCards().then((value) => _cards = value);
   }
 
-  List<CardEntity> _cards = [];
+  @override
+  Widget build(BuildContext context) {
+    _players = ModalRoute.of(context).settings.arguments;
 
-  updateDisplayedCard() {
-    List<String> playersCopy = List.from(_players);
-    if(_cards.isNotEmpty) {
-      var rdm = new Random();
-      String pickedCard = "";
+    return GestureDetector(
+      onTap: updateDisplayedCard,
+      child: Scaffold(
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              _displayedCard,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void updateDisplayedCard() {
+    final playersCopy = List<String>.from(_players);
+    if (_cards.isNotEmpty) {
+      final rdm = Random();
+      var pickedCard = "";
       int pickedCardNum;
       do {
-        if(_cards.isEmpty) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+        if (_cards.isEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Menu()),
+          );
           return;
         } else {
           pickedCardNum = rdm.nextInt(_cards.length);
@@ -71,10 +69,10 @@ class _CardDisplayState extends State<CardDisplay> {
             _cards.removeAt(pickedCardNum);
           }
         }
-      } while("#".allMatches(pickedCard).length > _players.length);
+      } while ("#".allMatches(pickedCard).length > _players.length);
 
-      while(pickedCard.contains("#")) {
-        int pickedPlayerNum = rdm.nextInt(playersCopy.length);
+      while (pickedCard.contains("#")) {
+        final pickedPlayerNum = rdm.nextInt(playersCopy.length);
         pickedCard = pickedCard.replaceFirst("#", playersCopy[pickedPlayerNum]);
         playersCopy.removeAt(pickedPlayerNum);
       }
@@ -85,6 +83,5 @@ class _CardDisplayState extends State<CardDisplay> {
     } else {
       Navigator.pop(context);
     }
-
   }
 }

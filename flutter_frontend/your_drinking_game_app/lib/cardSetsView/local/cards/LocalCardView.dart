@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardSetEditForm.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/cards/LocalCardForm.dart';
+
+import '../../../dataBase/CardSetDB.dart';
+import '../../../models/CardEntity.dart';
+import '../../../models/CardSetEntity.dart';
+import '../../CardEditForm.dart';
+import '../../CardSetEditForm.dart';
 import '../cards/CustomLocalCardTile.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+import 'LocalCardForm.dart';
 
-class LocalCardView extends StatefulWidget{
-
+class LocalCardView extends StatefulWidget {
   static const routeName = '/LocalCardDisplay';
 
   final CardSetEntity cardSet;
-  LocalCardView(this.cardSet);
+
+  const LocalCardView({Key key, this.cardSet}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _LocalCardView(this.cardSet);
-
+  State<StatefulWidget> createState() => _LocalCardView();
 }
 
 class _LocalCardView extends State<LocalCardView> {
-
-  _LocalCardView(this._cardSet);
-
   CardSetEntity _cardSet;
   List<CardEntity> _cardList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _cardSet = widget.cardSet;
+    getCards();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,62 +37,62 @@ class _LocalCardView extends State<LocalCardView> {
         title: Text("Kartenset: ${_cardSet.name}"),
         actions: [
           IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => Navigator.pushNamed(context, CardSetEditForm.routeName, arguments: _cardSet).then((value) =>
-                setState((){})
-              ),
+            icon: const Icon(Icons.edit),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              CardSetEditForm.routeName,
+              arguments: _cardSet,
+            ).then(
+              (value) => setState(() {}),
+            ),
           ),
         ],
       ),
-      body: cards(),
+      body: ListView.separated(
+        itemCount: _cardList.length,
+        padding: const EdgeInsets.all(16.0),
+        separatorBuilder: (_, index) => const Divider(),
+        itemBuilder: (context, i) {
+          return GestureDetector(
+            onTap: () async {
+              await Navigator.pushNamed(
+                context,
+                CardEditForm.routeName,
+                arguments: _cardList[i],
+              );
+              getCards();
+            },
+            child: CustomLocalCardTile(
+              card: _cardList[i],
+              onActiveChanged: (value) {
+                setState(() {
+                  _cardList[i] = _cardList[i].copyWith(active: value);
+                });
+                CardSetDB.cardSetDB.updateCard(_cardList[i]);
+              },
+            ),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=> Navigator.pushNamed(context, LocalCardForm.routeName, arguments: _cardSet).then((value) => getCards()),
-        child: Icon(Icons.add),
+        onPressed: () => Navigator.pushNamed(
+          context,
+          LocalCardForm.routeName,
+          arguments: _cardSet,
+        ).then(
+          (value) => getCards(),
+        ),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget cards() {
-    return ListView.builder(
-        itemCount: _cardList.length,
-        padding: EdgeInsets.all(16.0),
-        itemBuilder: (context, i) {
-          return GestureDetector(
-            onTap: ()=> Navigator.pushNamed(context, CardEditForm.routeName, arguments: _cardList[i]).then((value) => getCards()),
-            child: Container(
-              color: Colors.transparent,
-              child: Column(
-                children: [
-                  _buildCard(_cardList[i]),
-                  Divider(),
-                ],
-              ),
-            )
-          );
-        }
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getCards();
-  }
-
-  Widget _buildCard(CardEntity card) {
-    return CustomLocalCardTile(
-        card: card,
-    );
-  }
-
-  getCards() {
+  void getCards() {
     CardSetDB.cardSetDB.getCards(_cardSet.id).then(
-        (cardList) => {
-          setState(
-                () => this._cardList = cardList,
-          )
-        }
-    );
+          (cardList) => setState(
+            () => _cardList = cardList,
+          ),
+        );
   }
 }

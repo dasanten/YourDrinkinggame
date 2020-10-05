@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/main.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+
+import '../dataBase/CardSetDB.dart';
+import '../models/CardSetEntity.dart';
 
 class CardSetEditForm extends StatefulWidget {
-
   static const routeName = '/editCardSet';
 
   @override
   State<StatefulWidget> createState() => _CardSetEditForm();
-
 }
 
 class _CardSetEditForm extends State<CardSetEditForm> {
-
   final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController;
   TextEditingController _descriptionController;
   CardSetEntity _cardSet;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _descriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,29 +40,32 @@ class _CardSetEditForm extends State<CardSetEditForm> {
       appBar: AppBar(
         title: Text("Kartenset ${_cardSet.name} bearbeiten"),
       ),
-      body: Form(
-        key: _formKey,
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Form(
+          key: _formKey,
           child: Column(
-            children: [
-              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            children: <Widget>[
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
-                  if(value.isEmpty) {
+                  if (value.isEmpty) {
                     return 'Bitte gebe einen Namen ein!';
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
                 maxLength: 20,
               ),
-              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+              ),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Beschreibung',
                   border: OutlineInputBorder(),
                 ),
@@ -61,68 +75,64 @@ class _CardSetEditForm extends State<CardSetEditForm> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   RaisedButton(
-                    child: Text("Karte löschen!"),
-                    onPressed: ()=> deleteCardSet(context),
+                    onPressed: () async => deleteCardSet(context),
                     color: Colors.red,
+                    child: const Text("Karte löschen!"),
                   ),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
                   RaisedButton(
-                    child: Text("Karte updaten!"),
-                    onPressed: ()=> updateCardSet(context),
+                    onPressed: () async => updateCardSet(context),
+                    child: const Text("Karte updaten!"),
                   ),
                 ],
               ),
             ],
-          )
+          ),
+        ),
       ),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _nameController = new TextEditingController();
-    _descriptionController = new TextEditingController();
-  }
-
-  deleteCardSet(BuildContext context) async{
-    bool confirmed = await _deleteDialog();
-    if(confirmed) {
-      CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
+  Future<void> deleteCardSet(BuildContext context) async {
+    final confirmed = await _deleteDialog();
+    if (confirmed) {
+      await CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }
 
-  updateCardSet(BuildContext context) {
-    if(_formKey.currentState.validate()) {
-      _cardSet
-          ..name = _nameController.text
-          ..description = _descriptionController.text;
-      CardSetDB.cardSetDB.updateCardSet(_cardSet);
+  Future<void> updateCardSet(BuildContext context) async {
+    if (_formKey.currentState.validate()) {
+      _cardSet = _cardSet.copyWith(
+        name: _nameController.text,
+        description: _descriptionController.text,
+      );
+      await CardSetDB.cardSetDB.updateCardSet(_cardSet);
       Navigator.pop(context);
     }
   }
 
-  Future<bool> _deleteDialog() async{
+  Future<bool> _deleteDialog() async {
     return showDialog<bool>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Wirklich löschen ?"),
-            actions: [
-              RaisedButton(
-                child: Text("Abbruch".toUpperCase()),
-                onPressed: ()=> Navigator.pop(context, false),
-              ),
-              RaisedButton(
-                child: Text("Bestätigen".toUpperCase()),
-                onPressed: ()=> Navigator.pop(context, true),
-              ),
-            ],
-          );
-        }
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Wirklich löschen ?"),
+          actions: [
+            RaisedButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text("ABBRUCH"),
+            ),
+            RaisedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text("Bestätigen"),
+            ),
+          ],
+        );
+      },
     );
   }
-
 }

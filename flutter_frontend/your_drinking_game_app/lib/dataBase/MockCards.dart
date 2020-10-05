@@ -1,9 +1,8 @@
-
-import 'package:your_drinking_game_app/models/CardEntity.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
+import '../models/CardEntity.dart';
+import '../models/CardSetEntity.dart';
 
 class MockCards {
-  final List<String> cards  =[
+  final List<String> cards = [
     "# und # trinken",
     "Alle Trinken",
     "Alle Männer trinken",
@@ -33,12 +32,22 @@ class MockCards {
     "Kategorien! Wem nichts mehr einfällt, der trinkt 2 Schlücke. # fängt an.",
   ];
 
-  static CardSetEntity standardCardSet = new CardSetEntity("Standard Set", "Standard Karten set", null, true);
-  List<CardEntity> cardEntityList = new List<CardEntity>();
+  static const CardSetEntity standardCardSet = CardSetEntity(
+    name: "Standard Set",
+    description: "Standard Karten set",
+    active: true,
+  );
+  List<CardEntity> cardEntityList = <CardEntity>[];
 
   MockCards(int cardSetId) {
-    cards.forEach((element) {
-      cardEntityList.add(new CardEntity(null, element, true, null, cardSetId));
-    });
+    cardEntityList = cards
+        .map<CardEntity>(
+          (element) => CardEntity(
+            content: element,
+            active: true,
+            cardSetId: cardSetId,
+          ),
+        )
+        .toList();
   }
 }

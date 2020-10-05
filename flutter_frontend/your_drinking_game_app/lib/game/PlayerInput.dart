@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/game/CardDisplay.dart';
+
+import 'CardDisplay.dart';
 
 class PlayerInput extends StatefulWidget {
   @override
@@ -7,8 +8,9 @@ class PlayerInput extends StatefulWidget {
 }
 
 class _PlayerInputState extends State<PlayerInput> {
-  TextEditingController _controller;
   final FocusNode _playerInputField = FocusNode();
+  final List<String> _players = [];
+  TextEditingController _controller;
 
   @override
   void initState() {
@@ -17,10 +19,16 @@ class _PlayerInputState extends State<PlayerInput> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Spieler Auswahl"),
+        title: const Text("Spieler Auswahl"),
       ),
       body: Builder(
         builder: (context) => Center(
@@ -31,11 +39,11 @@ class _PlayerInputState extends State<PlayerInput> {
                 child: playerChips(),
               ),
               Container(
-                padding: EdgeInsets.all(30.0),
+                padding: const EdgeInsets.all(30.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: 'Spieler Namen',
-                      border: OutlineInputBorder(),
+                  decoration: const InputDecoration(
+                    labelText: 'Spieler Namen',
+                    border: OutlineInputBorder(),
                   ),
                   controller: _controller,
                   maxLength: 10,
@@ -52,17 +60,17 @@ class _PlayerInputState extends State<PlayerInput> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: RaisedButton(
-                        child: Text("Spieler hinzufügen"),
-                        onPressed: () => addPlayer(),
+                        onPressed: addPlayer,
+                        child: const Text("Spieler hinzufügen"),
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: RaisedButton(
                         onPressed: () => startGame(context),
-                        child: Text('START!'),
+                        child: const Text('START!'),
                       ),
                     ),
                   ],
@@ -75,27 +83,28 @@ class _PlayerInputState extends State<PlayerInput> {
     );
   }
 
-  List<String> _players = [];
-
-  playerChips() {
+  Widget playerChips() {
     return Wrap(
       spacing: 6.0,
       runSpacing: 6.0,
-      children: List<Widget>.generate(_players.length, (int index) {
-        return Chip(
-          label: Text(_players[index]),
-          onDeleted: () {
-            setState(() {
-              _players.removeAt(index);
-            });
-          },
-        );
-      }),
+      children: List<Widget>.generate(
+        _players.length,
+        (index) {
+          return Chip(
+            label: Text(_players[index]),
+            onDeleted: () {
+              setState(() {
+                _players.removeAt(index);
+              });
+            },
+          );
+        },
+      ),
     );
   }
 
   void addPlayer() {
-    String input = _controller.value.text.trim();
+    final input = _controller.value.text.trim();
     if (input.isNotEmpty) {
       setState(() {
         _players.add(input);
@@ -104,19 +113,17 @@ class _PlayerInputState extends State<PlayerInput> {
     }
   }
 
-  startGame(BuildContext context) {
+  void startGame(BuildContext context) {
     addPlayer();
     if (_players.length >= 2) {
       Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
     } else {
-      Scaffold.of(context).showSnackBar(notEnoughPlayerSnackBar());
+      Scaffold.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Füge mindestens 2 Spieler hinzu"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
-  }
-
-  Widget notEnoughPlayerSnackBar() {
-    return SnackBar(
-      content: Text("Füge mindestens 2 Spieler hinzu"),
-      behavior: SnackBarBehavior.floating,
-    );
   }
 }
