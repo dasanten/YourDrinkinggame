@@ -35,11 +35,15 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
               context,
               LocalCardView.routeName,
               arguments: _cardSetList[i],
-            ).then(
-              (value) => getCardSets(),
-            ),
+            ).then((value) => getCardSets()),
             child: CustomCardSetTile(
               cardSet: _cardSetList[i],
+              onActiveChanged: (value) {
+                setState(() {
+                  _cardSetList[i] = _cardSetList[i].copyWith(active: value);
+                });
+                CardSetDB.cardSetDB.updateCardSet(_cardSetList[i]);
+              },
             ),
           );
         },
@@ -59,11 +63,9 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
 
   void getCardSets() {
     CardSetDB.cardSetDB.getCardSets().then(
-          (cardSetList) => {
-            setState(
-              () => _cardSetList = cardSetList,
-            )
-          },
+          (cardSetList) => setState(
+            () => _cardSetList = cardSetList,
+          ),
         );
   }
 }

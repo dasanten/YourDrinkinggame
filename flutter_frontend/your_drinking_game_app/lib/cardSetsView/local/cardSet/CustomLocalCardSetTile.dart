@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../dataBase/CardSetDB.dart';
 import '../../../models/CardSetEntity.dart';
 
-class CustomCardSetTile extends StatefulWidget {
+class CustomCardSetTile extends StatelessWidget {
   final CardSetEntity cardSet;
+  final void Function(bool value) onActiveChanged;
 
-  const CustomCardSetTile({Key key, this.cardSet}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _CustomCardSetTile();
-}
-
-class _CustomCardSetTile extends State<CustomCardSetTile> {
-  CardSetEntity cardSet;
-
-  @override
-  void initState() {
-    super.initState();
-    cardSet = widget.cardSet;
-  }
+  const CustomCardSetTile({
+    Key key,
+    @required this.cardSet,
+    @required this.onActiveChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +18,7 @@ class _CustomCardSetTile extends State<CustomCardSetTile> {
       padding: const EdgeInsets.symmetric(vertical: 5.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,13 +35,8 @@ class _CustomCardSetTile extends State<CustomCardSetTile> {
             ),
           ),
           Switch(
-            value: widget.cardSet.active,
-            onChanged: (value) {
-              setState(() {
-                cardSet = cardSet.copyWith(active: value);
-              });
-              CardSetDB.cardSetDB.updateCardSet(widget.cardSet);
-            },
+            value: cardSet.active,
+            onChanged: onActiveChanged,
           ),
         ],
       ),
