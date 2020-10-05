@@ -33,43 +33,43 @@ class _CardSetForm extends State<CardSetForm> {
       appBar: AppBar(
         title: const Text("CardSet erstellen"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextFormField(
-              controller: _nameController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Bitte gebe einen Namen ein!';
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Bitte gebe einen Namen ein!';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                ),
+                maxLength: 20,
               ),
-              maxLength: 20,
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Beschreibung',
-                border: OutlineInputBorder(),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Beschreibung',
+                  border: OutlineInputBorder(),
+                ),
+                maxLength: 256,
               ),
-              maxLength: 256,
-            ),
-            Center(
-              child: RaisedButton(
-                onPressed: () async => saveCardSet(context),
-                child: const Text("CardSet erstellen!"),
-              ),
-            )
-          ],
+              Center(
+                child: RaisedButton(
+                  onPressed: () async => saveCardSet(context),
+                  child: const Text("CardSet erstellen!"),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

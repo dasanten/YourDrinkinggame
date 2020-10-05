@@ -36,34 +36,34 @@ class _LocalCardForm extends State<LocalCardForm> {
       appBar: AppBar(
         title: Text("Karte für ${_cardSet.name}"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextFormField(
-              controller: _contentController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Es muss Text festgelegt werden!";
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Regel',
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _contentController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Es muss Text festgelegt werden!";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Regel',
+                  border: OutlineInputBorder(),
+                ),
+                maxLength: 256,
               ),
-              maxLength: 256,
-            ),
-            Center(
-              child: RaisedButton(
-                onPressed: () async => saveCard(context),
-                child: const Text("Karte hinzufügen!"),
-              ),
-            )
-          ],
+              Center(
+                child: RaisedButton(
+                  onPressed: () async => saveCard(context),
+                  child: const Text("Karte hinzufügen!"),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

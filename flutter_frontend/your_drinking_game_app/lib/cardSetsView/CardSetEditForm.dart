@@ -40,56 +40,56 @@ class _CardSetEditForm extends State<CardSetEditForm> {
       appBar: AppBar(
         title: Text("Kartenset ${_cardSet.name} bearbeiten"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextFormField(
-              controller: _nameController,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Bitte gebe einen Namen ein!';
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _nameController,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Bitte gebe einen Namen ein!';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(),
+                ),
+                maxLength: 20,
               ),
-              maxLength: 20,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Beschreibung',
-                border: OutlineInputBorder(),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
               ),
-              maxLength: 256,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  onPressed: () => deleteCardSet(context),
-                  color: Colors.red,
-                  child: const Text("Karte löschen!"),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(
+                  labelText: 'Beschreibung',
+                  border: OutlineInputBorder(),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                ),
-                RaisedButton(
-                  onPressed: () => updateCardSet(context),
-                  child: const Text("Karte updaten!"),
-                ),
-              ],
-            ),
-          ],
+                maxLength: 256,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    onPressed: () async => deleteCardSet(context),
+                    color: Colors.red,
+                    child: const Text("Karte löschen!"),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  RaisedButton(
+                    onPressed: () async => updateCardSet(context),
+                    child: const Text("Karte updaten!"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -98,7 +98,7 @@ class _CardSetEditForm extends State<CardSetEditForm> {
   Future<void> deleteCardSet(BuildContext context) async {
     final confirmed = await _deleteDialog();
     if (confirmed) {
-      CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
+      await CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }

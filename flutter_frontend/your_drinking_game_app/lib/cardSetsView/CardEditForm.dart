@@ -36,46 +36,46 @@ class _CardEditForm extends State<CardEditForm> {
       appBar: AppBar(
         title: const Text("Karte bearbeiten"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
-            ),
-            TextFormField(
-              controller: _contentController,
-              maxLines: 5,
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Es muss Text festgelegt werden!";
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                labelText: 'Regel',
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _contentController,
+                maxLines: 5,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Es muss Text festgelegt werden!";
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  labelText: 'Regel',
+                  border: OutlineInputBorder(),
+                ),
+                maxLength: 256,
               ),
-              maxLength: 256,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  onPressed: () async => deleteCard(context),
-                  color: Colors.red,
-                  child: const Text("Karte löschen!"),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                ),
-                RaisedButton(
-                  onPressed: () async => updateCard(context),
-                  child: const Text("Karte updaten!"),
-                ),
-              ],
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    onPressed: () async => deleteCard(context),
+                    color: Colors.red,
+                    child: const Text("Karte löschen!"),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  RaisedButton(
+                    onPressed: () async => updateCard(context),
+                    child: const Text("Karte updaten!"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
