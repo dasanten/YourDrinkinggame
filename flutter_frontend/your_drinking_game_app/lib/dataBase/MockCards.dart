@@ -1,6 +1,8 @@
+import '../models/CardEntity.dart';
+import '../models/CardSetEntity.dart';
 
 class MockCards {
-  final List<String> cards  =[
+  final List<String> cards = [
     "# und # trinken",
     "Alle Trinken",
     "Alle Männer trinken",
@@ -29,4 +31,23 @@ class MockCards {
     "Wenn # einfriert, müssen die anderen ihm/ihr nachmachen. Der/die letzte trinkt 2 Schlücke",
     "Kategorien! Wem nichts mehr einfällt, der trinkt 2 Schlücke. # fängt an.",
   ];
+
+  static const CardSetEntity standardCardSet = CardSetEntity(
+    name: "Standard Set",
+    description: "Standard Karten set",
+    active: true,
+  );
+  List<CardEntity> cardEntityList = <CardEntity>[];
+
+  MockCards(int cardSetId) {
+    cardEntityList = cards
+        .map<CardEntity>(
+          (element) => CardEntity(
+            content: element,
+            active: true,
+            cardSetId: cardSetId,
+          ),
+        )
+        .toList();
+  }
 }
