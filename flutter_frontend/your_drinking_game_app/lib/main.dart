@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
-import 'cardSetsView/CardEditForm.dart';
-import 'cardSetsView/CardSetEditForm.dart';
+import 'cardSetsView/local/cards/CardEditForm.dart';
+import 'cardSetsView/local/cardSet/CardSetEditForm.dart';
 import 'cardSetsView/CardSetsTabView.dart';
 import 'cardSetsView/local/cards/LocalCardForm.dart';
 import 'cardSetsView/local/cards/LocalCardView.dart';
@@ -22,9 +23,9 @@ void main() {
       onGenerateRoute: (settings) {
         final routes = <String, dynamic>{
           LocalCardView.routeName: (context) =>
-              LocalCardView(cardSet: settings.arguments),
+              LocalCardView(cardSet: settings.arguments as CardSetEntity),
         };
-        WidgetBuilder builder = routes[settings.name];
+        final WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (context) => builder(context));
       },
       theme: ThemeData(

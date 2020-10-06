@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../dataBase/CardSetDB.dart';
 import '../../../models/CardEntity.dart';
 import '../../../models/CardSetEntity.dart';
-import '../../CardEditForm.dart';
-import '../../CardSetEditForm.dart';
+import '../cardSet/CardSetEditForm.dart';
 import '../cards/CustomLocalCardTile.dart';
+import 'CardEditForm.dart';
 import 'LocalCardForm.dart';
 
 class LocalCardView extends StatefulWidget {

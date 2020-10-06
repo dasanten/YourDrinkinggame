@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../dataBase/CardSetDB.dart';
-import '../models/CardSetEntity.dart';
+import '../../../dataBase/CardSetDB.dart';
+import '../../../models/CardSetEntity.dart';
 
 class CardSetEditForm extends StatefulWidget {
   static const routeName = '/editCardSet';
@@ -32,7 +32,7 @@ class _CardSetEditForm extends State<CardSetEditForm> {
 
   @override
   Widget build(BuildContext context) {
-    _cardSet = ModalRoute.of(context).settings.arguments;
+    _cardSet = ModalRoute.of(context).settings.arguments as CardSetEntity;
     _nameController.text = _cardSet.name;
     _descriptionController.text = _cardSet.description;
 

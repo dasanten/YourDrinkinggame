@@ -30,7 +30,7 @@ class _LocalCardForm extends State<LocalCardForm> {
 
   @override
   Widget build(BuildContext context) {
-    _cardSet = ModalRoute.of(context).settings.arguments;
+    _cardSet = ModalRoute.of(context).settings.arguments as CardSetEntity;
 
     return Scaffold(
       appBar: AppBar(

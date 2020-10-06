@@ -27,7 +27,7 @@ class _CardDisplayState extends State<CardDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    _players = ModalRoute.of(context).settings.arguments;
+    _players = ModalRoute.of(context).settings.arguments as List<String>;
 
     return GestureDetector(
       onTap: updateDisplayedCard,
