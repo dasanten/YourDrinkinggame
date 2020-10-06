@@ -10,7 +10,7 @@ import java.util.UUID;
 public class CardDTO {
 
     private String id;
-    private CardSetDTO cardSetDTO;
+    private String cardSetId;
     private String content;
     private String type;
     private boolean isReported;

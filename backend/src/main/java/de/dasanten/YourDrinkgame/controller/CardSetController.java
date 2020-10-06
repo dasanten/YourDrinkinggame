@@ -74,7 +74,7 @@ public class CardSetController {
 
     @PostMapping("/addCards")
     public ResponseEntity<List<CardDTO>> addCards(@RequestBody List<CardDTO> cardDTOList, @RequestParam String token){
-        List<CardDTO> addedCards = cardSetService.addCards(cardDTOList);
+        List<CardDTO> addedCards = cardSetService.addCards(cardDTOList, token);
         return new ResponseEntity<>(addedCards, HttpStatus.OK);
     }
 
@@ -87,8 +87,8 @@ public class CardSetController {
 
     //EDIT
     @PutMapping("/editCardSet")
-    public  ResponseEntity<CardSetDTO> editCardSet(@RequestBody CardSetDTO cardSetDTO){
-        CardSetDTO editedCardSet = cardSetService.editCardSet(cardSetDTO);
+    public  ResponseEntity<CardSetDTO> editCardSet(@RequestBody CardSetDTO cardSetDTO, @RequestParam String token){
+        CardSetDTO editedCardSet = cardSetService.editCardSet(cardSetDTO, token);
         if (editedCardSet != null){
             return new ResponseEntity<>(editedCardSet, HttpStatus.OK);
         }
@@ -96,8 +96,8 @@ public class CardSetController {
     }
 
     @PutMapping("/editCard")
-    public ResponseEntity<CardDTO> editCard(@RequestBody CardDTO cardDTO){
-        CardDTO editedCard = cardSetService.editCard(cardDTO);
+    public ResponseEntity<CardDTO> editCard(@RequestBody CardDTO cardDTO, @RequestParam String token){
+        CardDTO editedCard = cardSetService.editCard(cardDTO, token);
         if (editedCard != null){
             return new ResponseEntity<>(editedCard, HttpStatus.OK);
         }
