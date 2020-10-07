@@ -45,6 +45,7 @@ public class CardSetMapper {
         CardSetDTO cardSetDTO = new CardSetDTO();
         cardSetDTO.setId(cardSetEntity.getId());
         cardSetDTO.setName(cardSetEntity.getName());
+        cardSetDTO.setFavorites(cardSetEntity.getFavorites());
         cardSetDTO.setType(cardSetEntity.getType());
         cardSetDTO.setReported(cardSetEntity.isReported());
         cardSetDTO.setReports(cardSetEntity.getReports());
@@ -59,17 +60,18 @@ public class CardSetMapper {
 
     public CardSetEntity cardSetDTOToCardSetEntity(CardSetDTO cardSetDTO){
         CardSetEntity cardSetEntity = new CardSetEntity();
+        Optional <CardSetEntity> cardSet = cardSetRepository.findById(cardSetEntity.getId());
         if(cardSetDTO.getId() != null){
             cardSetEntity.setId(cardSetDTO.getId());
         }
         cardSetEntity.setName(cardSetDTO.getName());
+        cardSetEntity.setFavorites(cardSet.get().getFavorites());
         cardSetEntity.setReported(cardSetDTO.isReported());
         cardSetEntity.setReports(cardSetDTO.getReports());
         cardSetEntity.setType(cardSetDTO.getType());
         cardSetEntity.setVersion(cardSetDTO.getVersion());
-        Optional <CardSetEntity> cardSetTokens = cardSetRepository.findById(cardSetEntity.getId());
-        cardSetEntity.setAdminToken(cardSetTokens.get().getAdminToken());
-        cardSetEntity.setEditorToken(cardSetTokens.get().getEditorToken());
+        cardSetEntity.setAdminToken(cardSet.get().getAdminToken());
+        cardSetEntity.setEditorToken(cardSet.get().getEditorToken());
         return cardSetEntity;
     }
 

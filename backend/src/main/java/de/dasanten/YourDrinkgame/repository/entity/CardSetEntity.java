@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkgame.repository.entity;
 
+import de.dasanten.YourDrinkgame.enums.CardSetType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,10 +23,11 @@ public class CardSetEntity {
     private Set<CardEntity> cards;
 
     private String name;
-    private String type;
-    private int version;
-    private boolean isReported;
-    private int reports;
+    private int favorites = 0;
+    private CardSetType type = CardSetType.NORMAL;
+    private int version = 0;
+    private boolean isReported = false;
+    private int reports = 0;
     private String adminToken;
     private String editorToken;
 }

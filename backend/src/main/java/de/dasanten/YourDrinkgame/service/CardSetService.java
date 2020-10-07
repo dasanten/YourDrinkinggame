@@ -184,18 +184,11 @@ public class CardSetService {
         CardSetEntity cardSet = new CardSetEntity();
         CardEntity card = new CardEntity();
 
-        cardSet.setReported(false);
-        cardSet.setReports(0);
-        cardSet.setType("Test");
-        cardSet.setVersion(0);
         cardSet.setName("Basic Set");
         cardSet.setAdminToken("3922");
         cardSet.setEditorToken("LappenToken");
 
         card.setContent("Malte trinkt!");
-        card.setReported(true);
-        card.setReports(2);
-        card.setType("super tolle Karte");
 
         cardSet.setCards(new HashSet<>());
         cardSet.getCards().add(card);
@@ -203,5 +196,14 @@ public class CardSetService {
         cardSetRepository.save(cardSet);
 
         return cardSet;
+    }
+
+    public List<CardSetDTO> getTopCardSets() {
+        List<CardSetEntity> cardSetEntityList = cardSetRepository.findTop30ByOrderByFavoritesDesc();
+        List<CardSetDTO> cardSetDTOList = new ArrayList<>();
+        for (CardSetEntity cardSetEntity: cardSetEntityList) {
+            cardSetDTOList.add(cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntity));
+        }
+        return cardSetDTOList;
     }
 }

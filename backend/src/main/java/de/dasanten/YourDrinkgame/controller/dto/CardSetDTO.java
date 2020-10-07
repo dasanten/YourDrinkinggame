@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkgame.controller.dto;
 
+import de.dasanten.YourDrinkgame.enums.CardSetType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,7 +13,8 @@ public class CardSetDTO {
     private String id;
 
     private String name;
-    private String type;
+    private int favorites = 0;
+    private CardSetType type;
     private int version;
     private boolean isReported;
     private int reports;

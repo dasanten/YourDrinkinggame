@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkgame.controller.dto;
 
+import de.dasanten.YourDrinkgame.enums.CardType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,7 +13,7 @@ public class CardDTO {
     private String id;
     private String cardSetId;
     private String content;
-    private String type;
+    private CardType type;
     private boolean isReported;
     private int reports;
 }

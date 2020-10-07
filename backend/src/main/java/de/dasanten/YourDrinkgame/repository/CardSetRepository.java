@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -14,5 +15,7 @@ import java.util.Optional;
 public interface CardSetRepository extends JpaRepository<CardSetEntity, String> {
 
     CardSetEntity findCardSetByCards(CardEntity card);
+
+    List<CardSetEntity> findTop30ByOrderByFavoritesDesc();
 
 }

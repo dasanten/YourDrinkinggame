@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkgame.repository.entity;
 
+import de.dasanten.YourDrinkgame.enums.CardType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,8 +24,8 @@ public class CardEntity {
     private CardSetEntity cardSet;
 
     private String content;
-    private String type;
-    private boolean isReported;
-    private int reports;
+    private CardType type = CardType.NORMAL;
+    private boolean isReported = false;
+    private int reports = 0;
 
 }

@@ -23,6 +23,11 @@ public class CardSetController {
     private final CardSetService cardSetService;
 
     //GETTER
+    @GetMapping("/getTopCardSets")
+    public ResponseEntity<List<CardSetDTO>> getTopCardSets() {
+        return new ResponseEntity<>(cardSetService.getTopCardSets() ,HttpStatus.OK);
+    }
+
     @GetMapping("/getCardSetCardsById")
     public ResponseEntity <List<CardDTO>> getCardsByCardSetId(@RequestParam String cardSetId) {
         List<CardDTO> cardDTOList = cardSetService.getCardSetCardsById(cardSetId);
