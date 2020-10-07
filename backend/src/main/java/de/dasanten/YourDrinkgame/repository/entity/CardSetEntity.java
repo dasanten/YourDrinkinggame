@@ -23,6 +23,7 @@ public class CardSetEntity {
     private Set<CardEntity> cards;
 
     private String name;
+    private String description;
     private int favorites = 0;
     private CardSetType type = CardSetType.NORMAL;
     private int version = 0;

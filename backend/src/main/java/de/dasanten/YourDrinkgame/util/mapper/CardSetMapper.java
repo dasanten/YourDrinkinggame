@@ -24,6 +24,7 @@ public class CardSetMapper {
         CardSetDTO cardSetDTO = new CardSetDTO();
         cardSetDTO.setId(cardSetEntity.getId());
         cardSetDTO.setName(cardSetEntity.getName());
+        cardSetDTO.setDescription(cardSetEntity.getDescription());
         cardSetDTO.setType(cardSetEntity.getType());
         cardSetDTO.setReported(cardSetEntity.isReported());
         cardSetDTO.setReports(cardSetEntity.getReports());
@@ -45,6 +46,7 @@ public class CardSetMapper {
         CardSetDTO cardSetDTO = new CardSetDTO();
         cardSetDTO.setId(cardSetEntity.getId());
         cardSetDTO.setName(cardSetEntity.getName());
+        cardSetDTO.setDescription(cardSetEntity.getDescription());
         cardSetDTO.setFavorites(cardSetEntity.getFavorites());
         cardSetDTO.setType(cardSetEntity.getType());
         cardSetDTO.setReported(cardSetEntity.isReported());
@@ -65,9 +67,10 @@ public class CardSetMapper {
             cardSetEntity.setId(cardSetDTO.getId());
         }
         cardSetEntity.setName(cardSetDTO.getName());
+        cardSetEntity.setDescription(cardSetDTO.getDescription());
         cardSetEntity.setFavorites(cardSet.get().getFavorites());
-        cardSetEntity.setReported(cardSetDTO.isReported());
-        cardSetEntity.setReports(cardSetDTO.getReports());
+        cardSetEntity.setReported(cardSet.get().isReported());
+        cardSetEntity.setReports(cardSet.get().getReports());
         cardSetEntity.setType(cardSetDTO.getType());
         cardSetEntity.setVersion(cardSetDTO.getVersion());
         cardSetEntity.setAdminToken(cardSet.get().getAdminToken());

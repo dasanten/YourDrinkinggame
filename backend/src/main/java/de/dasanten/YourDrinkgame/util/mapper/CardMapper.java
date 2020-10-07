@@ -38,8 +38,8 @@ public class CardMapper {
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTO.getCardSetId());
         cardEntity.setCardSet(cardSetEntityOptional.get());
         cardEntity.setContent(cardDTO.getContent());
-        cardEntity.setReported(cardDTO.isReported());
-        cardEntity.setReports(cardDTO.getReports());
+        cardEntity.setReported(cardSetEntityOptional.get().isReported());
+        cardEntity.setReports(cardSetEntityOptional.get().getReports());
         cardEntity.setType(cardDTO.getType());
         return cardEntity;
     }

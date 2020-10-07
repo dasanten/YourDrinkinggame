@@ -13,6 +13,7 @@ public class CardSetDTO {
     private String id;
 
     private String name;
+    private String description;
     private int favorites = 0;
     private CardSetType type;
     private int version;
