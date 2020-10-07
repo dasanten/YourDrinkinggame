@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:your_drinking_game_app/HttpService/Dto/CardDto.dart';
 
 import '../dataBase/CardSetDB.dart';
 
@@ -33,6 +34,13 @@ class CardEntity {
         workshopId: map[CardSetDB.COLUMN_CARD_WORKSHOP_ID] as String,
         cardSetId: map[CardSetDB.COLUMN_CARD_CARD_SET_ID] as int,
       );
+
+  factory CardEntity.fromCardDto(CardDto cardDto, int cardSetId) => CardEntity(
+      content: cardDto.content,
+      active: true,
+      cardSetId: cardSetId,
+      workshopId: cardDto.id
+  );
 
   CardEntity copyWith({
     int id,

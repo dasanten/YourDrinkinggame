@@ -14,7 +14,16 @@ class CardSetDB {
   static const String COLUMN_CARD_SET_NAME = "name";
   static const String COLUMN_CARD_SET_DESCRIPTION = "description";
   static const String COLUMN_CARD_SET_ACTIVE = "active";
+  static const String COLUMN_CARD_SET_ADMIN_TOKEN = "admin_token";
+  static const String COLUMN_CARD_SET_EDITOR_TOKEN = "editor_token";
   static const String COLUMN_CARD_SET_WORKSHOP_ID = "workshop_id";
+  static const String COLUMN_CARD_SET_VERSION = "version";
+
+  static const List<String> allCardSetColumns = [
+    COLUMN_CARD_SET_ID, COLUMN_CARD_SET_NAME, COLUMN_CARD_SET_DESCRIPTION,
+    COLUMN_CARD_SET_ACTIVE, COLUMN_CARD_SET_ADMIN_TOKEN, COLUMN_CARD_SET_EDITOR_TOKEN,
+    COLUMN_CARD_SET_WORKSHOP_ID, COLUMN_CARD_SET_VERSION
+  ];
 
   static const String TABLE_CARD = "card";
 
@@ -23,6 +32,11 @@ class CardSetDB {
   static const String COLUMN_CARD_ACTIVE = "active";
   static const String COLUMN_CARD_WORKSHOP_ID = "workshop_id";
   static const String COLUMN_CARD_CARD_SET_ID = "card_set_id";
+
+  static const List<String> allCardColumns = [
+    COLUMN_CARD_ID, COLUMN_CARD_CONTENT, COLUMN_CARD_ACTIVE,
+    COLUMN_CARD_WORKSHOP_ID, COLUMN_CARD_CARD_SET_ID
+  ];
 
   CardSetDB._();
   static final CardSetDB cardSetDB = CardSetDB._();
@@ -50,7 +64,8 @@ class CardSetDB {
               $COLUMN_CARD_SET_NAME TEXT,
               $COLUMN_CARD_SET_DESCRIPTION TEXT,
               $COLUMN_CARD_SET_ACTIVE INTEGER,
-              $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
+              $COLUMN_CARD_SET_WORKSHOP_ID TEXT,
+              $COLUMN_CARD_SET_VERSION INTEGER)
         """,
         );
         await database.execute(
@@ -74,13 +89,7 @@ class CardSetDB {
     final db = await database;
     final cardSets = await db.query(
       TABLE_CARD_SET,
-      columns: [
-        COLUMN_CARD_SET_ID,
-        COLUMN_CARD_SET_NAME,
-        COLUMN_CARD_SET_DESCRIPTION,
-        COLUMN_CARD_SET_ACTIVE,
-        COLUMN_CARD_SET_WORKSHOP_ID
-      ],
+      columns: allCardSetColumns,
     );
 
     return cardSets
@@ -124,13 +133,7 @@ class CardSetDB {
 
     final cards = await db.query(
       TABLE_CARD,
-      columns: [
-        COLUMN_CARD_ID,
-        COLUMN_CARD_CONTENT,
-        COLUMN_CARD_ACTIVE,
-        COLUMN_CARD_WORKSHOP_ID,
-        COLUMN_CARD_CARD_SET_ID
-      ],
+      columns: allCardColumns,
       where: "$COLUMN_CARD_CARD_SET_ID = ?",
       whereArgs: [cardSetId],
     );
