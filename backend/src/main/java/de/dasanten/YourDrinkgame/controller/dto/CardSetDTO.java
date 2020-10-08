@@ -4,6 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 public class CardSetDTO {
@@ -16,4 +17,5 @@ public class CardSetDTO {
     private boolean isReported;
     private int reports;
     private String Token;
+    private List<CardDTO> cardList;
 }
