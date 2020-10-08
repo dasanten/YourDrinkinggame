@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -46,33 +47,13 @@ class CardSetDB {
 
   Future<Database> createDataBase() async {
     if (Platform.isWindows) {
+      final dbDir = await getApplicationSupportDirectory();
+
       return databaseFactoryFfi.openDatabase(
-        inMemoryDatabasePath,
+        join(dbDir.path, 'card_set_database.db'),
         options: OpenDatabaseOptions(
           version: 1,
-          onCreate: (database, version) async {
-            await database.execute(
-              """
-                CREATE TABLE $TABLE_CARD_SET (
-                  $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
-                  $COLUMN_CARD_SET_NAME TEXT,
-                  $COLUMN_CARD_SET_DESCRIPTION TEXT,
-                  $COLUMN_CARD_SET_ACTIVE INTEGER,
-                  $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
-              """,
-            );
-            await database.execute(
-              """
-                CREATE TABLE $TABLE_CARD (
-                  $COLUMN_CARD_ID INTEGER PRIMARY KEY,
-                  $COLUMN_CARD_CONTENT TEXT,
-                  $COLUMN_CARD_ACTIVE INTEGER,
-                  $COLUMN_CARD_WORKSHOP_ID TEXT,
-                  $COLUMN_CARD_CARD_SET_ID INTEGER,
-                  FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
-                    ON DELETE NO ACTION ON UPDATE NO ACTION)""",
-            );
-          },
+          onCreate: _onCreateDb,
         ),
       );
     } else {
@@ -81,31 +62,34 @@ class CardSetDB {
       return openDatabase(
         join(dbPath, 'card_set_database.db'),
         version: 1,
-        onCreate: (database, version) async {
-          await database.execute(
-            """
-              CREATE TABLE $TABLE_CARD_SET (
-                $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
-                $COLUMN_CARD_SET_NAME TEXT,
-                $COLUMN_CARD_SET_DESCRIPTION TEXT,
-                $COLUMN_CARD_SET_ACTIVE INTEGER,
-                $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
-            """,
-          );
-          await database.execute(
-            """
-              CREATE TABLE $TABLE_CARD (
-                $COLUMN_CARD_ID INTEGER PRIMARY KEY,
-                $COLUMN_CARD_CONTENT TEXT,
-                $COLUMN_CARD_ACTIVE INTEGER,
-                $COLUMN_CARD_WORKSHOP_ID TEXT,
-                $COLUMN_CARD_CARD_SET_ID INTEGER,
-                FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
-                  ON DELETE NO ACTION ON UPDATE NO ACTION)""",
-          );
-        },
+        onCreate: _onCreateDb,
       );
     }
+  }
+
+  FutureOr<void> _onCreateDb(Database database, int version) async {
+    await database.execute(
+      """
+        CREATE TABLE $TABLE_CARD_SET (
+          $COLUMN_CARD_SET_ID INTEGER PRIMARY KEY,
+          $COLUMN_CARD_SET_NAME TEXT,
+          $COLUMN_CARD_SET_DESCRIPTION TEXT,
+          $COLUMN_CARD_SET_ACTIVE INTEGER,
+          $COLUMN_CARD_SET_WORKSHOP_ID TEXT)
+      """,
+    );
+    await database.execute(
+      """
+        CREATE TABLE $TABLE_CARD (
+          $COLUMN_CARD_ID INTEGER PRIMARY KEY,
+          $COLUMN_CARD_CONTENT TEXT,
+          $COLUMN_CARD_ACTIVE INTEGER,
+          $COLUMN_CARD_WORKSHOP_ID TEXT,
+          $COLUMN_CARD_CARD_SET_ID INTEGER,
+          FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
+            ON DELETE NO ACTION ON UPDATE NO ACTION)
+      """,
+    );
   }
 
   //CARD SET DB ACTIONS
