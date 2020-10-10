@@ -89,6 +89,12 @@ public class CardSetController {
         return new ResponseEntity<>(cardSetWithToken, HttpStatus.OK);
     }
 
+    @PostMapping("/setAdminToken")
+    public ResponseEntity<CardSetDTO> setAdminToken(@RequestBody CardSetDTO cardSetDTO, @RequestParam String adminToken){
+        CardSetDTO cardSetWithToken = cardSetService.setAdminToken(cardSetDTO, adminToken);
+        return new ResponseEntity<>(cardSetWithToken, HttpStatus.OK);
+    }
+
 
     //EDIT
     @PutMapping("/editCardSet")
@@ -129,24 +135,16 @@ public class CardSetController {
 
 
     //REPORTS
-    @GetMapping("/reportCardSet")
-    public void reportCardSet(@RequestParam String cardSetId) {
+    @PostMapping("/reportCardSet")
+    public ResponseEntity<Void> reportCardSet(@RequestParam String cardSetId) {
         cardSetService.reportCardSet(cardSetId);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/reportCard")
-    public void reportCard(@RequestParam String cardId){
+    @PostMapping("/reportCard")
+    public ResponseEntity<Void> reportCard(@RequestParam String cardId){
         cardSetService.reportCard(cardId);
-    }
-
-
-
-
-
-    //TEST
-    @GetMapping("/addExample")
-    public CardSetEntity addExample(){
-        return cardSetService.addExample();
+        return ResponseEntity.ok().build();
     }
 }
 

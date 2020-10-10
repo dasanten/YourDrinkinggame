@@ -40,7 +40,9 @@ public class CardMapper {
         cardEntity.setContent(cardDTO.getContent());
         cardEntity.setReported(cardSetEntityOptional.get().isReported());
         cardEntity.setReports(cardSetEntityOptional.get().getReports());
-        cardEntity.setType(cardDTO.getType());
+        if (cardDTO.getType() != null) {
+            cardEntity.setType(cardDTO.getType());
+        }
         return cardEntity;
     }
 

@@ -2,6 +2,7 @@ package de.dasanten.YourDrinkgame.util.mapper;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.enums.CardSetType;
 import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
@@ -30,8 +31,10 @@ public class CardSetMapper {
         cardSetDTO.setReports(cardSetEntity.getReports());
         cardSetDTO.setVersion(cardSetEntity.getVersion());
         List<CardDTO> cardDTOS = new ArrayList<>();
-        for (CardEntity cardEntity: cardSetEntity.getCards()) {
-            cardDTOS.add(cardMapper.cardEntityToCardDTO(cardEntity));
+        if (cardSetEntity.getCards() != null) {
+            for (CardEntity cardEntity: cardSetEntity.getCards()) {
+                cardDTOS.add(cardMapper.cardEntityToCardDTO(cardEntity));
+            }
         }
         cardSetDTO.setCardList(cardDTOS);
         if (token.equals(cardSetEntity.getAdminToken())){
@@ -53,8 +56,10 @@ public class CardSetMapper {
         cardSetDTO.setReports(cardSetEntity.getReports());
         cardSetDTO.setVersion(cardSetEntity.getVersion());
         List<CardDTO> cardDTOS = new ArrayList<>();
-        for (CardEntity cardEntity: cardSetEntity.getCards()) {
-            cardDTOS.add(cardMapper.cardEntityToCardDTO(cardEntity));
+        if (cardSetEntity.getCards() != null) {
+            for (CardEntity cardEntity: cardSetEntity.getCards()) {
+                cardDTOS.add(cardMapper.cardEntityToCardDTO(cardEntity));
+            }
         }
         cardSetDTO.setCardList(cardDTOS);
         return cardSetDTO;
@@ -62,7 +67,7 @@ public class CardSetMapper {
 
     public CardSetEntity cardSetDTOToCardSetEntity(CardSetDTO cardSetDTO){
         CardSetEntity cardSetEntity = new CardSetEntity();
-        Optional <CardSetEntity> cardSet = cardSetRepository.findById(cardSetEntity.getId());
+        Optional <CardSetEntity> cardSet = cardSetRepository.findById(cardSetDTO.getId());
         if(cardSetDTO.getId() != null){
             cardSetEntity.setId(cardSetDTO.getId());
         }
@@ -77,5 +82,16 @@ public class CardSetMapper {
         cardSetEntity.setEditorToken(cardSet.get().getEditorToken());
         return cardSetEntity;
     }
+
+    public CardSetEntity cardSetDTOToNewCardSetEntity(CardSetDTO cardSetDTO){
+        CardSetEntity cardSetEntity = new CardSetEntity();
+        cardSetEntity.setName(cardSetDTO.getName());
+        cardSetEntity.setDescription(cardSetDTO.getDescription());
+        cardSetEntity.setAdminToken(cardSetDTO.getToken());
+        if (cardSetDTO.getType() != null) {
+            cardSetEntity.setType(cardSetDTO.getType());
+        }
+        return cardSetEntity;
+    };
 
 }
