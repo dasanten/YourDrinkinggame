@@ -24,4 +24,13 @@ class CardDto {
     cardSetId: cardSetId
   );
 
+  factory CardDto.fromJson(Map<String, dynamic> json) => CardDto(
+    id: json['id'] as String,
+    cardSetId: json['cardSetId'] as String,
+    content: json['content'] as String,
+    type: json['type'] as String,
+    isReported: json['isReported'] as bool,
+    reports: json['reports'] as int
+  );
+
 }

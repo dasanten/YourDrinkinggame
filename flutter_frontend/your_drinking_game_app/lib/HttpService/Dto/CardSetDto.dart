@@ -36,5 +36,22 @@ class CardSetDto{
     token: cardSetEntity.adminToken ?? cardSetEntity.editorToken,
   );
 
+  factory CardSetDto.fromJson(Map<String, dynamic> json) {
+    final cardList = json['cardList'] as List<Map<String, dynamic>>;
+    final cardDtoList = cardList.map((e) => CardDto.fromJson(e)).toList();
+    return CardSetDto(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      description: json['description'] as String,
+      favorites: json['favorites'] as int,
+      type: json['type'] as String,
+      version: json['version'] as int,
+      isReported: json['reported'] as bool,
+      reports: json['reports'] as int,
+      token: json['token'] as String,
+      cardList: cardDtoList,
+    );
+  }
+
 
 }
