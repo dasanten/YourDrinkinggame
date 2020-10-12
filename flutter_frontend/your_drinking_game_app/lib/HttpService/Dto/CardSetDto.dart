@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../../models/CardSetEntity.dart';
 
 import 'CardDto.dart';
@@ -37,8 +39,6 @@ class CardSetDto{
   );
 
   factory CardSetDto.fromJson(Map<String, dynamic> json) {
-    final cardList = json['cardList'] as List<Map<String, dynamic>>;
-    final cardDtoList = cardList.map((e) => CardDto.fromJson(e)).toList();
     return CardSetDto(
       id: json['id'] as String,
       name: json['name'] as String,
@@ -49,7 +49,7 @@ class CardSetDto{
       isReported: json['reported'] as bool,
       reports: json['reports'] as int,
       token: json['token'] as String,
-      cardList: cardDtoList,
+      cardList: null,
     );
   }
 

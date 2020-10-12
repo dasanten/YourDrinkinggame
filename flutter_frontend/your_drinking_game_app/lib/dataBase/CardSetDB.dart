@@ -65,6 +65,8 @@ class CardSetDB {
               $COLUMN_CARD_SET_DESCRIPTION TEXT,
               $COLUMN_CARD_SET_ACTIVE INTEGER,
               $COLUMN_CARD_SET_WORKSHOP_ID TEXT,
+              $COLUMN_CARD_SET_ADMIN_TOKEN TEXT,
+              $COLUMN_CARD_SET_EDITOR_TOKEN TEXT,
               $COLUMN_CARD_SET_VERSION INTEGER)
         """,
         );

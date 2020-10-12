@@ -9,14 +9,21 @@ import 'Dto/CardSetDto.dart';
 class CardSetService{
 
   static Future<List<CardSetDto>> getTopCardSets() async {
-    final response = await http.get("http://dasanten.de:8080/getTopCardSets");
-    List<Map<String, dynamic>> body;
+    // final response = await http.get("localhost:8080/getTopCardSets");
+    final response = await http.get("http://192.168.0.121:8080/getTopCardSets");
+
+
     if(response.statusCode == 200) {
-      body = jsonDecode(response.body) as List<Map<String, dynamic>>;
-      return body.map((e) => CardSetDto.fromJson(e)).toList();
+      return parseCardSets(response.body);
     } else {
       throw Exception('Failed to load to CardSets');
     }
   }
 
+
+  static List<CardSetDto> parseCardSets(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<CardSetDto>((json) => CardSetDto.fromJson(json)).toList();
+  }
 }
