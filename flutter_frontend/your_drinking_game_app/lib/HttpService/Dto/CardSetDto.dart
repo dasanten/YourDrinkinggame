@@ -39,6 +39,10 @@ class CardSetDto{
   );
 
   factory CardSetDto.fromJson(Map<String, dynamic> json) {
+    List<CardDto> cardList = [];
+    json['cardList'].forEach((json)=>{
+      cardList.add(CardDto.fromJson(json))
+    });
     return CardSetDto(
       id: json['id'] as String,
       name: json['name'] as String,
@@ -49,7 +53,7 @@ class CardSetDto{
       isReported: json['reported'] as bool,
       reports: json['reports'] as int,
       token: json['token'] as String,
-      cardList: null,
+      cardList: cardList,
     );
   }
 
