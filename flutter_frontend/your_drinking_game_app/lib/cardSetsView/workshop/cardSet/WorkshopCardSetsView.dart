@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/cardSetsView/workshop/cards/WorkshopCardView.dart';
+import 'package:your_drinking_game_app/models/CardSetCardsArguments.dart';
 
 import '../../../HttpService/CardSetService.dart';
 import '../../../HttpService/Dto/CardSetDto.dart';
@@ -26,8 +28,15 @@ class _WorkshopCardSetsView extends State<WorkshopCardSetsView> {
                   padding: const EdgeInsets.all(16.0),
                   separatorBuilder: (_, index) => const Divider(),
                   itemBuilder: (context, i) {
-                    return CustomWorkshopCardSetTile(
-                        cardSet: cardSetList[i]
+                    return GestureDetector(
+                      onTap: ()=> Navigator.pushNamed(
+                          context,
+                          WorkshopCardView.routeName,
+                          arguments: CardSetCardsArguments(cardSetList[i], cardSetList[i].cardList)
+                      ),
+                      child: CustomWorkshopCardSetTile(
+                          cardSet: cardSetList[i]
+                      ),
                     );
                   },
                 )

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:your_drinking_game_app/HttpService/Dto/CardSetDto.dart';
+import 'package:your_drinking_game_app/cardSetsView/workshop/cardSet/WorkshopCardSetsView.dart';
+import 'package:your_drinking_game_app/cardSetsView/workshop/cards/WorkshopCardView.dart';
 import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 import 'cardSetsView/local/cards/CardEditForm.dart';
@@ -19,6 +23,7 @@ void main() {
         LocalCardForm.routeName: (context) => LocalCardForm(),
         CardSetEditForm.routeName: (context) => CardSetEditForm(),
         CardEditForm.routeName: (context) => CardEditForm(),
+        WorkshopCardView.routeName: (context) => WorkshopCardView(),
       },
       onGenerateRoute: (settings) {
         final routes = <String, dynamic>{
