@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:your_drinking_game_app/HttpService/Dto/CardSetDto.dart';
-import 'package:your_drinking_game_app/cardSetsView/workshop/cardSet/WorkshopCardSetsView.dart';
-import 'package:your_drinking_game_app/cardSetsView/workshop/cards/WorkshopCardView.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
-import 'cardSetsView/local/cards/CardEditForm.dart';
-import 'cardSetsView/local/cardSet/CardSetEditForm.dart';
+import 'package:provider/provider.dart';
+
 import 'cardSetsView/CardSetsTabView.dart';
+import 'cardSetsView/local/cardSet/CardSetEditForm.dart';
+import 'cardSetsView/local/cards/CardEditForm.dart';
 import 'cardSetsView/local/cards/LocalCardForm.dart';
 import 'cardSetsView/local/cards/LocalCardView.dart';
+import 'cardSetsView/workshop/cards/WorkshopCardView.dart';
 import 'game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
+import 'viewmodel/current_card_set_viewmodel.dart';
+import 'viewmodel/local_card_sets_viewmodel.dart';
 
 void main() {
   runApp(
-    MaterialApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LocalCardSetsViewmodel>(
+          create: (_) => LocalCardSetsViewmodel(),
+        ),
+        ChangeNotifierProvider<CurrentCardSetViewmodel>(
+          create: (_) => CurrentCardSetViewmodel(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       title: 'Dein Trinkspiel',
       home: Menu(),
       routes: {
@@ -24,14 +43,7 @@ void main() {
         CardSetEditForm.routeName: (context) => CardSetEditForm(),
         CardEditForm.routeName: (context) => CardEditForm(),
         WorkshopCardView.routeName: (context) => WorkshopCardView(),
-      },
-      onGenerateRoute: (settings) {
-        final routes = <String, dynamic>{
-          LocalCardView.routeName: (context) =>
-              LocalCardView(cardSet: settings.arguments as CardSetEntity),
-        };
-        final WidgetBuilder builder = routes[settings.name];
-        return MaterialPageRoute(builder: (context) => builder(context));
+        LocalCardView.routeName: (context) => LocalCardView(),
       },
       theme: ThemeData(
         primaryColor: Colors.blue,
@@ -41,8 +53,8 @@ void main() {
         bottomAppBarColor: Colors.grey.shade300,
       ),
       darkTheme: ThemeData.dark(),
-    ),
-  );
+    );
+  }
 }
 
 class Menu extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../dataBase/CardSetDB.dart';
-import '../../../models/CardEntity.dart';
-import '../../../models/CardSetEntity.dart';
+import 'package:provider/provider.dart';
+
+import '../../../viewmodel/current_card_set_viewmodel.dart';
 
 class LocalCardForm extends StatefulWidget {
   static const routeName = '/CreateLocalCard';
@@ -14,7 +14,6 @@ class LocalCardForm extends StatefulWidget {
 class _LocalCardForm extends State<LocalCardForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _contentController;
-  CardSetEntity _cardSet;
 
   @override
   void initState() {
@@ -30,11 +29,11 @@ class _LocalCardForm extends State<LocalCardForm> {
 
   @override
   Widget build(BuildContext context) {
-    _cardSet = ModalRoute.of(context).settings.arguments as CardSetEntity;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Karte für ${_cardSet.name}"),
+        title: Text(
+          "Karte für ${context.watch<CurrentCardSetViewmodel>().cardSet.name}",
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -71,12 +70,9 @@ class _LocalCardForm extends State<LocalCardForm> {
 
   Future<void> saveCard(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      final card = CardEntity(
-        active: true,
-        cardSetId: _cardSet.id,
-        content: _contentController.text,
-      );
-      await CardSetDB.cardSetDB.insertCard(card);
+      await context
+          .read<CurrentCardSetViewmodel>()
+          .addCardFromContent(_contentController.text);
       Navigator.pop(context);
     }
   }

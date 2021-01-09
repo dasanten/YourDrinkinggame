@@ -24,10 +24,12 @@ class CardSetsTabView extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(children: [
-          LocalCardSetsView(),
-          WorkshopCardSetsView(),
-        ]),
+        body: TabBarView(
+          children: [
+            LocalCardSetsView(),
+            WorkshopCardSetsView(),
+          ],
+        ),
       ),
     );
   }

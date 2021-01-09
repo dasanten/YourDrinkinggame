@@ -1,44 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../../../dataBase/CardSetDB.dart';
-import '../../../models/CardSetEntity.dart';
+import 'package:provider/provider.dart';
 
-class CardSetEditForm extends StatefulWidget {
+import '../../../viewmodel/current_card_set_viewmodel.dart';
+import '../../../viewmodel/local_card_sets_viewmodel.dart';
+
+final _formKey = GlobalKey<FormState>();
+
+class CardSetEditForm extends StatelessWidget {
   static const routeName = '/editCardSet';
 
   @override
-  State<StatefulWidget> createState() => _CardSetEditForm();
-}
-
-class _CardSetEditForm extends State<CardSetEditForm> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController;
-  TextEditingController _descriptionController;
-  CardSetEntity _cardSet;
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController();
-    _descriptionController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _cardSet = ModalRoute.of(context).settings.arguments as CardSetEntity;
-    _nameController.text = _cardSet.name;
-    _descriptionController.text = _cardSet.description;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kartenset ${_cardSet.name} bearbeiten"),
+        title: Consumer<CurrentCardSetViewmodel>(
+          builder: (context, viewmodel, child) => Text(
+            "Kartenset ${viewmodel.cardSet.name} bearbeiten",
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -47,7 +27,10 @@ class _CardSetEditForm extends State<CardSetEditForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                controller: _nameController,
+                controller: context
+                    .select<CurrentCardSetViewmodel, TextEditingController>(
+                  (v) => v.nameController,
+                ),
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Bitte gebe einen Namen ein!';
@@ -64,7 +47,10 @@ class _CardSetEditForm extends State<CardSetEditForm> {
                 padding: EdgeInsets.symmetric(vertical: 5),
               ),
               TextFormField(
-                controller: _descriptionController,
+                controller: context
+                    .select<CurrentCardSetViewmodel, TextEditingController>(
+                  (v) => v.descriptionController,
+                ),
                 decoration: const InputDecoration(
                   labelText: 'Beschreibung',
                   border: OutlineInputBorder(),
@@ -96,25 +82,31 @@ class _CardSetEditForm extends State<CardSetEditForm> {
   }
 
   Future<void> deleteCardSet(BuildContext context) async {
-    final confirmed = await _deleteDialog();
+    final confirmed = await _deleteDialog(context);
     if (confirmed) {
-      await CardSetDB.cardSetDB.deleteCardSet(_cardSet.id);
+      await context.read<LocalCardSetsViewmodel>().deleteCardSet(
+            context.read<CurrentCardSetViewmodel>().cardSet.id,
+          );
       Navigator.popUntil(context, (route) => route.isFirst);
+      Future.delayed(
+        const Duration(milliseconds: 500),
+        () => context.read<CurrentCardSetViewmodel>().reset(),
+      );
     }
   }
 
   Future<void> updateCardSet(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      _cardSet = _cardSet.copyWith(
-        name: _nameController.text,
-        description: _descriptionController.text,
-      );
-      await CardSetDB.cardSetDB.updateCardSet(_cardSet);
+      final currentCardSetViewmodel = context.read<CurrentCardSetViewmodel>()
+        ..save();
+      context
+          .read<LocalCardSetsViewmodel>()
+          .updateCardSet(currentCardSetViewmodel.cardSet);
       Navigator.pop(context);
     }
   }
 
-  Future<bool> _deleteDialog() async {
+  Future<bool> _deleteDialog(BuildContext context) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,

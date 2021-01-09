@@ -20,9 +20,14 @@ class CardSetDB {
   static const String COLUMN_CARD_SET_VERSION = "version";
 
   static const List<String> allCardSetColumns = [
-    COLUMN_CARD_SET_ID, COLUMN_CARD_SET_NAME, COLUMN_CARD_SET_DESCRIPTION,
-    COLUMN_CARD_SET_ACTIVE, COLUMN_CARD_SET_ADMIN_TOKEN, COLUMN_CARD_SET_EDITOR_TOKEN,
-    COLUMN_CARD_SET_WORKSHOP_ID, COLUMN_CARD_SET_VERSION
+    COLUMN_CARD_SET_ID,
+    COLUMN_CARD_SET_NAME,
+    COLUMN_CARD_SET_DESCRIPTION,
+    COLUMN_CARD_SET_ACTIVE,
+    COLUMN_CARD_SET_ADMIN_TOKEN,
+    COLUMN_CARD_SET_EDITOR_TOKEN,
+    COLUMN_CARD_SET_WORKSHOP_ID,
+    COLUMN_CARD_SET_VERSION
   ];
 
   static const String TABLE_CARD = "card";
@@ -34,8 +39,11 @@ class CardSetDB {
   static const String COLUMN_CARD_CARD_SET_ID = "card_set_id";
 
   static const List<String> allCardColumns = [
-    COLUMN_CARD_ID, COLUMN_CARD_CONTENT, COLUMN_CARD_ACTIVE,
-    COLUMN_CARD_WORKSHOP_ID, COLUMN_CARD_CARD_SET_ID
+    COLUMN_CARD_ID,
+    COLUMN_CARD_CONTENT,
+    COLUMN_CARD_ACTIVE,
+    COLUMN_CARD_WORKSHOP_ID,
+    COLUMN_CARD_CARD_SET_ID
   ];
 
   CardSetDB._();
@@ -110,6 +118,12 @@ class CardSetDB {
 
   Future<int> deleteCardSet(int id) async {
     final db = await database;
+
+    await db.delete(
+      TABLE_CARD,
+      where: "$COLUMN_CARD_CARD_SET_ID = ?",
+      whereArgs: [id],
+    );
 
     return db.delete(
       TABLE_CARD_SET,

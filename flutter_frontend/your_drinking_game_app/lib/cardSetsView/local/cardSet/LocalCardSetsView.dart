@@ -1,51 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-import '../../../dataBase/CardSetDB.dart';
-import '../../../models/CardSetEntity.dart';
+import 'package:provider/provider.dart';
+
+import '../../../viewmodel/current_card_set_viewmodel.dart';
+import '../../../viewmodel/local_card_sets_viewmodel.dart';
 import '../cards/LocalCardView.dart';
 import 'CustomLocalCardSetTile.dart';
 import 'LocalCardSetForm.dart';
 
-class LocalCardSetsView extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _LocalCardSetsView();
-}
-
-class _LocalCardSetsView extends State<LocalCardSetsView> {
-  List<CardSetEntity> _cardSetList;
-
-  @override
-  void initState() {
-    super.initState();
-    _cardSetList = <CardSetEntity>[];
-    getCardSets();
-  }
-
+class LocalCardSetsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.separated(
-        itemCount: _cardSetList.length,
-        padding: const EdgeInsets.all(16.0),
-        separatorBuilder: (_, index) => const Divider(),
-        itemBuilder: (context, i) {
-          return GestureDetector(
-            onTap: () => Navigator.pushNamed(
-              context,
-              LocalCardView.routeName,
-              arguments: _cardSetList[i],
-            ).then((value) => getCardSets()),
-            child: CustomCardSetTile(
-              cardSet: _cardSetList[i],
-              onActiveChanged: (value) {
-                setState(() {
-                  _cardSetList[i] = _cardSetList[i].copyWith(active: value);
-                });
-                CardSetDB.cardSetDB.updateCardSet(_cardSetList[i]);
+      body: Consumer<LocalCardSetsViewmodel>(
+        builder: (context, viewmodel, child) {
+          if (viewmodel.cardSetList.isNotEmpty) {
+            return ListView.separated(
+              itemCount: viewmodel.cardSetList.length,
+              padding: const EdgeInsets.all(16.0),
+              separatorBuilder: (_, index) => const Divider(),
+              itemBuilder: (context, i) {
+                final cardSet = viewmodel.cardSetList.elementAt(i);
+
+                return GestureDetector(
+                  onTap: () {
+                    context.read<CurrentCardSetViewmodel>().setCardSet(
+                          cardSet,
+                        );
+                    Navigator.pushNamed(context, LocalCardView.routeName);
+                  },
+                  child: CustomCardSetTile(
+                    cardSet: cardSet,
+                    onActiveChanged: (value) async {
+                      await viewmodel.updateCardSet(
+                        cardSet.copyWith(active: value),
+                      );
+                    },
+                  ),
+                );
               },
-            ),
-          );
+            );
+          } else if (viewmodel.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return const Center(
+              child: Text('Keine Sets gefunden.'),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -54,18 +57,10 @@ class _LocalCardSetsView extends State<LocalCardSetsView> {
           MaterialPageRoute(
             builder: (context) => CardSetForm(),
           ),
-        ).then((_) => getCardSets()),
+        ),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  void getCardSets() {
-    CardSetDB.cardSetDB.getCardSets().then(
-          (cardSetList) => setState(
-            () => _cardSetList = cardSetList,
-          ),
-        );
   }
 }

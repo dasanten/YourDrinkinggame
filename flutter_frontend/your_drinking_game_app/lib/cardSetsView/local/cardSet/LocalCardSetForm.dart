@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../dataBase/CardSetDB.dart';
-import '../../../models/CardSetEntity.dart';
+import 'package:provider/provider.dart';
+
+import '../../../viewmodel/local_card_sets_viewmodel.dart';
 
 class CardSetForm extends StatefulWidget {
   @override
@@ -77,12 +78,10 @@ class _CardSetForm extends State<CardSetForm> {
 
   Future<void> saveCardSet(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      final cardSet = CardSetEntity(
-        name: _nameController.text,
-        description: _descriptionController.text,
-        active: true,
-      );
-      await CardSetDB.cardSetDB.insertCardSet(cardSet);
+      await context.read<LocalCardSetsViewmodel>().addCardSet(
+            _nameController.text,
+            _descriptionController.text,
+          );
       Navigator.pop(context);
     }
   }
