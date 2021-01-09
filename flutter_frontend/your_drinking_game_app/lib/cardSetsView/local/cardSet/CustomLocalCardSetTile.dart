@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 
 import '../../../models/CardSetEntity.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
@@ -33,6 +34,23 @@ class CustomCardSetTile extends StatelessWidget {
                 cardSet,
               );
           Navigator.pushNamed(context, LocalCardView.routeName);
+        },
+        onLongPress: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return ListTile(
+                title: const Text("Löschen"),
+                leading: const Icon(Icons.delete),
+                onTap: () {
+                  context
+                      .read<LocalCardSetsViewmodel>()
+                      .deleteCardSet(cardSet.id);
+                  Navigator.pop(context);
+                },
+              );
+            },
+          );
         },
       ),
     );
