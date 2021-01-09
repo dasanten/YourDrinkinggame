@@ -11,6 +11,7 @@ import 'cardSetsView/workshop/cards/WorkshopCardView.dart';
 import 'game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
 import 'viewmodel/current_card_set_viewmodel.dart';
+import 'viewmodel/current_card_viewmodel.dart';
 import 'viewmodel/local_card_sets_viewmodel.dart';
 
 void main() {
@@ -22,6 +23,9 @@ void main() {
         ),
         ChangeNotifierProvider<CurrentCardSetViewmodel>(
           create: (_) => CurrentCardSetViewmodel(),
+        ),
+        ChangeNotifierProvider<CurrentCardViewmodel>(
+          create: (_) => CurrentCardViewmodel(),
         ),
       ],
       child: const MyApp(),

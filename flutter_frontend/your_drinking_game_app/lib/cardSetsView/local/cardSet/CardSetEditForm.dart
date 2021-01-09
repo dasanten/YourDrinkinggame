@@ -84,13 +84,14 @@ class CardSetEditForm extends StatelessWidget {
   Future<void> deleteCardSet(BuildContext context) async {
     final confirmed = await _deleteDialog(context);
     if (confirmed) {
+      final currentCardSetViewmodel = context.read<CurrentCardSetViewmodel>();
       await context.read<LocalCardSetsViewmodel>().deleteCardSet(
-            context.read<CurrentCardSetViewmodel>().cardSet.id,
+            currentCardSetViewmodel.cardSet.id,
           );
       Navigator.popUntil(context, (route) => route.isFirst);
       Future.delayed(
         const Duration(milliseconds: 500),
-        () => context.read<CurrentCardSetViewmodel>().reset(),
+        () => currentCardSetViewmodel.reset(),
       );
     }
   }

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../cardSet/CardSetEditForm.dart';
 import '../cards/CustomLocalCardTile.dart';
-import 'CardEditForm.dart';
 import 'LocalCardForm.dart';
 
 class LocalCardView extends StatelessWidget {
@@ -35,24 +34,14 @@ class LocalCardView extends StatelessWidget {
           if (viewmodel.cards.isNotEmpty) {
             return ListView.separated(
               itemCount: viewmodel.cards.length,
-              padding: const EdgeInsets.all(16.0),
               separatorBuilder: (_, index) => const Divider(),
               itemBuilder: (context, i) {
                 final card = viewmodel.cards[i];
-                return GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamed(
-                      context,
-                      CardEditForm.routeName,
-                      arguments: card,
-                    );
-                  },
-                  child: CustomLocalCardTile(
-                    card: card,
-                    onActiveChanged: (value) => viewmodel.updateCard(
-                      card.copyWith(
-                        active: value,
-                      ),
+                return CustomLocalCardTile(
+                  card: card,
+                  onActiveChanged: (value) => viewmodel.updateCard(
+                    card.copyWith(
+                      active: value,
                     ),
                   ),
                 );

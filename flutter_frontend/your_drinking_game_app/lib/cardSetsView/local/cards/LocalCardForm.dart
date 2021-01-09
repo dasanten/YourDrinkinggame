@@ -72,7 +72,7 @@ class _LocalCardForm extends State<LocalCardForm> {
     if (_formKey.currentState.validate()) {
       await context
           .read<CurrentCardSetViewmodel>()
-          .addCardFromContent(_contentController.text);
+          .insertCardFromContent(_contentController.text);
       Navigator.pop(context);
     }
   }

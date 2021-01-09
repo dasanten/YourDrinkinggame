@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../../../models/CardEntity.dart';
+import '../../../viewmodel/current_card_viewmodel.dart';
+import 'CardEditForm.dart';
 
 class CustomLocalCardTile extends StatelessWidget {
   final CardEntity card;
@@ -14,14 +18,23 @@ class CustomLocalCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      margin: const EdgeInsets.all(8),
       child: ListTile(
         title: Text(card.content),
         trailing: Switch(
           value: card.active,
           onChanged: onActiveChanged,
         ),
+        onTap: () async {
+          context.read<CurrentCardViewmodel>().setCard(card);
+          await Navigator.pushNamed(
+            context,
+            CardEditForm.routeName,
+            arguments: card,
+          );
+        },
       ),
     );
   }

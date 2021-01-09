@@ -1,37 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../../dataBase/CardSetDB.dart';
-import '../../../models/CardEntity.dart';
+import 'package:provider/provider.dart';
 
-class CardEditForm extends StatefulWidget {
+import '../../../viewmodel/current_card_set_viewmodel.dart';
+import '../../../viewmodel/current_card_viewmodel.dart';
+
+final _formKey = GlobalKey<FormState>();
+
+class CardEditForm extends StatelessWidget {
   static const routeName = '/editCard';
 
   @override
-  State<StatefulWidget> createState() => _CardEditForm();
-}
-
-class _CardEditForm extends State<CardEditForm> {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController _contentController;
-  CardEntity _card;
-
-  @override
-  void initState() {
-    super.initState();
-    _contentController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _contentController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _card = ModalRoute.of(context).settings.arguments as CardEntity;
-    _contentController.text = _card.content;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Karte bearbeiten"),
@@ -43,7 +23,10 @@ class _CardEditForm extends State<CardEditForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                controller: _contentController,
+                controller:
+                    context.select<CurrentCardViewmodel, TextEditingController>(
+                  (v) => v.contentController,
+                ),
                 maxLines: 5,
                 validator: (value) {
                   if (value.isEmpty) {
@@ -83,21 +66,28 @@ class _CardEditForm extends State<CardEditForm> {
 
   Future<void> updateCard(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      _card = _card.copyWith(content: _contentController.text);
-      await CardSetDB.cardSetDB.updateCard(_card);
+      final currentCardViewmodel = context.read<CurrentCardViewmodel>()..save();
+      await context.read<CurrentCardSetViewmodel>().updateCard(
+            currentCardViewmodel.card,
+          );
       Navigator.pop(context);
     }
   }
 
   Future<void> deleteCard(BuildContext context) async {
-    final confirmed = await _deleteDialog();
+    final confirmed = await _deleteDialog(context);
     if (confirmed) {
-      await CardSetDB.cardSetDB.deleteCard(_card.id);
+      final currentCardViewmodel = context.read<CurrentCardViewmodel>();
+      await context.read<CurrentCardSetViewmodel>().deleteCard(currentCardViewmodel.card.id);
       Navigator.pop(context);
+      Future.delayed(
+        const Duration(milliseconds: 500),
+        () => currentCardViewmodel.reset(),
+      );
     }
   }
 
-  Future<bool> _deleteDialog() async {
+  Future<bool> _deleteDialog(BuildContext context) async {
     return showDialog<bool>(
       context: context,
       barrierDismissible: false,
