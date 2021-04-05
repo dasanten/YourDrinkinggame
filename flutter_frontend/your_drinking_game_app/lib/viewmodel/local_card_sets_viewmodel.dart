@@ -5,7 +5,7 @@ import '../models/CardSetEntity.dart';
 import 'async_viewmodel_base.dart';
 
 class LocalCardSetsViewmodel extends AsyncViewmodelBase {
-  List<CardSetEntity> _cardSetList;
+  late List<CardSetEntity> _cardSetList;
 
   List<CardSetEntity> get cardSetList => _cardSetList;
 
@@ -49,15 +49,12 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
         .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
     final cardEntityList = cardSetDto.cardList
         .map<CardEntity>(
-          (e) => CardEntity.fromCardDto(e, responseCardSet.id),
+          (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
         )
         .toList();
     final responseCards =
         await CardSetDB.cardSetDB.insertCardList(cardEntityList);
-
-    if (responseCardSet != null && responseCards != null) {
-      return true;
-    }
-    return false;
+    await getCardSets();
+    return true;
   }
 }

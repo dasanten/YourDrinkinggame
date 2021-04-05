@@ -13,7 +13,7 @@ class LocalCardForm extends StatefulWidget {
 
 class _LocalCardForm extends State<LocalCardForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _contentController;
+  late TextEditingController _contentController;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _LocalCardForm extends State<LocalCardForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Karte für ${context.watch<CurrentCardSetViewmodel>().cardSet.name}",
+          "Karte für ${context.watch<CurrentCardSetViewmodel>().cardSet!.name}",
         ),
       ),
       body: Padding(
@@ -44,7 +44,7 @@ class _LocalCardForm extends State<LocalCardForm> {
               TextFormField(
                 controller: _contentController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return "Es muss Text festgelegt werden!";
                   }
                   return null;
@@ -69,7 +69,7 @@ class _LocalCardForm extends State<LocalCardForm> {
   }
 
   Future<void> saveCard(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       await context
           .read<CurrentCardSetViewmodel>()
           .insertCardFromContent(_contentController.text);

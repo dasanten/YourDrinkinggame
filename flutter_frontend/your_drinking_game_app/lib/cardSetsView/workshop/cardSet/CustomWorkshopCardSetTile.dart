@@ -12,9 +12,9 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
   final bool isLocal;
 
   const CustomWorkshopCardSetTile({
-    Key key,
-    @required this.cardSet,
-    @required this.isLocal,
+    Key? key,
+    required this.cardSet,
+    required this.isLocal,
   }) : super(key: key);
 
   @override

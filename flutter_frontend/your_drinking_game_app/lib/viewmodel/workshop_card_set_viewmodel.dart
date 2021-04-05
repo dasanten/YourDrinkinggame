@@ -1,17 +1,15 @@
-import 'package:flutter/foundation.dart';
-
 import '../HttpService/CardSetService.dart';
 import '../HttpService/Dto/CardSetDto.dart';
 import '../dataBase/CardSetDB.dart';
 import 'async_viewmodel_base.dart';
 
 class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
-  List<CardSetDto> _cardSetList;
-  Map<String, bool> _cardSetLocal;
+  late List<CardSetDto> _cardSetList;
+  late Map<String, bool> _cardSetLocal;
 
   List<CardSetDto> get cardSetList => _cardSetList;
   bool getCardSetLocalById(String id) =>
-      _cardSetLocal.containsKey(id) && _cardSetLocal[id];
+      _cardSetLocal.containsKey(id) && _cardSetLocal[id]!;
 
   WorkshopCardSetViewmodel() {
     _cardSetList = <CardSetDto>[];
@@ -31,7 +29,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
     notifyListeners();
   }
 
-  void refreshCardSetLocalById(String id, {@required bool isLocal}) {
+  void refreshCardSetLocalById(String id, {required bool isLocal}) {
     _cardSetLocal[id] = isLocal;
     notifyListeners();
   }

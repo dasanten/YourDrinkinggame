@@ -3,11 +3,11 @@ import '../../../HttpService/Dto/CardDto.dart';
 
 class CustomWorkshopCardTile extends StatelessWidget {
   final CardDto card;
-  final void Function(bool value) onActiveChanged;
+  final void Function(bool value)? onActiveChanged;
 
   const CustomWorkshopCardTile({
-    Key key,
-    @required this.card,
+    Key? key,
+    required this.card,
     this.onActiveChanged,
   }) : super(key: key);
 

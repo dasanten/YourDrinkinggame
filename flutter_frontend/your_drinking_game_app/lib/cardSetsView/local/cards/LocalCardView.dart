@@ -16,7 +16,7 @@ class LocalCardView extends StatelessWidget {
       appBar: AppBar(
         title: Consumer<CurrentCardSetViewmodel>(
           builder: (context, viewmodel, child) => Text(
-            "Kartenset: ${viewmodel.cardSet.name}",
+            "Kartenset: ${viewmodel.cardSet!.name}",
           ),
         ),
         actions: [

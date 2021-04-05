@@ -3,14 +3,14 @@ import 'package:flutter/widgets.dart';
 import '../models/CardEntity.dart';
 
 class CurrentCardViewmodel extends ChangeNotifier {
-  CardEntity _card;
-  TextEditingController _contentController;
+  CardEntity? _card;
+  late TextEditingController _contentController;
 
   CurrentCardViewmodel() {
     _contentController = TextEditingController();
   }
 
-  CardEntity get card => _card;
+  CardEntity? get card => _card;
   TextEditingController get contentController => _contentController;
 
   void setCard(CardEntity newCard) {
@@ -26,7 +26,7 @@ class CurrentCardViewmodel extends ChangeNotifier {
   }
 
   void save() {
-    _card = _card.copyWith(
+    _card = _card!.copyWith(
       content: contentController.text,
     );
     notifyListeners();

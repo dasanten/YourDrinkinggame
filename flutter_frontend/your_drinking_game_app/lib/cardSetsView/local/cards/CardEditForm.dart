@@ -29,7 +29,7 @@ class CardEditForm extends StatelessWidget {
                 ),
                 maxLines: 5,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return "Es muss Text festgelegt werden!";
                   }
                   return null;
@@ -65,10 +65,10 @@ class CardEditForm extends StatelessWidget {
   }
 
   Future<void> updateCard(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       final currentCardViewmodel = context.read<CurrentCardViewmodel>()..save();
       await context.read<CurrentCardSetViewmodel>().updateCard(
-            currentCardViewmodel.card,
+            currentCardViewmodel.card!,
           );
       Navigator.pop(context);
     }
@@ -78,7 +78,9 @@ class CardEditForm extends StatelessWidget {
     final confirmed = await _deleteDialog(context);
     if (confirmed) {
       final currentCardViewmodel = context.read<CurrentCardViewmodel>();
-      await context.read<CurrentCardSetViewmodel>().deleteCard(currentCardViewmodel.card.id);
+      await context
+          .read<CurrentCardSetViewmodel>()
+          .deleteCard(currentCardViewmodel.card!.id!);
       Navigator.pop(context);
       Future.delayed(
         const Duration(milliseconds: 500),
@@ -88,24 +90,25 @@ class CardEditForm extends StatelessWidget {
   }
 
   Future<bool> _deleteDialog(BuildContext context) async {
-    return showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Wirklich löschen ?"),
-          actions: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text("ABBRUCH"),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text("BESTÄTIGEN"),
-            ),
-          ],
-        );
-      },
-    );
+    return await showDialog<bool?>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Wirklich löschen ?"),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text("ABBRUCH"),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text("BESTÄTIGEN"),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
   }
 }

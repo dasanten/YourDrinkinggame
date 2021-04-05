@@ -6,10 +6,10 @@ import '../models/CardSetEntity.dart';
 import 'async_viewmodel_base.dart';
 
 class CurrentCardSetViewmodel extends AsyncViewmodelBase {
-  List<CardEntity> _cards;
-  CardSetEntity _cardSet;
-  TextEditingController _nameController;
-  TextEditingController _descriptionController;
+  late List<CardEntity> _cards;
+  CardSetEntity? _cardSet;
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
 
   CurrentCardSetViewmodel([this._cardSet]) {
     _cards = <CardEntity>[];
@@ -21,15 +21,15 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     );
   }
 
-  CardSetEntity get cardSet => _cardSet;
-  List<CardEntity> get cards => _cards ?? [];
+  CardSetEntity? get cardSet => _cardSet;
+  List<CardEntity> get cards => _cards ;
   TextEditingController get nameController => _nameController;
   TextEditingController get descriptionController => _descriptionController;
 
   void setCardSet(CardSetEntity newCardSet) {
     _cardSet = newCardSet;
-    _nameController.text = _cardSet.name;
-    _descriptionController.text = _cardSet.description;
+    _nameController.text = _cardSet!.name;
+    _descriptionController.text = _cardSet!.description;
     notifyListeners();
     getCards();
   }
@@ -43,7 +43,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   Future<void> getCards() async {
     if (_cardSet != null) {
       setLoading();
-      _cards = await CardSetDB.cardSetDB.getCards(_cardSet.id);
+      _cards = await CardSetDB.cardSetDB.getCards(_cardSet!.id!);
       setFinished();
     }
   }
@@ -56,7 +56,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   Future<void> insertCardFromContent(String content) async {
     final card = CardEntity(
       active: true,
-      cardSetId: _cardSet.id,
+      cardSetId: _cardSet!.id!,
       content: content,
     );
     await insertCard(card);
@@ -73,7 +73,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   }
 
   void save() {
-    _cardSet = _cardSet.copyWith(
+    _cardSet = _cardSet!.copyWith(
       name: _nameController.text,
       description: _descriptionController.text,
     );

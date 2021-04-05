@@ -48,11 +48,11 @@ class CardSetDB {
 
   CardSetDB._();
   static final CardSetDB cardSetDB = CardSetDB._();
-  Database _database;
+  Database? _database;
 
   Future<Database> get database async {
     if (_database != null) {
-      return _database;
+      return _database!;
     }
 
     return _database = await createDataBase();
@@ -148,13 +148,13 @@ class CardSetDB {
 
     final result = await db.query(
       TABLE_CARD_SET,
-      columns: allCardSetColumns,
+      columns: [COLUMN_CARD_SET_WORKSHOP_ID],
       distinct: true,
-      where: "$COLUMN_CARD_SET_ID = ?",
+      where: "$COLUMN_CARD_SET_WORKSHOP_ID = ?",
       whereArgs: [id],
     );
 
-    return result?.isNotEmpty ?? false;
+    return result.isNotEmpty;
   }
 
   //CARD DB ACTIONS

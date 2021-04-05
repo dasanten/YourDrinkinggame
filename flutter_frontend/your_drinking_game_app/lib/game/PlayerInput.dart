@@ -10,7 +10,7 @@ class PlayerInput extends StatefulWidget {
 class _PlayerInputState extends State<PlayerInput> {
   final FocusNode _playerInputField = FocusNode();
   final List<String> _players = [];
-  TextEditingController _controller;
+  late TextEditingController _controller;
 
   @override
   void initState() {

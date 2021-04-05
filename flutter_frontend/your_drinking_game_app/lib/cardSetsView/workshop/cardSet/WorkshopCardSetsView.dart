@@ -15,13 +15,16 @@ class WorkshopCardSetsView extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (viewmodel.cardSetList.isNotEmpty) {
-          return ListView.separated(
-            itemCount: viewmodel.cardSetList.length,
-            separatorBuilder: (_, index) => const Divider(),
-            itemBuilder: (context, i) => CustomWorkshopCardSetTile(
-              cardSet: viewmodel.cardSetList[i],
-              isLocal: viewmodel.getCardSetLocalById(
-                viewmodel.cardSetList[i].id,
+          return RefreshIndicator(
+            onRefresh: viewmodel.getWorkshopCardSets,
+            child: ListView.separated(
+              itemCount: viewmodel.cardSetList.length,
+              separatorBuilder: (_, index) => const Divider(),
+              itemBuilder: (context, i) => CustomWorkshopCardSetTile(
+                cardSet: viewmodel.cardSetList[i],
+                isLocal: viewmodel.getCardSetLocalById(
+                  viewmodel.cardSetList[i].id,
+                ),
               ),
             ),
           );

@@ -5,21 +5,21 @@ class CardDto {
   String id;
   String cardSetId;
   String content;
-  String type;
-  bool isReported;
-  int reports;
+  String? type;
+  bool? isReported;
+  int? reports;
 
   CardDto({
-      this.id,
-      this.cardSetId,
-      this.content,
+      required this.id,
+      required this.cardSetId,
+      required this.content,
       this.type,
       this.isReported,
       this.reports
   });
 
   factory CardDto.fromCardEntity(CardEntity cardEntity, String cardSetId) => CardDto(
-    id: cardEntity.workshopId,
+    id: cardEntity.workshopId ?? '',
     content: cardEntity.content,
     cardSetId: cardSetId
   );
@@ -28,9 +28,9 @@ class CardDto {
     id: json['id'] as String,
     cardSetId: json['cardSetId'] as String,
     content: json['content'] as String,
-    type: json['type'] as String,
-    isReported: json['isReported'] as bool,
-    reports: json['reports'] as int
+    type: json['type'] as String?,
+    isReported: json['isReported'] as bool?,
+    reports: json['reports'] as int?
   );
 
   Map<String, dynamic> toJson() => {

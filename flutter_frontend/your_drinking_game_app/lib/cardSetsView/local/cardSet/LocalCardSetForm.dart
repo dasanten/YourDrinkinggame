@@ -11,8 +11,8 @@ class CardSetForm extends StatefulWidget {
 
 class _CardSetForm extends State<CardSetForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController;
-  TextEditingController _descriptionController;
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _CardSetForm extends State<CardSetForm> {
               TextFormField(
                 controller: _nameController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value?.isEmpty ?? true) {
                     return 'Bitte gebe einen Namen ein!';
                   }
                   return null;
@@ -77,7 +77,7 @@ class _CardSetForm extends State<CardSetForm> {
   }
 
   Future<void> saveCardSet(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       await context.read<LocalCardSetsViewmodel>().addCardSet(
             _nameController.text,
             _descriptionController.text,

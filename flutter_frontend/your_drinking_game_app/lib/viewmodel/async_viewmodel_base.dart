@@ -5,7 +5,7 @@ class AsyncViewmodelBase extends ChangeNotifier {
 
   bool _isLoading;
 
-  bool get isLoading => _isLoading ?? false;
+  bool get isLoading => _isLoading;
 
   void setLoading() {
     _isLoading = true;

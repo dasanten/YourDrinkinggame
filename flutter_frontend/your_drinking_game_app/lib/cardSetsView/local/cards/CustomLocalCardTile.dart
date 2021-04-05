@@ -11,9 +11,9 @@ class CustomLocalCardTile extends StatelessWidget {
   final void Function(bool value) onActiveChanged;
 
   const CustomLocalCardTile({
-    Key key,
-    @required this.card,
-    @required this.onActiveChanged,
+    Key? key,
+    required this.card,
+    required this.onActiveChanged,
   }) : super(key: key);
 
   @override
@@ -43,7 +43,7 @@ class CustomLocalCardTile extends StatelessWidget {
                 title: const Text("Löschen"),
                 leading: const Icon(Icons.delete),
                 onTap: () {
-                  context.read<CurrentCardSetViewmodel>().deleteCard(card.id);
+                  context.read<CurrentCardSetViewmodel>().deleteCard(card.id!);
                   Navigator.pop(context);
                 },
               );

@@ -11,9 +11,9 @@ class CustomCardSetTile extends StatelessWidget {
   final void Function(bool value) onActiveChanged;
 
   const CustomCardSetTile({
-    Key key,
-    @required this.cardSet,
-    @required this.onActiveChanged,
+    Key? key,
+    required this.cardSet,
+    required this.onActiveChanged,
   }) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class CustomCardSetTile extends StatelessWidget {
                 onTap: () {
                   context
                       .read<LocalCardSetsViewmodel>()
-                      .deleteCardSet(cardSet.id);
+                      .deleteCardSet(cardSet.id!);
                   Navigator.pop(context);
                 },
               );
