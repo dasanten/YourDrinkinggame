@@ -143,6 +143,20 @@ class CardSetDB {
     );
   }
 
+  Future<bool> containsCardSet(String id) async {
+    final db = await database;
+
+    final result = await db.query(
+      TABLE_CARD_SET,
+      columns: allCardSetColumns,
+      distinct: true,
+      where: "$COLUMN_CARD_SET_ID = ?",
+      whereArgs: [id],
+    );
+
+    return result?.isNotEmpty ?? false;
+  }
+
   //CARD DB ACTIONS
   Future<List<CardEntity>> getCards(int cardSetId) async {
     final db = await database;

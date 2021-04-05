@@ -61,14 +61,14 @@ class _PlayerInputState extends State<PlayerInput> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: addPlayer,
                         child: const Text("Spieler hinzufügen"),
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.all(10),
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: () => startGame(context),
                         child: const Text('START!'),
                       ),
@@ -118,7 +118,7 @@ class _PlayerInputState extends State<PlayerInput> {
     if (_players.length >= 2) {
       Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
     } else {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Füge mindestens 2 Spieler hinzu"),
           behavior: SnackBarBehavior.floating,

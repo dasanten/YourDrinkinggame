@@ -49,9 +49,22 @@ class CardSetDto {
       token: json['token'] as String,
       cardList: (json['cardList'] as List)
           .map<CardDto>(
-            (j) => CardDto.fromJson(j),
+            (j) => CardDto.fromJson(j as Map<String, dynamic>),
           )
           .toList(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+      'id': id,
+      'name': name,
+      'description': description,
+      'favorites': favorites,
+      'type': type,
+      'version': version,
+      'isReported': isReported,
+      'reports': reports,
+      'token': token,
+      'cardList': cardList.map((e) => e.toJson())
+    };
 }

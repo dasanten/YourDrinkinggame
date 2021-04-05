@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:your_drinking_game_app/HttpService/Dto/CardDto.dart';
+import '../HttpService/Dto/CardDto.dart';
 
 import '../dataBase/CardSetDB.dart';
 

@@ -7,13 +7,15 @@ class CustomWorkshopCardTile extends StatelessWidget {
 
   const CustomWorkshopCardTile({
     Key key,
-    @required this.card, this.onActiveChanged,
+    @required this.card,
+    this.onActiveChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      margin: const EdgeInsets.all(8),
       child: ListTile(
         title: Text(card.content),
       ),

@@ -33,4 +33,13 @@ class CardDto {
     reports: json['reports'] as int
   );
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'cardSetId': cardSetId,
+    'content': content,
+    'type': type,
+    'isReported': isReported,
+    'reports': reports
+  };
+
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
+import '../../CardSetsTabView.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -60,17 +61,17 @@ class CardSetEditForm extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () async => deleteCardSet(context),
-                    color: Colors.red,
-                    child: const Text("Karte löschen!"),
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    child: const Text("Kartenset löschen!"),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () async => updateCardSet(context),
-                    child: const Text("Karte updaten!"),
+                    child: const Text("Kartenset updaten!"),
                   ),
                 ],
               ),
@@ -88,7 +89,12 @@ class CardSetEditForm extends StatelessWidget {
       await context.read<LocalCardSetsViewmodel>().deleteCardSet(
             currentCardSetViewmodel.cardSet.id,
           );
-      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.popUntil(
+        context,
+        (route) =>
+            route is MaterialPageRoute &&
+            route.builder(context) is CardSetsTabView,
+      );
       Future.delayed(
         const Duration(milliseconds: 500),
         () => currentCardSetViewmodel.reset(),
@@ -115,11 +121,11 @@ class CardSetEditForm extends StatelessWidget {
         return AlertDialog(
           title: const Text("Wirklich löschen ?"),
           actions: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, false),
               child: const Text("ABBRUCH"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
               child: const Text("Bestätigen"),
             ),

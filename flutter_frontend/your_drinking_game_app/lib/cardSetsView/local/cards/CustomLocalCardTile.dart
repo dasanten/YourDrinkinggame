@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 
 import '../../../models/CardEntity.dart';
+import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/current_card_viewmodel.dart';
 import 'CardEditForm.dart';
 

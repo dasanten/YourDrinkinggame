@@ -56,7 +56,7 @@ class _LocalCardForm extends State<LocalCardForm> {
                 maxLength: 256,
               ),
               Center(
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () async => saveCard(context),
                   child: const Text("Karte hinzufügen!"),
                 ),

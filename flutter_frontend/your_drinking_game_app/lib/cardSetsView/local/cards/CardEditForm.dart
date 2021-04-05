@@ -43,15 +43,15 @@ class CardEditForm extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () async => deleteCard(context),
-                    color: Colors.red,
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
                     child: const Text("Karte löschen!"),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () async => updateCard(context),
                     child: const Text("Karte updaten!"),
                   ),
@@ -95,11 +95,11 @@ class CardEditForm extends StatelessWidget {
         return AlertDialog(
           title: const Text("Wirklich löschen ?"),
           actions: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, false),
               child: const Text("ABBRUCH"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
               child: const Text("BESTÄTIGEN"),
             ),

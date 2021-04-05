@@ -13,6 +13,7 @@ import 'game/PlayerInput.dart';
 import 'viewmodel/current_card_set_viewmodel.dart';
 import 'viewmodel/current_card_viewmodel.dart';
 import 'viewmodel/local_card_sets_viewmodel.dart';
+import 'viewmodel/workshop_card_set_viewmodel.dart';
 
 void main() {
   runApp(
@@ -26,6 +27,9 @@ void main() {
         ),
         ChangeNotifierProvider<CurrentCardViewmodel>(
           create: (_) => CurrentCardViewmodel(),
+        ),
+        ChangeNotifierProvider<WorkshopCardSetViewmodel>(
+          create: (_) => WorkshopCardSetViewmodel(),
         ),
       ],
       child: const MyApp(),
@@ -84,7 +88,7 @@ class Menu extends StatelessWidget {
                 width: 200,
                 height: 50,
                 margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -98,7 +102,7 @@ class Menu extends StatelessWidget {
                 width: 200,
                 height: 50,
                 margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -113,7 +117,7 @@ class Menu extends StatelessWidget {
                 width: 200,
                 height: 50,
                 margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {},
                   child: const Text('OPTIONEN'),
                 ),
@@ -122,7 +126,7 @@ class Menu extends StatelessWidget {
                 width: 200,
                 height: 50,
                 margin: EdgeInsets.all(menuMargin),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {},
                   child: const Text('FEEDBACK'),
                 ),

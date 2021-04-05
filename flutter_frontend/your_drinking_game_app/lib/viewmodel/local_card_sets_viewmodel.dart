@@ -1,4 +1,6 @@
+import '../HttpService/Dto/CardSetDto.dart';
 import '../dataBase/CardSetDB.dart';
+import '../models/CardEntity.dart';
 import '../models/CardSetEntity.dart';
 import 'async_viewmodel_base.dart';
 
@@ -40,5 +42,22 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
   Future<void> deleteCardSet(int id) async {
     await CardSetDB.cardSetDB.deleteCardSet(id);
     await getCardSets();
+  }
+
+  Future<bool> importCardSetFromWorkshop(CardSetDto cardSetDto) async {
+    final responseCardSet = await CardSetDB.cardSetDB
+        .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
+    final cardEntityList = cardSetDto.cardList
+        .map<CardEntity>(
+          (e) => CardEntity.fromCardDto(e, responseCardSet.id),
+        )
+        .toList();
+    final responseCards =
+        await CardSetDB.cardSetDB.insertCardList(cardEntityList);
+
+    if (responseCardSet != null && responseCards != null) {
+      return true;
+    }
+    return false;
   }
 }

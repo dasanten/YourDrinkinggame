@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/models/CardSetCardsArguments.dart';
 
 import '../../../HttpService/Dto/CardDto.dart';
 import '../../../HttpService/Dto/CardSetDto.dart';
+import '../../../models/CardSetCardsArguments.dart';
 import 'CustomWorkshopCardTile.dart';
 
 class WorkshopCardView extends StatefulWidget {
@@ -17,27 +17,23 @@ class _WorkshopCardView extends State<WorkshopCardView> {
   List<CardDto> _cardList = [];
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context).settings.arguments as CardSetCardsArguments;
-    _cardList = args.cardList;
+    final args =
+        ModalRoute.of(context).settings.arguments as CardSetCardsArguments;
     _cardSet = args.cardSet;
+    _cardList = _cardSet.cardList;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Kartenset: ${_cardSet.name}"),
       ),
       body: ListView.separated(
         itemCount: _cardList.length,
-        padding: const EdgeInsets.all(16.0),
         separatorBuilder: (_, index) => const Divider(),
         itemBuilder: (context, i) {
           return CustomWorkshopCardTile(
-              card: _cardList[i],
-            );
+            card: _cardList[i],
+          );
         },
       ),
     );
