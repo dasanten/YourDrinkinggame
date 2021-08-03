@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../HttpService/Dto/CardDto.dart';
+import '../../../http_service/dto/CardDto.dart';
 
 class CustomWorkshopCardTile extends StatelessWidget {
   final CardDto card;

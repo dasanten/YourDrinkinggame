@@ -66,6 +66,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Menu extends StatelessWidget {
+
   final double menuMargin = 15;
   // This widget is the root of your application.
   @override
@@ -75,19 +76,18 @@ class Menu extends StatelessWidget {
         title: const Text('Menu'),
       ),
       body: Center(
-        child: SingleChildScrollView(
+        // child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
+              Flexible(
+                flex: 5,
+                child:  Image.asset(
                 'assets/images/logoTransparent.jpg',
-                width: 300,
-                height: 300,
+                ), 
               ),
-              Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
+              Flexible(
+                flex: 3,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -95,13 +95,11 @@ class Menu extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => PlayerInput()),
                     );
                   },
-                  child: const Text('SPIELEN'),
+                  child: const Text('SPIELEN'),                   
                 ),
               ),
-              Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
+              Flexible(
+                flex: 2,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -113,19 +111,15 @@ class Menu extends StatelessWidget {
                   child: const Text('KARTEN SETS'),
                 ),
               ),
-              Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
+              Flexible(
+                flex: 2,
                 child: ElevatedButton(
                   onPressed: () {},
                   child: const Text('OPTIONEN'),
                 ),
               ),
-              Container(
-                width: 200,
-                height: 50,
-                margin: EdgeInsets.all(menuMargin),
+              Flexible(
+                flex: 7,
                 child: ElevatedButton(
                   onPressed: () {},
                   child: const Text('FEEDBACK'),
@@ -134,7 +128,7 @@ class Menu extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      // ),
     );
   }
 }

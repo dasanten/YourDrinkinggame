@@ -15,7 +15,7 @@ class WorkshopCardView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Kartenset: ${_cardSet.name}"),
+        title: Text("Workshop Kartenset: ${_cardSet.name}"),
       ),
       body: ListView.separated(
         itemCount: _cardList.length,

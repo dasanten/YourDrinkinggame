@@ -1,6 +1,6 @@
-import '../HttpService/CardSetService.dart';
-import '../HttpService/Dto/CardSetDto.dart';
 import '../dataBase/CardSetDB.dart';
+import '../http_service/CardSetService.dart';
+import '../http_service/dto/CardSetDto.dart';
 import 'async_viewmodel_base.dart';
 
 class WorkshopCardSetViewmodel extends AsyncViewmodelBase {

@@ -65,6 +65,6 @@ class CardSetDto {
         'isReported': isReported,
         'reports': reports,
         'token': token,
-        'cardList': cardList.map((e) => e.toJson())
+        'cardList': cardList.map((e) => e.toJson()).toList()
       };
 }

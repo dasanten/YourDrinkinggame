@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/cardSetsView/local/cardSet/publish_card_set_form.dart';
+import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
+import 'package:your_drinking_game_app/http_service/dto/CardDto.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
+import '../../../http_service/CardSetService.dart';
+import '../../../http_service/dto/CardSetDto.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
 import '../../CardSetsTabView.dart';
 
 final _formKey = GlobalKey<FormState>();
 
-class CardSetEditForm extends StatelessWidget {
+class CardSetEditForm extends StatefulWidget {
   static const routeName = '/editCardSet';
 
   @override
+  State<StatefulWidget> createState() => _CardSetEditFormState();
+
+}
+
+class _CardSetEditFormState extends State<CardSetEditForm> {
+
+  bool published = false;
+
+  @override
   Widget build(BuildContext context) {
+    published = context.read<CurrentCardSetViewmodel>().cardSet?.workshopId?.isNotEmpty ?? false;
     return Scaffold(
       appBar: AppBar(
         title: Consumer<CurrentCardSetViewmodel>(
@@ -42,7 +57,7 @@ class CardSetEditForm extends StatelessWidget {
                   labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
-                maxLength: 20,
+                maxLength: 25,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -58,6 +73,41 @@ class CardSetEditForm extends StatelessWidget {
                 ),
                 maxLength: 256,
               ),
+              context.select<CurrentCardSetViewmodel, SwitchListTile>((value) =>
+                SwitchListTile(
+                  title: const Text("Kartenset veröffentlicht"),
+                  value: published, 
+                  onChanged: (v) async {
+                    if (!published) {
+                      final String token = await _publishDialog(context);
+                      if (token.isNotEmpty && value.cardSet != null) {
+                        
+                        final CardSetDto cardSetDto = await CardSetService.addCardSet(CardSetDto.fromCardSetEntity(value.cardSet!.copyWith(adminToken: token)));
+                        if(value.cards.isNotEmpty) {
+                          final List<CardDto> cardList = value.cards.map<CardDto>((card) => CardDto.fromCardEntity(card, cardSetDto.id)).toList();
+                          CardSetService.addCards(cardList, token);
+                        }
+                        final CardSetEntity newCardSet = value.cardSet!.copyWith(adminToken: cardSetDto.token, workshopId: cardSetDto.id);  
+                        context.read<CurrentCardSetViewmodel>().setCardSet(newCardSet);
+                        context
+                          .read<LocalCardSetsViewmodel>()
+                          .updateCardSet(value.cardSet!);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Kartenset ${newCardSet.name} veröffentlicht"),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    }
+                  }
+                ),
+              ),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.settings),
+                onPressed: published ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => PublishCardSetForm())): null,
+                label: const Text("Workshop einstellungen"),
+              ),            
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -119,7 +169,7 @@ class CardSetEditForm extends StatelessWidget {
           barrierDismissible: false,
           builder: (context) {
             return AlertDialog(
-              title: const Text("Wirklich löschen ?"),
+              title: const Text("Wirklich löschen?"),
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context, false),
@@ -134,5 +184,50 @@ class CardSetEditForm extends StatelessWidget {
           },
         ) ??
         false;
+  }
+
+  Future<String> _publishDialog(BuildContext context) async {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final TextEditingController textEditingController = TextEditingController();
+    return await showDialog<String?>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) =>
+        AlertDialog(
+          title: const Text("Wirklich veröffentlichen?"),
+          content: Form(
+            key: formKey,
+            child: TextFormField(
+              controller: textEditingController,
+              decoration: const InputDecoration(
+                labelText: 'Bearbeitungs Token',
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return 'Bitte gebe einen Token ein!';
+                }
+                return null;
+              },
+              maxLength: 12,
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () =>  
+                Navigator.pop(context, null),
+              child: const Text("ABBRUCH"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  Navigator.pop(context, textEditingController.text);
+                }
+              },
+              child: const Text("Bestätigen"),
+            ),
+          ],
+        )
+    ) ?? "";
   }
 }
