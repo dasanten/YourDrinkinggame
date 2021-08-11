@@ -14,7 +14,7 @@ class CardSetService {
   static final String _rooturl = HttpUtil.backendIp;
 
   static Future<List<CardSetDto>> getTopCardSets() async {
-    final response = await http.get(Uri.http(_rooturl, "/getTopCardSets"));
+    final response = await http.get(Uri.https(_rooturl, "/getTopCardSets"));
     if (response.statusCode == 200) {
       return parseCardSets(response.body);
     } else {
@@ -24,7 +24,7 @@ class CardSetService {
 
   static Future<CardSetDto> addCardSet(CardSetDto cardSetDto) async {
     final response = await http.post(
-        Uri.http(_rooturl, "addCardSet"),
+        Uri.https(_rooturl, "addCardSet"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -39,7 +39,7 @@ class CardSetService {
 
     static Future addCards(List<CardDto> cardList, String token) async {
     final response = await http.post(
-        Uri.http(_rooturl, "addCards", {'token': token}),
+        Uri.https(_rooturl, "addCards", {'token': token}),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

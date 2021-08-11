@@ -1,2 +1,31 @@
-FROM openjdk:12-jdk-alpine
+FROM maven:3.6.3-jdk-11-slim AS MAVEN_BUILD
 
+ARG ACTIVE_PROFILE
+#just needed for production
+ARG DATABASE_HOST
+ARG DATABASE_PORT
+ARG DATABASE_USERNAME
+ARG DATABASE_PASSWORD
+ARG SERVER_PORT
+
+ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
+
+ENV DATABASE_HOST=${DATABASE_HOST}
+ENV DATABASE_PORT=${DATABASE_PORT}
+ENV DATABASE_USERNAME=${DATABASE_USERNAME}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV SERVER_PORT=${SERVER_PORT}
+
+COPY pom.xml /build/
+COPY src /build/src
+WORKDIR /build/
+RUN mvn clean package -DskipTests
+FROM openjdk:11-slim
+WORKDIR /app
+
+EXPOSE 8080
+
+ADD certs/keystore.p12 certs/keystore.p12
+COPY --from=MAVEN_BUILD /build/target/*.jar /app/app.jar
+#ENV DATABASE_HOST=localhost
+ENTRYPOINT ["java","-jar","/app/app.jar"]

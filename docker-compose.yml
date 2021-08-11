@@ -1,15 +1,35 @@
-version: "3"
 services:
-  mariadb:
+  app_db:
+    container_name: AppDB
     image: mariadb:10
-    container_name: "AppDB"
-    restart: always
-    ports:
-    - '3306:3306'
     environment:
+      MYSQL_DATABASE: drinkgame
       MYSQL_ROOT_PASSWORD: 1235
-    volumes:
-    - mysql:/var/lib/mysql
+    ports:
+    - "3306:3306"
+    networks: 
+    - app-network 
+    restart: unless-stopped
+  app-backend:
+    container_name: AppBackend
+    image: ghcr.io/dasanten/drinkgame-backend:latest
+    environment:
+      - ACTIVE_PROFILE=prod
+      - DATABASE_HOST=app_db
+      - DATABASE_PORT=3306
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=1235
+      - SERVER_PORT=8080
+    networks:
+      - app-network
+    depends_on:
+      - app_db
+    ports:
+    - "8080:8080"
+    restart: unless-stopped
+
 volumes:
   mysql: ~
 
+networks: 
+  app-network:
