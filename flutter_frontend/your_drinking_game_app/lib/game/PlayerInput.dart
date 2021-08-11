@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
 
 import 'CardDisplay.dart';
 
@@ -30,49 +31,91 @@ class _PlayerInputState extends State<PlayerInput> {
       appBar: AppBar(
         title: const Text("Spieler Auswahl"),
       ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Image.asset(
+              'assets/images/logoTransparent.jpg',
+              ),     
+            ),
+            ListTile(
+              title: const Text("Kartensets"),
+              trailing: const Icon(Icons.folder),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                builder: (context) => CardSetsTabView()),
+              ),
+            ),
+            ListTile(
+              title: const Text("Feedback !IN DEVELOPMENT!"),
+              trailing: const Icon(Icons.note),
+              onTap: () {}
+            ),
+            ListTile(
+              title: const Text("Optionen !IN DEVELOPMENT!"),
+              trailing: const Icon(Icons.settings),
+              onTap: () {}
+            ),
+          ],
+        ),
+      ),
       body: Builder(
         builder: (context) => Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              Expanded(
+                flex: 2,
+                child:  Image.asset(
+                'assets/images/logoTransparent.jpg',
+                ), 
+              ),
+              Flexible(
                 child: playerChips(),
-              ),
-              Container(
-                padding: const EdgeInsets.all(30.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Spieler Namen',
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: _controller,
-                  maxLength: 10,
-                  textInputAction: TextInputAction.done,
-                  focusNode: _playerInputField,
-                  onFieldSubmitted: (value) {
-                    _playerInputField.requestFocus();
-                    addPlayer();
-                  },
-                ),
-              ),
+              ),          
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
+                    const Spacer(),
+                    Flexible(
+                      flex: 9,
+                      child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Spieler hinzufügen',
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: _controller,
+                      maxLength: 10,
+                      autofocus: true,
+                      textInputAction: TextInputAction.next,
+                      focusNode: _playerInputField,
+                      onFieldSubmitted: (value) {
+                        _playerInputField.requestFocus();
+                        addPlayer();
+                      },
+                    ),
+                    ),
+                    const Spacer(),
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
                         onPressed: addPlayer,
-                        child: const Text("Spieler hinzufügen"),
+                        icon: const Icon(Icons.add),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
+                    const Spacer(),
+                    Expanded(
+                      flex: 2,
+                      child: IconButton(
                         onPressed: () => startGame(context),
-                        child: const Text('START!'),
+                        icon: const Icon(Icons.play_arrow),
+
                       ),
                     ),
+                    const Spacer(),
                   ],
                 ),
               ),

@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dein Trinkspiel',
-      home: Menu(),
+      home: PlayerInput(),
       routes: {
         CardDisplay.routeName: (context) => CardDisplay(),
         LocalCardForm.routeName: (context) => LocalCardForm(),
