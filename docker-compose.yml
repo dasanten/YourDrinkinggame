@@ -5,6 +5,8 @@ services:
     environment:
       MYSQL_DATABASE: drinkgame
       MYSQL_ROOT_PASSWORD: 1235
+    volumes: 
+      - mysql:/var/lib/mysql
     ports:
     - "3306:3306"
     networks: 

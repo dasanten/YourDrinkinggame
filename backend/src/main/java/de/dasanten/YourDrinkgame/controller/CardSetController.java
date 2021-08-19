@@ -1,7 +1,9 @@
 package de.dasanten.YourDrinkgame.controller;
 
+import com.sun.net.httpserver.Headers;
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.enums.TokenAuth;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
 import lombok.AllArgsConstructor;
@@ -10,10 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.ServerRequest;
 
 import java.util.List;
-
-
 
 @CrossOrigin
 @Controller
@@ -23,7 +24,7 @@ public class CardSetController {
     private final CardSetService cardSetService;
 
     //GETTER
-    @GetMapping("/getTopCardSets")
+    @GetMapping(value = "/getTopCardSets")
     public ResponseEntity<List<CardSetDTO>> getTopCardSets() {
         return new ResponseEntity<>(cardSetService.getTopCardSets() ,HttpStatus.OK);
     }
@@ -64,9 +65,9 @@ public class CardSetController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/checkToken")
-    public ResponseEntity<Boolean> checkToken(@RequestBody CardSetDTO cardSetDTO){
-        Boolean tokenIs = cardSetService.checkToken(cardSetDTO);
+    @PostMapping("/checkToken")
+    public ResponseEntity<TokenAuth> checkToken(@RequestBody CardSetDTO cardSetDTO){
+        TokenAuth tokenIs = cardSetService.checkToken(cardSetDTO);
         return new ResponseEntity<>(tokenIs, HttpStatus.OK);
     }
 
@@ -95,6 +96,11 @@ public class CardSetController {
         return new ResponseEntity<>(cardSetWithToken, HttpStatus.OK);
     }
 
+    @PostMapping("/favorCardSet")
+    public ResponseEntity<Void> favorCardSet(@RequestParam String cardSetId){
+        cardSetService.favorCardSet(cardSetId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     //EDIT
     @PutMapping("/editCardSet")

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/cardSetsView/local/cardSet/publish_card_set_form.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/http_service/dto/CardDto.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 import '../../../http_service/CardSetService.dart';
+import '../../../http_service/dto/CardDto.dart';
 import '../../../http_service/dto/CardSetDto.dart';
+import '../../../models/CardSetEntity.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
 import '../../CardSetsTabView.dart';
+import 'publish_card_set_form.dart';
 
 final _formKey = GlobalKey<FormState>();
 
@@ -24,10 +23,12 @@ class CardSetEditForm extends StatefulWidget {
 class _CardSetEditFormState extends State<CardSetEditForm> {
 
   bool published = false;
+  bool editable = false;
 
   @override
   Widget build(BuildContext context) {
     published = context.read<CurrentCardSetViewmodel>().cardSet?.workshopId?.isNotEmpty ?? false;
+    editable = context.select<CurrentCardSetViewmodel, bool>((value) => value.isAdmin || value.isEditor);
     return Scaffold(
       appBar: AppBar(
         title: Consumer<CurrentCardSetViewmodel>(
@@ -43,6 +44,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
           child: Column(
             children: <Widget>[
               TextFormField(
+                readOnly: !editable,
                 controller: context
                     .select<CurrentCardSetViewmodel, TextEditingController>(
                   (v) => v.nameController,
@@ -63,6 +65,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                 padding: EdgeInsets.symmetric(vertical: 5),
               ),
               TextFormField(
+                readOnly: !editable,
                 controller: context
                     .select<CurrentCardSetViewmodel, TextEditingController>(
                   (v) => v.descriptionController,
@@ -77,8 +80,30 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                 SwitchListTile(
                   title: const Text("Kartenset veröffentlicht"),
                   value: published, 
-                  onChanged: (v) async {
-                    if (!published) {
+                  onChanged: editable ? (_) async {
+                    if (published) {
+                      if(value.isAdmin) {
+                        CardSetService.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
+                        final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "", adminToken: "", editorToken: "");
+                        value.setCardSet(cardSetEntity);
+                        context
+                          .read<LocalCardSetsViewmodel>()
+                          .updateCardSet(cardSetEntity);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Kartenset ${value.cardSet!.name} veröffentlichung rückgängig gemacht"),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      } else if(value.isEditor) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Nur Besitzer können ein Set löschen!"),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    } else {
                       final String token = await _publishDialog(context);
                       if (token.isNotEmpty && value.cardSet != null) {
                         
@@ -88,7 +113,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                           CardSetService.addCards(cardList, token);
                         }
                         final CardSetEntity newCardSet = value.cardSet!.copyWith(adminToken: cardSetDto.token, workshopId: cardSetDto.id);  
-                        context.read<CurrentCardSetViewmodel>().setCardSet(newCardSet);
+                        value.setCardSet(newCardSet);
                         context
                           .read<LocalCardSetsViewmodel>()
                           .updateCardSet(value.cardSet!);
@@ -100,7 +125,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                         );
                       }
                     }
-                  }
+                  }: null
                 ),
               ),
               ElevatedButton.icon(
@@ -120,7 +145,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                     padding: EdgeInsets.symmetric(horizontal: 10),
                   ),
                   ElevatedButton(
-                    onPressed: () async => updateCardSet(context),
+                    onPressed: editable ? () async => updateCardSet(context): null,
                     child: const Text("Kartenset updaten!"),
                   ),
                 ],
@@ -221,7 +246,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
             ElevatedButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  Navigator.pop(context, textEditingController.text);
+                  Navigator.pop(context, textEditingController.text.trim());
                 }
               },
               child: const Text("Bestätigen"),

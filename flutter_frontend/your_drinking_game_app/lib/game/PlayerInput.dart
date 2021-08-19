@@ -64,7 +64,7 @@ class _PlayerInputState extends State<PlayerInput> {
       body: Builder(
         builder: (context) => Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Expanded(
                 flex: 2,
@@ -127,22 +127,28 @@ class _PlayerInputState extends State<PlayerInput> {
   }
 
   Widget playerChips() {
-    return Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: List<Widget>.generate(
-        _players.length,
-        (index) {
-          return Chip(
-            label: Text(_players[index]),
-            onDeleted: () {
-              setState(() {
-                _players.removeAt(index);
-              });
-            },
-          );
-        },
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+       Wrap(
+        spacing: 6.0, 
+        
+        runSpacing: 6.0,
+        children: List<Widget>.generate(
+          _players.length,
+          (index) {
+            return Chip(
+              label: Text(_players[index]),
+              onDeleted: () {
+                setState(() {
+                  _players.removeAt(index);
+                });
+              },
+            );
+          },
+        ),
       ),
+      ]
     );
   }
 
@@ -151,8 +157,8 @@ class _PlayerInputState extends State<PlayerInput> {
     if (input.isNotEmpty) {
       setState(() {
         _players.add(input);
-      });
       _controller.text = "";
+      });
     }
   }
 

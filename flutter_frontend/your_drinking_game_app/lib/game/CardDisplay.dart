@@ -19,6 +19,8 @@ class _CardDisplayState extends State<CardDisplay> {
   List<CardEntity> _cards = [];
   String _displayedCard = "Don't drink and drive";
 
+  Color backgroundColor = Colors.green;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +34,7 @@ class _CardDisplayState extends State<CardDisplay> {
     return GestureDetector(
       onTap: updateDisplayedCard,
       child: Scaffold(
+        backgroundColor: backgroundColor,
         body: Center(
           child: Container(
             padding: const EdgeInsets.all(10),
@@ -77,6 +80,8 @@ class _CardDisplayState extends State<CardDisplay> {
         playersCopy.removeAt(pickedPlayerNum);
       }
       setState(() {
+        final List<Color> colors = [Colors.red, Colors.green, Colors.deepOrange, Colors.blue, Colors.cyan];
+        backgroundColor = colors[Random().nextInt(colors.length -1)];
         _displayedCard = pickedCard;
       });
       _cards.removeAt(pickedCardNum);

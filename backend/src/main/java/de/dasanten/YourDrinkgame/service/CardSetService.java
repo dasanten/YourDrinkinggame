@@ -2,6 +2,7 @@ package de.dasanten.YourDrinkgame.service;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.enums.TokenAuth;
 import de.dasanten.YourDrinkgame.repository.CardRepository;
 import de.dasanten.YourDrinkgame.repository.CardSetRepository;
 import de.dasanten.YourDrinkgame.repository.entity.CardEntity;
@@ -72,9 +73,13 @@ public class CardSetService {
         return null;
     }
 
-    public boolean checkToken(CardSetDTO cardSetDTO){
+    public TokenAuth checkToken(CardSetDTO cardSetDTO){
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDTO.getId());
-        return cardSetEntityOptional.filter(cardSetEntity -> tokenCheckForAllTokens(cardSetEntity, cardSetDTO.getToken())).isPresent();
+        if (cardSetEntityOptional.isPresent()) {
+            return  getTokenType(cardSetEntityOptional.get(), cardSetDTO.getToken());
+        } else {
+            return TokenAuth.NOT_AUTHORIZED;
+        }
     }
 
 
@@ -121,6 +126,15 @@ public class CardSetService {
             cardSetRepository.save(cardSetEntity);
         }
         return null;
+    }
+
+    public void favorCardSet(String cardSetId) {
+        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetId);
+        if (cardSetEntityOptional.isPresent()) {
+            CardSetEntity cardSetEntity = cardSetEntityOptional.get();
+            cardSetEntity.setFavorites(cardSetEntity.getFavorites() + 1);
+            cardSetRepository.save(cardSetEntity);
+        }
     }
 
     //EDIT

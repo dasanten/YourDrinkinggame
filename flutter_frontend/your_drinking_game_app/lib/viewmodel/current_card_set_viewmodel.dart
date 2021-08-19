@@ -10,6 +10,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   CardSetEntity? _cardSet;
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
+  late TextEditingController _adminTokenController;
+  late TextEditingController _editorTokenController;
 
   CurrentCardSetViewmodel([this._cardSet]) {
     _cards = <CardEntity>[];
@@ -19,17 +21,29 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     _descriptionController = TextEditingController(
       text: _cardSet?.description ?? '',
     );
+    _adminTokenController = TextEditingController(
+      text: _cardSet?.adminToken ?? ''
+    );
+    _editorTokenController = TextEditingController(
+      text: _cardSet?.editorToken ?? ''
+    );
   }
 
   CardSetEntity? get cardSet => _cardSet;
   List<CardEntity> get cards => _cards ;
   TextEditingController get nameController => _nameController;
   TextEditingController get descriptionController => _descriptionController;
+  TextEditingController get adminTokenController => _adminTokenController;
+  TextEditingController get editorTokenController => _editorTokenController;
+  bool get isAdmin => (_cardSet?.adminToken?.isNotEmpty ?? false) || (_cardSet?.workshopId?.isEmpty ?? true);
+  bool get isEditor => ((_cardSet?.editorToken?.isNotEmpty ?? false) && !isAdmin) || (_cardSet?.workshopId?.isEmpty ?? true);
 
   void setCardSet(CardSetEntity newCardSet) {
     _cardSet = newCardSet;
     _nameController.text = _cardSet!.name;
     _descriptionController.text = _cardSet!.description;
+    _adminTokenController.text = _cardSet!.adminToken ?? '';
+    _editorTokenController.text = _cardSet!.editorToken ?? '';
     notifyListeners();
     getCards();
   }
@@ -76,6 +90,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     _cardSet = _cardSet!.copyWith(
       name: _nameController.text,
       description: _descriptionController.text,
+      adminToken: _adminTokenController.text,
+      editorToken: _editorTokenController.text,
     );
     notifyListeners();
   }
@@ -84,6 +100,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _adminTokenController.dispose();
+    _editorTokenController.dispose();
     super.dispose();
   }
 }

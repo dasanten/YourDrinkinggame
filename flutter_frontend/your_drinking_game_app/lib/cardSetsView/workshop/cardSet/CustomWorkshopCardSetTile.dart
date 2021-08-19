@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/http_service/CardSetService.dart';
 
 import '../../../http_service/dto/CardSetDto.dart';
 import '../../../models/CardSetCardsArguments.dart';
@@ -40,6 +41,7 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
                           content: Text("Kartenset hinzugefügt!"),
                         ),
                       );
+                      CardSetService.favorCardSet(cardSet.id);
                     }
                   },
           ),

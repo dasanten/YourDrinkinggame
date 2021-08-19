@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkgame.util;
 
+import de.dasanten.YourDrinkgame.enums.TokenAuth;
 import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 
 public class HelperFunctions {
@@ -14,7 +15,13 @@ public class HelperFunctions {
         return cardSetEntity.getAdminToken().equals(token) || token.equals(moderationToken);
     }
 
-    public static boolean test() {
-        return true;
+    public static TokenAuth getTokenType(CardSetEntity cardSetEntity, String token) {
+        if(token.equals(cardSetEntity.getAdminToken()) || token.equals(moderationToken)) {
+            return TokenAuth.ADMIN;
+        } else if(token.equals(cardSetEntity.getEditorToken())) {
+            return TokenAuth.EDITOR;
+        } else {
+            return TokenAuth.NOT_AUTHORIZED;
+        }
     }
 }
