@@ -1,18 +1,15 @@
 package de.dasanten.YourDrinkgame.controller;
 
-import com.sun.net.httpserver.Headers;
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.controller.dto.CardSetVersionDTO;
 import de.dasanten.YourDrinkgame.enums.TokenAuth;
-import de.dasanten.YourDrinkgame.repository.entity.CardSetEntity;
 import de.dasanten.YourDrinkgame.service.CardSetService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.ServerRequest;
 
 import java.util.List;
 
@@ -54,6 +51,11 @@ public class CardSetController {
             return new ResponseEntity<>(cardDTO, HttpStatus.OK);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/checkCardSetUpdates")
+    public ResponseEntity<List<CardSetDTO>> checkCardSetsForUpdate(@RequestBody List<CardSetVersionDTO> cardSetVersionDTOList) {
+        return new ResponseEntity<>(cardSetService.checkCardSetsForUpdate(cardSetVersionDTOList), HttpStatus.OK);
     }
 
     @GetMapping("/getCardSetByCardId")

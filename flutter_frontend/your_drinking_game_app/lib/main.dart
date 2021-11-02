@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/models/CardEntity.dart';
 
 import 'cardSetsView/CardSetsTabView.dart';
 import 'cardSetsView/local/cardSet/CardSetEditForm.dart';
@@ -8,8 +9,13 @@ import 'cardSetsView/local/cards/CardEditForm.dart';
 import 'cardSetsView/local/cards/LocalCardForm.dart';
 import 'cardSetsView/local/cards/LocalCardView.dart';
 import 'cardSetsView/workshop/cards/WorkshopCardView.dart';
+import 'dataBase/CardSetDB.dart';
 import 'game/CardDisplay.dart';
 import 'game/PlayerInput.dart';
+import 'http_service/CardSetService.dart';
+import 'http_service/dto/CardSetDto.dart';
+import 'http_service/dto/card_set_version_dto.dart';
+import 'models/CardSetEntity.dart';
 import 'viewmodel/current_card_set_viewmodel.dart';
 import 'viewmodel/current_card_viewmodel.dart';
 import 'viewmodel/local_card_sets_viewmodel.dart';
@@ -35,6 +41,61 @@ void main() {
       child: const MyApp(),
     ),
   );
+  checkForUpdates();
+}
+
+Future checkForUpdates() async {
+  // Get local CardSets
+  final List<CardSetEntity> cardSetList = await CardSetDB.cardSetDB.getCardSets();
+
+  // Workshop CardSets
+  final List<CardSetVersionDto> cardSetVersionList = cardSetList.map<CardSetVersionDto>((e) => CardSetVersionDto.fromCardEntity(e)).toList();
+  List<CardSetDto> newCardSets = await CardSetService.checkCardSetUpdates(cardSetVersionList);
+
+  // itterate newCardSets
+  newCardSets.forEach((newCardSet) async {
+    try {
+
+      // Find correspondig saved CardSet and copy with changes
+      final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description);
+
+      // Save changed CardSet
+      CardSetDB.cardSetDB.updateCardSet(cardSet);
+
+      // List of old Local Cards
+      List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
+
+      List<CardEntity> removeCards = List.from(oldCards);
+
+      List<CardEntity> newCards = [];
+
+      List<CardEntity> addCards = [];
+
+      // Itterate threw Cards to find corresponding
+      newCardSet.cardList.forEach((newCard) {
+        bool added = false;
+        for (final CardEntity dbCard in oldCards) {
+          if(dbCard.workshopId == newCard.id) {
+            removeCards.remove(dbCard);
+            CardSetDB.cardSetDB.updateCard(dbCard.copyWith(content: newCard.content));
+            added = true;
+            break;
+          } 
+        }
+        if(!added) {
+          CardSetDB.cardSetDB.insertCard(CardEntity.fromCardDto(newCard, cardSet.id!));
+        }
+      });
+
+      removeCards.forEach((card) { CardSetDB.cardSetDB.deleteCard(card.id!); });
+      
+
+      
+    } catch(e) {
+    }
+
+    
+  });
 }
 
 class MyApp extends StatelessWidget {

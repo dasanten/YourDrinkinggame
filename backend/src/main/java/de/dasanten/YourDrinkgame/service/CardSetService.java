@@ -2,6 +2,7 @@ package de.dasanten.YourDrinkgame.service;
 
 import de.dasanten.YourDrinkgame.controller.dto.CardDTO;
 import de.dasanten.YourDrinkgame.controller.dto.CardSetDTO;
+import de.dasanten.YourDrinkgame.controller.dto.CardSetVersionDTO;
 import de.dasanten.YourDrinkgame.enums.TokenAuth;
 import de.dasanten.YourDrinkgame.repository.CardRepository;
 import de.dasanten.YourDrinkgame.repository.CardSetRepository;
@@ -11,6 +12,7 @@ import de.dasanten.YourDrinkgame.util.mapper.CardMapper;
 import de.dasanten.YourDrinkgame.util.mapper.CardSetMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -80,6 +82,17 @@ public class CardSetService {
         } else {
             return TokenAuth.NOT_AUTHORIZED;
         }
+    }
+
+    public List<CardSetDTO> checkCardSetsForUpdate(@RequestBody List<CardSetVersionDTO> cardSetVersionDTOList) {
+        List<CardSetDTO> updatedCardSets = new ArrayList<>();
+        cardSetVersionDTOList.forEach(cardSetVersionDTO -> {
+            Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetVersionDTO.getId());
+            if (cardSetEntityOptional.isPresent() && cardSetEntityOptional.get().getVersion() > cardSetVersionDTO.getVersion()) {
+                updatedCardSets.add(cardSetMapper.cardSetEntityToCardSetDTO(cardSetEntityOptional.get()));
+            }
+        });
+        return updatedCardSets;
     }
 
 

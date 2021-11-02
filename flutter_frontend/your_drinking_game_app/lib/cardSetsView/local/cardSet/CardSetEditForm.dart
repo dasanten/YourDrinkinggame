@@ -234,7 +234,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                 }
                 return null;
               },
-              maxLength: 12,
+              maxLength: 20,
             ),
           ),
           actions: [

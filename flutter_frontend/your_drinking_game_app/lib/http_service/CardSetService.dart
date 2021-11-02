@@ -4,6 +4,7 @@ import 'dart:core';
 
 import 'package:http/http.dart' as http;
 import 'package:your_drinking_game_app/enums/token_auth.dart';
+import 'package:your_drinking_game_app/http_service/dto/card_set_version_dto.dart';
 
 import 'HttpUtil.dart';
 import 'dto/CardDto.dart';
@@ -16,6 +17,21 @@ class CardSetService {
 
   static Future<List<CardSetDto>> getTopCardSets() async {
     final response = await http.get(Uri.https(_rooturl, "/getTopCardSets"));
+    if (response.statusCode == 200) {
+      return parseCardSets(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to load to CardSets');
+    }
+  }
+
+  
+  static Future<List<CardSetDto>> checkCardSetUpdates(List<CardSetVersionDto> cardSetVersionList) async {
+    final response = await http.put(Uri.https(_rooturl, "/checkCardSetUpdates"),
+      headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(cardSetVersionList.map((e) => e.toJson()).toList())
+    );
     if (response.statusCode == 200) {
       return parseCardSets(utf8.decode(response.bodyBytes));
     } else {
