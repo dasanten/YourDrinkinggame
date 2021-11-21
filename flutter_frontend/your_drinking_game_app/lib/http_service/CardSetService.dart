@@ -5,6 +5,8 @@ import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:your_drinking_game_app/enums/token_auth.dart';
 import 'package:your_drinking_game_app/http_service/dto/card_set_version_dto.dart';
+import 'package:your_drinking_game_app/models/CardEntity.dart';
+import 'package:your_drinking_game_app/models/CardSetEntity.dart';
 
 import 'HttpUtil.dart';
 import 'dto/CardDto.dart';
@@ -69,6 +71,21 @@ class CardSetService {
     }
   }
 
+    static Future<CardSetDto> editCardSet(CardSetDto cardSetDto, String token) async {
+    final response = await http.put(
+        Uri.https(_rooturl, "editCardSet", {'token': token}),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(cardSetDto.toJson()),
+    );
+    if(response.statusCode == 200) {
+      return CardSetDto.fromJson(jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to add CardSet');
+    }
+  }
+
   static Future addCards(List<CardDto> cardList, String token) async {
     final response = await http.post(
         Uri.https(_rooturl, "addCards", {'token': token}),
@@ -81,6 +98,21 @@ class CardSetService {
 
     } else {
       throw Exception('Failed to add cards');
+    }
+  }
+
+    static Future<List<CardDto>> updateCards(List<CardDto> cardList, String token) async {
+    final response = await http.put(
+        Uri.https(_rooturl, "editCards", {'token': token}),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(parseCardList(cardList)),
+    );
+    if(response.statusCode == 200) {
+      return parseCards(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to update cards');
     }
   }
 
@@ -109,6 +141,12 @@ class CardSetService {
     final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
     return parsed.map<CardSetDto>((json) => CardSetDto.fromJson(json as Map<String, dynamic>)).toList() as List<CardSetDto>;
+  }
+
+  static List<CardDto> parseCards(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<CardDto>((json) => CardDto.fromJson(json as Map<String, dynamic>)).toList() as List<CardDto>;
   }
 
   static List<Map<String, dynamic>> parseCardList(List<CardDto> cardList) => 

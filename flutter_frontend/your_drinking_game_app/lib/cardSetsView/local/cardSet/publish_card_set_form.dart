@@ -113,7 +113,6 @@ class _PublishCardSetFormState extends State<PublishCardSetForm> {
     CardSetEntity cardSetEntity = context.read<CurrentCardSetViewmodel>().cardSet!;
     final CardSetDto cardSetDto = CardSetDto.fromCardSetEntity(cardSetEntity)..token=_tokenCheckController.text;
     final TokenAuth tokenAuth = await CardSetService.getTokenType(cardSetDto);
-    print(tokenAuth);
     if(tokenAuth==TokenAuth.ADMIN)  {
       cardSetEntity = cardSetEntity.copyWith(adminToken: _tokenCheckController.text);
       ScaffoldMessenger.of(context).showSnackBar(

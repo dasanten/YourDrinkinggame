@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
+import 'package:your_drinking_game_app/models/CardEntity.dart';
 
 import '../../../http_service/CardSetService.dart';
 import '../../../http_service/dto/CardDto.dart';
@@ -164,6 +166,12 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
       await context.read<LocalCardSetsViewmodel>().deleteCardSet(
             currentCardSetViewmodel.cardSet!.id!,
           );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Kartenset ${currentCardSetViewmodel.cardSet!.name} gelöscht"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       Navigator.popUntil(
         context,
         (route) =>
@@ -182,8 +190,27 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
       final currentCardSetViewmodel = context.read<CurrentCardSetViewmodel>()
         ..save();
       context
-          .read<LocalCardSetsViewmodel>()
-          .updateCardSet(currentCardSetViewmodel.cardSet!);
+        .read<LocalCardSetsViewmodel>()
+        .updateCardSet(currentCardSetViewmodel.cardSet!);
+      if(published) {
+        final String token = currentCardSetViewmodel.cardSet!.adminToken!.isNotEmpty ? currentCardSetViewmodel.cardSet!.adminToken!: currentCardSetViewmodel.cardSet!.editorToken!;
+        CardSetService.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
+        final List<CardEntity> cards = currentCardSetViewmodel.cards; 
+        if(cards.isNotEmpty) {
+          final List<CardDto> cardDtoList = await CardSetService.updateCards(cards.map<CardDto>((e) => CardDto.fromCardEntity(e, currentCardSetViewmodel.cardSet!.workshopId!)).toList(), token);
+          cardDtoList.forEach((element) { 
+            final CardEntity card = cards.firstWhere((card) => card.content==element.content).copyWith(workshopId: element.id);
+            CardSetDB.cardSetDB.updateCard(card);
+          
+          });
+        }
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Kartenset ${currentCardSetViewmodel.cardSet!.name} geupdated"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       Navigator.pop(context);
     }
   }

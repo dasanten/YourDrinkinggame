@@ -32,7 +32,7 @@ class _CardSetForm extends State<CardSetForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("CardSet erstellen"),
+        title: const Text("Kartenset erstellen"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

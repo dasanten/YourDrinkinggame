@@ -76,7 +76,7 @@ class CardSetDB {
               $COLUMN_CARD_SET_ADMIN_TOKEN TEXT,
               $COLUMN_CARD_SET_EDITOR_TOKEN TEXT,
               $COLUMN_CARD_SET_VERSION INTEGER)
-        """,
+          """,
         );
         await database.execute(
           """

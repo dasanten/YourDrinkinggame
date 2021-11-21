@@ -32,11 +32,15 @@ class _PlayerInputState extends State<PlayerInput> {
         title: const Text("Spieler Auswahl"),
       ),
       drawer: Drawer(
-        child: Column(
+        child: ListView(
+          padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
               child: Image.asset(
-              'assets/images/logoTransparent.jpg',
+                'assets/images/Dein-Trinkspiel-Full.png',
               ),     
             ),
             ListTile(
@@ -66,10 +70,13 @@ class _PlayerInputState extends State<PlayerInput> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const Spacer(
+                flex: 1,
+              ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child:  Image.asset(
-                'assets/images/logoTransparent.jpg',
+                  'assets/images/Dein-Trinkspiel-Full.png',
                 ), 
               ),
               Flexible(

@@ -15,6 +15,6 @@ class CardSetVersionDto {
 
     factory CardSetVersionDto.fromCardEntity(CardSetEntity cardSetEntity) => CardSetVersionDto(
     id: cardSetEntity.workshopId!,
-    version: cardSetEntity.version!,
+    version: cardSetEntity.version ?? 0,
   );
 }

@@ -49,6 +49,7 @@ Future checkForUpdates() async {
   final List<CardSetEntity> cardSetList = await CardSetDB.cardSetDB.getCardSets();
 
   // Workshop CardSets
+  cardSetList.removeWhere((element) => element.workshopId?.isEmpty ?? true);
   final List<CardSetVersionDto> cardSetVersionList = cardSetList.map<CardSetVersionDto>((e) => CardSetVersionDto.fromCardEntity(e)).toList();
   List<CardSetDto> newCardSets = await CardSetService.checkCardSetUpdates(cardSetVersionList);
 
@@ -64,12 +65,9 @@ Future checkForUpdates() async {
 
       // List of old Local Cards
       List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
+      oldCards.forEach((element) { print(element.workshopId); });
 
-      List<CardEntity> removeCards = List.from(oldCards);
-
-      List<CardEntity> newCards = [];
-
-      List<CardEntity> addCards = [];
+      final List<CardEntity> removeCards = List.from(oldCards);
 
       // Itterate threw Cards to find corresponding
       newCardSet.cardList.forEach((newCard) {
@@ -144,7 +142,7 @@ class Menu extends StatelessWidget {
               Flexible(
                 flex: 5,
                 child:  Image.asset(
-                'assets/images/logoTransparent.jpg',
+                  'assets/images/Dein-Trinkspiel-Full.png',
                 ), 
               ),
               Flexible(

@@ -114,9 +114,9 @@ public class CardSetController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/editCard")
-    public ResponseEntity<CardDTO> editCard(@RequestBody CardDTO cardDTO, @RequestParam String token){
-        CardDTO editedCard = cardSetService.editCard(cardDTO, token);
+    @PutMapping("/editCards")
+    public ResponseEntity<List<CardDTO>> editCard(@RequestBody List<CardDTO> cardDTOs, @RequestParam String token){
+        List<CardDTO> editedCard = cardSetService.editCards(cardDTOs, token);
         if (editedCard != null){
             return new ResponseEntity<>(editedCard, HttpStatus.OK);
         }

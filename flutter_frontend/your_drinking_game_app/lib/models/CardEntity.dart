@@ -46,12 +46,13 @@ class CardEntity {
     int ?id,
     String ?content,
     bool ?active,
+    String? workshopId,
   }) =>
       CardEntity(
         content: content ?? this.content,
         active: active ?? this.active,
         cardSetId: cardSetId,
         id: id ?? this.id,
-        workshopId: workshopId,
+        workshopId: workshopId ?? this.workshopId,
       );
 }

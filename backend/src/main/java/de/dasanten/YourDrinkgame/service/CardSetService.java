@@ -162,13 +162,19 @@ public class CardSetService {
         return null;
     }
 
-    public CardDTO editCard(CardDTO cardDTO, String token){
-        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTO.getCardSetId());
-        if (cardSetEntityOptional.isPresent() && tokenCheckForAllTokens(cardSetEntityOptional.get(), token)){
-            CardEntity cardEntity = cardRepository.save(cardMapper.cardDTOToCardEntity(cardDTO));
-            cardSetEntityOptional.get().setVersion(cardSetEntityOptional.get().getVersion() +1);
-            cardSetRepository.save(cardSetEntityOptional.get());
-            return cardMapper.cardEntityToCardDTO(cardEntity);
+    public List<CardDTO> editCards(List<CardDTO> cardDTOs, String token){
+        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardDTOs.get(0).getCardSetId());
+        if (cardSetEntityOptional.isPresent() && tokenCheckForAllTokens(cardSetEntityOptional.get(), token)) {
+            List<CardEntity> cardEntityList = new ArrayList<>();
+            for (CardDTO cardDTO : cardDTOs) {
+                cardEntityList.add(cardMapper.cardDTOToCardEntity(cardDTO));
+            }
+            List<CardEntity> cardEntities = cardRepository.saveAll(cardEntityList);
+            List<CardDTO> responseCards = new ArrayList<>();
+            for (CardEntity cardEntity: cardEntities) {
+                responseCards.add(cardMapper.cardEntityToCardDTO(cardEntity));
+            }
+            return responseCards;
         }
         return null;
     }
