@@ -47,6 +47,7 @@ void main() {
 Future checkForUpdates() async {
   // Get local CardSets
   final List<CardSetEntity> cardSetList = await CardSetDB.cardSetDB.getCardSets();
+  cardSetList.forEach((element) {print(element.version); print(element.workshopId);});
 
   // Workshop CardSets
   cardSetList.removeWhere((element) => element.workshopId?.isEmpty ?? true);
@@ -55,10 +56,10 @@ Future checkForUpdates() async {
 
   // itterate newCardSets
   newCardSets.forEach((newCardSet) async {
-    try {
+    // try {
 
       // Find correspondig saved CardSet and copy with changes
-      final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description);
+      final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description, version: newCardSet.version);
 
       // Save changed CardSet
       CardSetDB.cardSetDB.updateCardSet(cardSet);
@@ -89,8 +90,8 @@ Future checkForUpdates() async {
       
 
       
-    } catch(e) {
-    }
+    // } catch(e) {
+    // }
 
     
   });
