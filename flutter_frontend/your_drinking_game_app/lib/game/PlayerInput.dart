@@ -37,14 +37,17 @@ class _PlayerInputState extends State<PlayerInput> {
           children: [
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Color.fromRGBO(0, 0, 0, 0.1),
               ),
               child: Image.asset(
                 'assets/images/Dein-Trinkspiel-Full.png',
               ),     
             ),
             ListTile(
-              title: const Text("Kartensets"),
+              title: const Text("Kartensets",
+                style: TextStyle(
+                  fontSize: 17
+                ),),
               trailing: const Icon(Icons.folder),
               onTap: () => Navigator.push(
                 context,
@@ -52,13 +55,22 @@ class _PlayerInputState extends State<PlayerInput> {
                 builder: (context) => CardSetsTabView()),
               ),
             ),
+            const Divider(),
             ListTile(
-              title: const Text("Feedback !IN DEVELOPMENT!"),
+              title: const Text("Feedback !IN DEVELOPMENT!",
+                style: TextStyle(
+                  fontSize: 17
+                ),
+              ),
               trailing: const Icon(Icons.note),
               onTap: () {}
             ),
+            const Divider(),
             ListTile(
-              title: const Text("Optionen !IN DEVELOPMENT!"),
+              title: const Text("Optionen !IN DEVELOPMENT!",
+                style: TextStyle(
+                  fontSize: 17
+                ),),
               trailing: const Icon(Icons.settings),
               onTap: () {}
             ),
@@ -81,7 +93,7 @@ class _PlayerInputState extends State<PlayerInput> {
               ),
               Flexible(
                 child: playerChips(),
-              ),          
+              ),  
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

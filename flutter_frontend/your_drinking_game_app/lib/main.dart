@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:your_drinking_game_app/models/CardEntity.dart';
 
@@ -47,7 +48,6 @@ void main() {
 Future checkForUpdates() async {
   // Get local CardSets
   final List<CardSetEntity> cardSetList = await CardSetDB.cardSetDB.getCardSets();
-  cardSetList.forEach((element) {print(element.version); print(element.workshopId);});
 
   // Workshop CardSets
   cardSetList.removeWhere((element) => element.workshopId?.isEmpty ?? true);
@@ -56,44 +56,34 @@ Future checkForUpdates() async {
 
   // itterate newCardSets
   newCardSets.forEach((newCardSet) async {
-    // try {
+    // Find correspondig saved CardSet and copy with changes
+    final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description, version: newCardSet.version);
 
-      // Find correspondig saved CardSet and copy with changes
-      final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description, version: newCardSet.version);
+    // Save changed CardSet
+    CardSetDB.cardSetDB.updateCardSet(cardSet);
 
-      // Save changed CardSet
-      CardSetDB.cardSetDB.updateCardSet(cardSet);
+    // List of old Local Cards
+    List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
 
-      // List of old Local Cards
-      List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
-      oldCards.forEach((element) { print(element.workshopId); });
+    final List<CardEntity> removeCards = List.from(oldCards);
 
-      final List<CardEntity> removeCards = List.from(oldCards);
+    // Itterate threw Cards to find corresponding
+    newCardSet.cardList.forEach((newCard) {
+      bool added = false;
+      for (final CardEntity dbCard in oldCards) {
+        if(dbCard.workshopId == newCard.id) {
+          removeCards.remove(dbCard);
+          CardSetDB.cardSetDB.updateCard(dbCard.copyWith(content: newCard.content));
+          added = true;
+          break;
+        } 
+      }
+      if(!added) {
+        CardSetDB.cardSetDB.insertCard(CardEntity.fromCardDto(newCard, cardSet.id!));
+      }
+    });
 
-      // Itterate threw Cards to find corresponding
-      newCardSet.cardList.forEach((newCard) {
-        bool added = false;
-        for (final CardEntity dbCard in oldCards) {
-          if(dbCard.workshopId == newCard.id) {
-            removeCards.remove(dbCard);
-            CardSetDB.cardSetDB.updateCard(dbCard.copyWith(content: newCard.content));
-            added = true;
-            break;
-          } 
-        }
-        if(!added) {
-          CardSetDB.cardSetDB.insertCard(CardEntity.fromCardDto(newCard, cardSet.id!));
-        }
-      });
-
-      removeCards.forEach((card) { CardSetDB.cardSetDB.deleteCard(card.id!); });
-      
-
-      
-    // } catch(e) {
-    // }
-
-    
+    removeCards.forEach((card) { CardSetDB.cardSetDB.deleteCard(card.id!); });    
   });
 }
 
@@ -119,6 +109,10 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.orangeAccent,
         buttonColor: Colors.orangeAccent,
         bottomAppBarColor: Colors.grey.shade300,
+        colorScheme: ColorScheme.fromSwatch(
+
+        ),
+        textTheme: GoogleFonts.ubuntuTextTheme(),
       ),
       darkTheme: ThemeData.dark(),
     );

@@ -252,7 +252,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
             child: TextFormField(
               controller: textEditingController,
               decoration: const InputDecoration(
-                labelText: 'Bearbeitungs Token',
+                labelText: 'Neuer Admin Token',
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
