@@ -52,10 +52,10 @@ Future checkForUpdates() async {
   // Workshop CardSets
   cardSetList.removeWhere((element) => element.workshopId?.isEmpty ?? true);
   final List<CardSetVersionDto> cardSetVersionList = cardSetList.map<CardSetVersionDto>((e) => CardSetVersionDto.fromCardEntity(e)).toList();
-  List<CardSetDto> newCardSets = await CardSetService.checkCardSetUpdates(cardSetVersionList);
+  final List<CardSetDto> newCardSets = await CardSetService.checkCardSetUpdates(cardSetVersionList);
 
   // itterate newCardSets
-  newCardSets.forEach((newCardSet) async {
+  for (final newCardSet in newCardSets) {
     // Find correspondig saved CardSet and copy with changes
     final CardSetEntity cardSet = cardSetList.firstWhere((element) => element.workshopId==newCardSet.id).copyWith(name: newCardSet.name, description: newCardSet.description, version: newCardSet.version);
 
@@ -63,12 +63,12 @@ Future checkForUpdates() async {
     CardSetDB.cardSetDB.updateCardSet(cardSet);
 
     // List of old Local Cards
-    List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
+    final List<CardEntity> oldCards = await CardSetDB.cardSetDB.getCards(cardSet.id!);
 
     final List<CardEntity> removeCards = List.from(oldCards);
 
     // Itterate threw Cards to find corresponding
-    newCardSet.cardList.forEach((newCard) {
+    for (final newCard in newCardSet.cardList) {
       bool added = false;
       for (final CardEntity dbCard in oldCards) {
         if(dbCard.workshopId == newCard.id) {
@@ -81,10 +81,10 @@ Future checkForUpdates() async {
       if(!added) {
         CardSetDB.cardSetDB.insertCard(CardEntity.fromCardDto(newCard, cardSet.id!));
       }
-    });
+    }
 
-    removeCards.forEach((card) { CardSetDB.cardSetDB.deleteCard(card.id!); });    
-  });
+    for (var card in removeCards) { CardSetDB.cardSetDB.deleteCard(card.id!); }    
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -106,13 +106,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue,
         primaryColorDark: Colors.blueAccent,
-        accentColor: Colors.orangeAccent,
-        buttonColor: Colors.orangeAccent,
         bottomAppBarColor: Colors.grey.shade300,
-        colorScheme: ColorScheme.fromSwatch(
+        textTheme: GoogleFonts.ubuntuTextTheme(), colorScheme: ColorScheme.fromSwatch(
 
-        ),
-        textTheme: GoogleFonts.ubuntuTextTheme(),
+        ).copyWith(secondary: Colors.orangeAccent),
       ),
       darkTheme: ThemeData.dark(),
     );
