@@ -71,7 +71,7 @@ class CardSetService {
     }
   }
 
-    static Future<CardSetDto> editCardSet(CardSetDto cardSetDto, String token) async {
+  static Future<CardSetDto> editCardSet(CardSetDto cardSetDto, String token) async {
     final response = await http.put(
         Uri.https(_rooturl, "editCardSet", {'token': token}),
         headers: <String, String>{

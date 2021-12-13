@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../dataBase/CardSetDB.dart';
-import '../main.dart';
 import '../models/CardEntity.dart';
+import 'PlayerInput.dart';
 
 class CardDisplay extends StatefulWidget {
   static const routeName = '/CardDisplay';
@@ -62,7 +62,7 @@ class _CardDisplayState extends State<CardDisplay> {
         if (_cards.isEmpty) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Menu()),
+            MaterialPageRoute(builder: (context) => PlayerInput()),
           );
           return;
         } else {
