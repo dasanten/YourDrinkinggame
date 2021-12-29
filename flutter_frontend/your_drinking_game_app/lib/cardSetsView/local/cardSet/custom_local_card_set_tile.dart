@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../dataBase/models/card_set_entity.dart';
 
-import '../../../models/CardSetEntity.dart';
+import '../../../models/card_set_entity.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
-import '../cards/LocalCardView.dart';
+import '../cards/local_card_view.dart';
 
 class CustomCardSetTile extends StatelessWidget {
   final CardSetEntity cardSet;

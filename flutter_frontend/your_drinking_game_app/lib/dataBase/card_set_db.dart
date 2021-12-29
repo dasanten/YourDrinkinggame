@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../models/CardEntity.dart';
-import '../models/CardSetEntity.dart';
+import 'models/card_entity.dart';
+import 'models/card_set_entity.dart';
 
 class CardSetDB {
   // ignore_for_file: constant_identifier_names

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/models/CardSetEntity.dart';
-import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
-import '../../../enums/token_auth.dart';
-import '../../../http_service/CardSetService.dart';
-import '../../../http_service/dto/CardSetDto.dart';
+import 'package:your_drinking_game_app/http_service/dto/enums/token_auth.dart';
+import 'package:your_drinking_game_app/http_service/token_service.dart' as TokenHttpService;
+
+import '../../../dataBase/models/card_set_entity.dart';
+import '../../../http_service/card_set_service.dart';
+import '../../../http_service/dto/card_set_dto.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
+import '../../../viewmodel/local_card_sets_viewmodel.dart';
 
 class PublishCardSetForm extends StatefulWidget {
   static const routeName = '/publishCardSet';
@@ -112,7 +114,7 @@ class _PublishCardSetFormState extends State<PublishCardSetForm> {
   Future getTokenType(BuildContext context) async {
     CardSetEntity cardSetEntity = context.read<CurrentCardSetViewmodel>().cardSet!;
     final CardSetDto cardSetDto = CardSetDto.fromCardSetEntity(cardSetEntity)..token=_tokenCheckController.text;
-    final TokenAuth tokenAuth = await CardSetService.getTokenType(cardSetDto);
+    final TokenAuth tokenAuth = await TokenHttpService.getTokenType(cardSetDto);
     if(tokenAuth==TokenAuth.ADMIN)  {
       cardSetEntity = cardSetEntity.copyWith(adminToken: _tokenCheckController.text);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -145,7 +147,7 @@ class _PublishCardSetFormState extends State<PublishCardSetForm> {
       // CHANGE ZU BACKEND HINZUFÜGEN
       // context.read<CurrentCardSetViewmodel().adminTokenController;
     } else {
-      final TokenAuth tokenAuth = await CardSetService.getTokenType(CardSetDto.fromCardSetEntity(cardSetEntity)..token=context.read<CurrentCardSetViewmodel>().adminTokenController.text.trim());
+      final TokenAuth tokenAuth = await TokenHttpService.getTokenType(CardSetDto.fromCardSetEntity(cardSetEntity)..token=context.read<CurrentCardSetViewmodel>().adminTokenController.text.trim());
       if(tokenAuth==TokenAuth.ADMIN)  {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -162,7 +164,7 @@ class _PublishCardSetFormState extends State<PublishCardSetForm> {
 
   Future<void> _checkOrUpdateEditorToken(bool isAdmin, BuildContext context, CardSetEntity cardSetEntity) async {
     if (!isAdmin) {
-      final TokenAuth tokenAuth = await CardSetService.getTokenType(CardSetDto.fromCardSetEntity(cardSetEntity)..token=context.read<CurrentCardSetViewmodel>().editorTokenController.text.trim());
+      final TokenAuth tokenAuth = await TokenHttpService.getTokenType(CardSetDto.fromCardSetEntity(cardSetEntity)..token=context.read<CurrentCardSetViewmodel>().editorTokenController.text.trim());
       if(tokenAuth==TokenAuth.EDITOR)  {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

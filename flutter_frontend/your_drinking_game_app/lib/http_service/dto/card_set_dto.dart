@@ -1,6 +1,8 @@
-import '../../models/CardSetEntity.dart';
+import '../../dataBase/models/card_set_entity.dart';
 
-import 'CardDto.dart';
+import '../../models/card_set_entity.dart';
+
+import 'card_dto.dart';
 
 class CardSetDto {
   String id;

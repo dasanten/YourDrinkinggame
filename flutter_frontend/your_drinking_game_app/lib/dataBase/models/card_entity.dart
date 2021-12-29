@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-import '../dataBase/CardSetDB.dart';
-import '../http_service/dto/CardDto.dart';
+import '../../http_service/dto/card_dto.dart';
+import '../card_set_db.dart';
+
 
 @immutable
 class CardEntity {

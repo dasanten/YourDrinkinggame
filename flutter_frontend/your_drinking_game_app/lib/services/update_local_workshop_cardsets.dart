@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/http_service/dto/CardDto.dart';
 
-import '../dataBase/CardSetDB.dart';
-import '../http_service/CardSetService.dart';
-import '../http_service/dto/CardSetDto.dart';
+import 'package:your_drinking_game_app/http_service/update_service.dart' as UpdateHttpService;
+
+import '../dataBase/card_set_db.dart';
+import '../dataBase/models/card_entity.dart';
+import '../dataBase/models/card_set_entity.dart';
+import '../http_service/card_set_service.dart' as CardSetHttp;
+import '../http_service/dto/card_dto.dart';
+import '../http_service/dto/card_set_dto.dart';
 import '../http_service/dto/card_set_version_dto.dart';
-import '../models/CardEntity.dart';
-import '../models/CardSetEntity.dart';
+import '../models/card_set_entity.dart';
 
 List<CardSetEntity> _localCardSets = [];
 List<CardSetDto> _workshopCardSets = [];
@@ -54,7 +56,7 @@ Future _compareCards(List<CardDto> workshopCards, List<CardEntity> localCards, C
     for (final card in _removeCards) { CardSetDB.cardSetDB.deleteCard(card.id!); }    
 }
 
-Future<List<CardSetDto>> _getNewCardSetsFromWorkshop() async => CardSetService.checkCardSetUpdates(await _mapToCardSetVersionList());
+Future<List<CardSetDto>> _getNewCardSetsFromWorkshop() async => UpdateHttpService.checkCardSetUpdates(await _mapToCardSetVersionList());
 
 
 CardSetEntity _updateCardSet(CardSetDto newWorkshopCardSet) {

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
-import 'CustomLocalCardSetTile.dart';
-import 'LocalCardSetForm.dart';
+import 'custom_local_card_set_tile.dart';
+import 'local_card_set_form.dart';
 
 class LocalCardSetsView extends StatelessWidget {
   @override

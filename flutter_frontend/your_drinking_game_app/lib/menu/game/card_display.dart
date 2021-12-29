@@ -2,10 +2,10 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import '../../dataBase/card_set_db.dart';
+import '../../dataBase/models/card_entity.dart';
 
-import '../dataBase/CardSetDB.dart';
-import '../models/CardEntity.dart';
-import 'PlayerInput.dart';
+import '../player_input.dart';
 
 class CardDisplay extends StatefulWidget {
   static const routeName = '/CardDisplay';

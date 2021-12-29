@@ -1,5 +1,5 @@
-import '../../models/CardSetEntity.dart';
 
+import '../../dataBase/models/card_set_entity.dart';
 
 class CardSetVersionDto {
   

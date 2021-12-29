@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../../dataBase/models/card_set_cards_arguments.dart';
 
-import '../../../models/CardSetCardsArguments.dart';
-import 'CustomWorkshopCardTile.dart';
+import 'custom_workshop_card_tile.dart';
 
 class WorkshopCardView extends StatelessWidget {
   static const routeName = '/WorkshopCardDisplay';

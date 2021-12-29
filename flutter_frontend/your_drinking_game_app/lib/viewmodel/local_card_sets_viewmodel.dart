@@ -1,11 +1,12 @@
-import '../dataBase/CardSetDB.dart';
-
-import '../http_service/dto/CardSetDto.dart';
-import '../models/CardEntity.dart';
-import '../models/CardSetEntity.dart';
+import '../dataBase/card_set_db.dart';
+import '../dataBase/models/card_entity.dart';
+import '../dataBase/models/card_set_entity.dart';
+import '../http_service/dto/card_set_dto.dart';
+import '../models/card_set_entity.dart';
 import 'async_viewmodel_base.dart';
 
 class LocalCardSetsViewmodel extends AsyncViewmodelBase {
+
   late List<CardSetEntity> _cardSetList;
 
   List<CardSetEntity> get cardSetList => _cardSetList;
@@ -53,8 +54,8 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
           (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
         )
         .toList();
-    final responseCards =
-        await CardSetDB.cardSetDB.insertCardList(cardEntityList);
+    
+    await CardSetDB.cardSetDB.insertCardList(cardEntityList);
     await getCardSets();
     return true;
   }

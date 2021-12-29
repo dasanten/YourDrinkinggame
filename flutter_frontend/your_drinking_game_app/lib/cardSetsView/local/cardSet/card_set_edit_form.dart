@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/dataBase/CardSetDB.dart';
-import 'package:your_drinking_game_app/models/CardEntity.dart';
+import '../../../dataBase/card_set_db.dart';
+import '../../../dataBase/models/card_entity.dart';
+import '../../../dataBase/models/card_set_entity.dart';
 
-import '../../../http_service/CardSetService.dart';
-import '../../../http_service/dto/CardDto.dart';
-import '../../../http_service/dto/CardSetDto.dart';
-import '../../../models/CardSetEntity.dart';
+import '../../../http_service/card_set_service.dart' as card_set_http;
+import '../../../http_service/dto/card_dto.dart';
+import '../../../http_service/dto/card_set_dto.dart';
+import '../../../models/card_set_entity.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
-import '../../CardSetsTabView.dart';
+import '../../card_sets_tab_view.dart';
 import 'publish_card_set_form.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -85,7 +86,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                   onChanged: editable ? (_) async {
                     if (published) {
                       if(value.isAdmin) {
-                        CardSetService.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
+                        card_set_http.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
                         final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "", adminToken: "", editorToken: "");
                         value.setCardSet(cardSetEntity);
                         context
@@ -109,10 +110,10 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                       final String token = await _publishDialog(context);
                       if (token.isNotEmpty && value.cardSet != null) {
                         
-                        final CardSetDto cardSetDto = await CardSetService.addCardSet(CardSetDto.fromCardSetEntity(value.cardSet!.copyWith(adminToken: token)));
+                        final CardSetDto cardSetDto = await card_set_http.addCardSet(CardSetDto.fromCardSetEntity(value.cardSet!.copyWith(adminToken: token)));
                         if(value.cards.isNotEmpty) {
                           final List<CardDto> cardList = value.cards.map<CardDto>((card) => CardDto.fromCardEntity(card, cardSetDto.id)).toList();
-                          CardSetService.addCards(cardList, token);
+                          card_set_http.addCards(cardList, token);
                         }
                         final CardSetEntity newCardSet = value.cardSet!.copyWith(adminToken: cardSetDto.token, workshopId: cardSetDto.id);  
                         value.setCardSet(newCardSet);
@@ -194,10 +195,10 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
         .updateCardSet(currentCardSetViewmodel.cardSet!);
       if(published) {
         final String token = currentCardSetViewmodel.cardSet!.adminToken!.isNotEmpty ? currentCardSetViewmodel.cardSet!.adminToken!: currentCardSetViewmodel.cardSet!.editorToken!;
-        CardSetService.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
+        card_set_http.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
         final List<CardEntity> cards = currentCardSetViewmodel.cards; 
         if(cards.isNotEmpty) {
-          final List<CardDto> cardDtoList = await CardSetService.updateCards(cards.map<CardDto>((e) => CardDto.fromCardEntity(e, currentCardSetViewmodel.cardSet!.workshopId!)).toList(), token);
+          final List<CardDto> cardDtoList = await card_set_http.updateCards(cards.map<CardDto>((e) => CardDto.fromCardEntity(e, currentCardSetViewmodel.cardSet!.workshopId!)).toList(), token);
           cardDtoList.forEach((element) { 
             final CardEntity card = cards.firstWhere((card) => card.content==element.content).copyWith(workshopId: element.id);
             CardSetDB.cardSetDB.updateCard(card);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/cardSetsView/CardSetsTabView.dart';
 
-import 'CardDisplay.dart';
+import 'game/card_display.dart';
+import 'menu_drawer.dart';
 
 class PlayerInput extends StatefulWidget {
   @override
@@ -34,58 +34,16 @@ class _PlayerInputState extends State<PlayerInput> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(0, 0, 0, 0.1),
-              ),
-              child: Image.asset(
-                'assets/images/Dein-Trinkspiel-Full.png',
-              ),     
-            ),
-            ListTile(
-              title: const Text("Kartensets",
-                style: TextStyle(
-                  fontSize: 17
-                ),),
-              trailing: const Icon(Icons.folder),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                builder: (context) => CardSetsTabView()),
-              ),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text("Feedback !IN DEVELOPMENT!",
-                style: TextStyle(
-                  fontSize: 17
-                ),
-              ),
-              trailing: const Icon(Icons.note),
-              onTap: () {}
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text("Optionen !IN DEVELOPMENT!",
-                style: TextStyle(
-                  fontSize: 17
-                ),),
-              trailing: const Icon(Icons.settings),
-              onTap: () {}
-            ),
-          ],
+          children: menuDrawer(context),
         ),
       ),
       body: Builder(
         builder: (context) => Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Spacer(
-                flex: 1,
-              ),
-              Expanded(
+              const Spacer(), 
+              Flexible(
                 flex: 3,
                 child:  Image.asset(
                   'assets/images/Dein-Trinkspiel-Full.png',
@@ -101,29 +59,7 @@ class _PlayerInputState extends State<PlayerInput> {
                     const Spacer(),
                     Flexible(
                       flex: 9,
-                      child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Spieler hinzufügen',
-                        border: OutlineInputBorder(),
-                      ),
-                      controller: _controller,
-                      maxLength: 10,
-                      autofocus: true,
-                      textInputAction: TextInputAction.next,
-                      focusNode: _playerInputField,
-                      onFieldSubmitted: (value) {
-                        _playerInputField.requestFocus();
-                        addPlayer();
-                      },
-                    ),
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      flex: 2,
-                      child: IconButton(
-                        onPressed: addPlayer,
-                        icon: const Icon(Icons.add),
-                      ),
+                      child: _inputField,
                     ),
                     const Spacer(),
                     Expanded(
@@ -131,7 +67,6 @@ class _PlayerInputState extends State<PlayerInput> {
                       child: IconButton(
                         onPressed: () => startGame(context),
                         icon: const Icon(Icons.play_arrow),
-
                       ),
                     ),
                     const Spacer(),
@@ -151,7 +86,6 @@ class _PlayerInputState extends State<PlayerInput> {
       children: [
        Wrap(
         spacing: 6.0, 
-        
         runSpacing: 6.0,
         children: List<Widget>.generate(
           _players.length,
@@ -171,18 +105,18 @@ class _PlayerInputState extends State<PlayerInput> {
     );
   }
 
-  void addPlayer() {
+  void _addPlayer() {
     final input = _controller.value.text.trim();
     if (input.isNotEmpty) {
       setState(() {
         _players.add(input);
-      _controller.text = "";
+        _controller.clear();
       });
     }
   }
 
   void startGame(BuildContext context) {
-    addPlayer();
+    _addPlayer();
     if (_players.length >= 2) {
       Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
     } else {
@@ -194,4 +128,24 @@ class _PlayerInputState extends State<PlayerInput> {
       );
     }
   }
+
+  TextFormField get _inputField => TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Spieler hinzufügen',
+        suffixIcon: IconButton(
+          onPressed: _addPlayer,
+          icon: const Icon(Icons.add),
+        ),
+      ),
+      controller: _controller,
+      maxLength: 10,
+      autofocus: true,
+      textInputAction: TextInputAction.next,
+      focusNode: _playerInputField,
+      onFieldSubmitted: (value) {
+        _playerInputField.requestFocus();
+        _addPlayer();
+      },
+    );
+
 }

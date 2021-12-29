@@ -1,4 +1,4 @@
-import '../../models/CardEntity.dart';
+import '../../dataBase/models/card_entity.dart';
 
 class CardDto {
 

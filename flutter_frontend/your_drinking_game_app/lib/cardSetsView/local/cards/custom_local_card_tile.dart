@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../dataBase/models/card_entity.dart';
 
-import '../../../models/CardEntity.dart';
 import '../../../viewmodel/current_card_set_viewmodel.dart';
 import '../../../viewmodel/current_card_viewmodel.dart';
-import 'CardEditForm.dart';
+import 'card_edit_form.dart';
 
 class CustomLocalCardTile extends StatelessWidget {
   final CardEntity card;

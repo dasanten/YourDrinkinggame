@@ -7,9 +7,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:your_drinking_game_app/game/PlayerInput.dart';
+
 
 import 'package:your_drinking_game_app/main.dart';
+import 'package:your_drinking_game_app/menu/player_input.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

@@ -1,6 +1,6 @@
-import '../dataBase/CardSetDB.dart';
-import '../http_service/CardSetService.dart';
-import '../http_service/dto/CardSetDto.dart';
+import '../dataBase/card_set_db.dart';
+import '../http_service/card_set_service.dart' as card_set_http;
+import '../http_service/dto/card_set_dto.dart';
 import 'async_viewmodel_base.dart';
 
 class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
@@ -19,7 +19,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
 
   Future<void> getWorkshopCardSets() async {
     setLoading();
-    _cardSetList = await CardSetService.getTopCardSets();
+    _cardSetList = await card_set_http.getTopCardSets();
     _cardSetLocal.clear();
     setFinished();
     for (final cardSet in _cardSetList) {

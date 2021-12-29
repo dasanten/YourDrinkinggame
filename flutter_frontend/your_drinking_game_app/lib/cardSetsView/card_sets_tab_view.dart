@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'local/cardSet/LocalCardSetsView.dart';
-import 'workshop/cardSet/WorkshopCardSetsView.dart';
+import 'local/cardSet/local_card_sets_view.dart';
+import 'workshop/cardSet/workshop_card_sets_view.dart';
 
 class CardSetsTabView extends StatelessWidget {
   @override

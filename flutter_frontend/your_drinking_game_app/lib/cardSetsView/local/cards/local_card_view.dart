@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../viewmodel/current_card_set_viewmodel.dart';
-import '../cardSet/CardSetEditForm.dart';
-import '../cards/CustomLocalCardTile.dart';
-import 'LocalCardForm.dart';
+import '../cardSet/card_set_edit_form.dart';
+import 'custom_local_card_tile.dart';
+import 'local_card_form.dart';
 
 class LocalCardView extends StatelessWidget {
   static const routeName = '/LocalCardDisplay';

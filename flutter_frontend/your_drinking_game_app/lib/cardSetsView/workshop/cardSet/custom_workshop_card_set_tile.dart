@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/http_service/CardSetService.dart';
+import 'package:your_drinking_game_app/dataBase/models/card_set_cards_arguments.dart';
+import 'package:your_drinking_game_app/http_service/card_set_service.dart' as CardSetHttpService;
 
-import '../../../http_service/dto/CardSetDto.dart';
-import '../../../models/CardSetCardsArguments.dart';
+import '../../../http_service/dto/card_set_dto.dart';
 import '../../../viewmodel/local_card_sets_viewmodel.dart';
 import '../../../viewmodel/workshop_card_set_viewmodel.dart';
-import '../cards/WorkshopCardView.dart';
+import '../cards/workshop_card_view.dart';
 
 class CustomWorkshopCardSetTile extends StatelessWidget {
   final CardSetDto cardSet;
@@ -41,7 +41,7 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
                           content: Text("Kartenset hinzugefügt!"),
                         ),
                       );
-                      CardSetService.favorCardSet(cardSet.id);
+                      CardSetHttpService.favorCardSet(cardSet.id);
                     }
                   },
           ),

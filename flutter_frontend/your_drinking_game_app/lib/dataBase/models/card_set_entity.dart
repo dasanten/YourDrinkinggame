@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:your_drinking_game_app/http_service/dto/card_set_dto.dart';
 
-import '../dataBase/CardSetDB.dart';
-import '../http_service/dto/CardSetDto.dart';
+import '../card_set_db.dart';
 
 @immutable
 class CardSetEntity {
