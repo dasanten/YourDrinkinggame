@@ -1,14 +1,11 @@
 
-import 'package:your_drinking_game_app/http_service/update_service.dart' as UpdateHttpService;
-
-import '../dataBase/card_set_db.dart';
-import '../dataBase/models/card_entity.dart';
-import '../dataBase/models/card_set_entity.dart';
-import '../http_service/card_set_service.dart' as CardSetHttp;
+import '../data_base/card_set_db.dart';
+import '../data_base/models/card_entity.dart';
+import '../data_base/models/card_set_entity.dart';
 import '../http_service/dto/card_dto.dart';
 import '../http_service/dto/card_set_dto.dart';
 import '../http_service/dto/card_set_version_dto.dart';
-import '../models/card_set_entity.dart';
+import '../http_service/update_service.dart' as UpdateHttpService;
 
 List<CardSetEntity> _localCardSets = [];
 List<CardSetDto> _workshopCardSets = [];

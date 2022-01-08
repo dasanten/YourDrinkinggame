@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import '../../../../viewmodel/workshop_card_set_viewmodel.dart';
 
-import '../../../viewmodel/workshop_card_set_viewmodel.dart';
 import 'custom_workshop_card_set_tile.dart';
 
 class WorkshopCardSetsView extends StatelessWidget {

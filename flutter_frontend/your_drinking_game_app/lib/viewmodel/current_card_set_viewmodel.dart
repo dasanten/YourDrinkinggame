@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
+import '../data_base/card_set_db.dart';
+import '../data_base/models/card_entity.dart';
+import '../data_base/models/card_set_entity.dart';
 
-import '../dataBase/card_set_db.dart';
-import '../dataBase/models/card_entity.dart';
-import '../dataBase/models/card_set_entity.dart';
-import '../models/card_set_entity.dart';
 import 'async_viewmodel_base.dart';
 
 class CurrentCardSetViewmodel extends AsyncViewmodelBase {

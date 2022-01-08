@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-
-import '../../../viewmodel/local_card_sets_viewmodel.dart';
+import '../../../../viewmodel/local_card_sets_viewmodel.dart';
 
 class CardSetForm extends StatefulWidget {
   @override

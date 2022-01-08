@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'cardSetsView/local/cardSet/card_set_edit_form.dart';
-import 'cardSetsView/local/cards/card_edit_form.dart';
-import 'cardSetsView/local/cards/local_card_form.dart';
-import 'cardSetsView/local/cards/local_card_view.dart';
-import 'cardSetsView/workshop/cards/workshop_card_view.dart';
+import 'menu/card_set_lists/local/cardSet/card_set_edit_form.dart';
+import 'menu/card_set_lists/local/cards/card_edit_form.dart';
+import 'menu/card_set_lists/local/cards/local_card_form.dart';
+import 'menu/card_set_lists/local/cards/local_card_view.dart';
+import 'menu/card_set_lists/workshop/cards/workshop_card_view.dart';
 import 'menu/game/card_display.dart';
 import 'menu/player_input.dart';
 import 'services/update_local_workshop_cardsets.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../dataBase/models/card_set_cards_arguments.dart';
+import '../../../../data_base/models/card_set_cards_arguments.dart';
 
 import 'custom_workshop_card_tile.dart';
 

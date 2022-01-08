@@ -1,6 +1,4 @@
-import '../../dataBase/models/card_set_entity.dart';
-
-import '../../models/card_set_entity.dart';
+import '../../data_base/models/card_set_entity.dart';
 
 import 'card_dto.dart';
 

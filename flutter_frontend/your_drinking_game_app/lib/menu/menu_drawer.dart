@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../cardSetsView/card_sets_tab_view.dart';
+
+import 'card_set_lists/card_sets_tab_view.dart';
 
 List<Widget> menuDrawer(BuildContext context) =>  [
   DrawerHeader(

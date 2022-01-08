@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../dataBase/models/card_set_entity.dart';
 
-import '../../../models/card_set_entity.dart';
-import '../../../viewmodel/current_card_set_viewmodel.dart';
-import '../../../viewmodel/local_card_sets_viewmodel.dart';
-import '../cards/local_card_view.dart';
+import '../../../../data_base/models/card_entity.dart';
+import '../../../../viewmodel/current_card_set_viewmodel.dart';
+import '../../../../viewmodel/current_card_viewmodel.dart';
+import 'card_edit_form.dart';
 
-class CustomCardSetTile extends StatelessWidget {
-  final CardSetEntity cardSet;
+class CustomLocalCardTile extends StatelessWidget {
+  final CardEntity card;
   final void Function(bool value) onActiveChanged;
 
-  const CustomCardSetTile({
+  const CustomLocalCardTile({
     Key? key,
-    required this.cardSet,
+    required this.card,
     required this.onActiveChanged,
   }) : super(key: key);
 
@@ -23,17 +22,18 @@ class CustomCardSetTile extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(8),
       child: ListTile(
-        title: Text(cardSet.name),
-        subtitle: Text(cardSet.description),
+        title: Text(card.content),
         trailing: Switch(
-          value: cardSet.active,
+          value: card.active,
           onChanged: onActiveChanged,
         ),
-        onTap: () {
-          context.read<CurrentCardSetViewmodel>().setCardSet(
-                cardSet,
-              );
-          Navigator.pushNamed(context, LocalCardView.routeName);
+        onTap: () async {
+          context.read<CurrentCardViewmodel>().setCard(card);
+          await Navigator.pushNamed(
+            context,
+            CardEditForm.routeName,
+            arguments: card,
+          );
         },
         onLongPress: () {
           showModalBottomSheet(
@@ -43,9 +43,7 @@ class CustomCardSetTile extends StatelessWidget {
                 title: const Text("Löschen"),
                 leading: const Icon(Icons.delete),
                 onTap: () {
-                  context
-                      .read<LocalCardSetsViewmodel>()
-                      .deleteCardSet(cardSet.id!);
+                  context.read<CurrentCardSetViewmodel>().deleteCard(card.id!);
                   Navigator.pop(context);
                 },
               );

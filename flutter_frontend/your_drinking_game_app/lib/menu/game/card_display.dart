@@ -2,8 +2,9 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import '../../dataBase/card_set_db.dart';
-import '../../dataBase/models/card_entity.dart';
+import '../../data_base/card_set_db.dart';
+import '../../data_base/models/card_entity.dart';
+
 
 import '../player_input.dart';
 
