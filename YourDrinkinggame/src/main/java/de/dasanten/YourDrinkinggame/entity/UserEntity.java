@@ -1,6 +1,7 @@
 package de.dasanten.YourDrinkinggame.entity;
 
-import de.dasanten.YourDrinkinggame.entity.enums.AppRole;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.dasanten.YourDrinkinggame.entity.enums.UserRole;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,10 +24,12 @@ public class UserEntity {
 
     private String username;
 
+    private String eMail;
+
     private boolean banned;
 
     @Enumerated(EnumType.STRING)
-    private AppRole role;
+    private UserRole role;
 
     @OneToMany(mappedBy = "user")
     private List<FeedbackEntity> feedbacks;

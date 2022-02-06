@@ -23,6 +23,8 @@ public class FeedbackEntity {
 
     private String description;
 
+    private String answerAddress;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

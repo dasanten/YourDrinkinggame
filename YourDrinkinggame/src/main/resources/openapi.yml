@@ -16,6 +16,7 @@ tags:
   - name: Configure
   - name: Moderrating
   - name: Auth
+  - name: Feedback
 
 paths:
   /cardset:
@@ -30,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CardSetDtoList'
+                $ref: '#/components/schemas/CardSetBasicDtoList'
     post:
       operationId: addCardSet
       description: Adds Cardset with corresponding Cards.
@@ -62,6 +63,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/CardSetDto'
   /cardset/{id}:
+    get:
+      operationId: getCardSetById
+      description: Returns a Cardset by it's id with cards.
+      tags:
+        - Cardset
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON Cardset with it cards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDto'
     delete:
       operationId: deleteCardSet
       description: Adds Cardset with corresponding Cards.
@@ -273,7 +292,33 @@ paths:
       responses:
         '200':
           description:  Sucesfull deleted Card
-
+  /feedback:
+    get:
+      operationId: getUserFeedback
+      description: Gets all User Feedback
+      tags:
+        - Feedback
+      responses:
+        '200':
+          description:  A JSON of all Feedbacks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackDtoList'
+    post:
+      operationId: sendFeedback
+      description: Saves user Feedback
+      tags:
+        - Feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackDto'
+      responses:
+        '200':
+          description: Succesfully saved Feedback
 
   /auth:
     put:
@@ -304,16 +349,33 @@ components:
           type: string
         version:
           type: number
-        reports:
-          type: number
         nsfw:
           type: boolean
+        creator:
+          $ref: '#/components/schemas/UserBasicDto'
         cards:
           $ref: '#/components/schemas/CardDtoList'
     CardSetDtoList:
       type: array
       items:
         $ref: '#/components/schemas/CardSetDto'
+    CardSetBasicDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        nsfw:
+          type: boolean
+    CardSetBasicDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardSetBasicDto'
     CardDto:
       type: object
       properties:
@@ -335,6 +397,8 @@ components:
       properties:
         id:
           type: string
+        username:
+          type: string
         e-mail:
           type: string
         role:
@@ -343,27 +407,54 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/UserDto'
+    UserBasicDto:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+    UserBasicDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserBasicDto'
+
+    FeedbackDto:
+      type: object
+      properties:
+        id:
+          type: string
+        header:
+          type: string
+        description:
+          type: string
+        answerAddress:
+          type: string
+    FeedbackDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/FeedbackDto'
 
     CardType:
       type: string
       enum:
-        - standard
-        - later
-        - next
-        - clear
-        - game
+        - STANDARD
+        - LATER
+        - NEXT
+        - CLEAR
+        - GAME
     UserRole:
       type: string
       enum:
-        - superadmin
-        - admin
-        - moderator
-        - helper
-        - user
+        - SUPER_ADMIN
+        - ADMIN
+        - MODERATOR
+        - HELPER
+        - USER
     CardSetRole:
       type: string
       enum:
-        - owner
-        - admin
-        - moderator
+        - OWNER
+        - ADMIN
+        - MODERATOR
   

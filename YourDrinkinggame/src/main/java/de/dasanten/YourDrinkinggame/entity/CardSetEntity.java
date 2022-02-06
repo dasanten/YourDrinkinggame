@@ -21,7 +21,7 @@ public class CardSetEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id")
-    private CardSetTypeEntity type;
+    private CardSetCategoryEntity category;
 
     private String name;
 

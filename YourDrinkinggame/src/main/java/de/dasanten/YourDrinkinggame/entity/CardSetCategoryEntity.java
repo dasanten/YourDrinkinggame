@@ -8,11 +8,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "type")
+@Entity(name = "category")
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class CardSetTypeEntity {
+public class CardSetCategoryEntity {
 
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -21,7 +21,7 @@ public class CardSetTypeEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<CardSetEntity> cardSets;
 
 }
