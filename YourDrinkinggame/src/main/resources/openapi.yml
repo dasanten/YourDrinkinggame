@@ -55,6 +55,12 @@ paths:
       description: Edits Cardset with corresponding Cards.
       tags:
         - Cardset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardSetDto'
       responses:
         '200':
           description:  A JSON of edited Cardset
@@ -80,7 +86,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CardSetBasicDto'
+                $ref: '#/components/schemas/CardSetDto'
     delete:
       operationId: deleteCardSet
       description: Adds Cardset with corresponding Cards.
@@ -114,7 +120,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CardSetDto'
+                $ref: '#/components/schemas/CardSetBasicDto'
   /cardset/report/{id}:
     post:
       operationId: reportCardSet
@@ -133,7 +139,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CardSetDto'
+                $ref: '#/components/schemas/CardSetBasicDto'
 
   /configure/cardset/{cardSetId}/user/:
     get:

@@ -30,14 +30,16 @@ public interface CardSetMapper {
 
     @Named("cardSetCreators")
     default UserBasicDto cardSetCreator(List<CardSetRoleEntity> roles) {
-        CardSetRoleEntity foundCardSetRole = roles.stream()
-                .filter(cardSetRoleEntity -> cardSetRoleEntity.getRole().equals(CardSetRole.ADMIN))
-                .findAny().orElse(null);
-        if (foundCardSetRole!=null) {
-            UserBasicDto userBasicDto = new UserBasicDto();
-            userBasicDto.setId(foundCardSetRole.getUser().getId());
-            userBasicDto.setUsername(foundCardSetRole.getUser().getUsername());
-            return userBasicDto;
+        if(roles!=null) {
+            CardSetRoleEntity foundCardSetRole = roles.stream()
+                    .filter(cardSetRoleEntity -> cardSetRoleEntity.getRole().equals(CardSetRole.ADMIN))
+                    .findAny().orElse(null);
+            if (foundCardSetRole!=null) {
+                UserBasicDto userBasicDto = new UserBasicDto();
+                userBasicDto.setId(foundCardSetRole.getUser().getId());
+                userBasicDto.setUsername(foundCardSetRole.getUser().getUsername());
+                return userBasicDto;
+            }
         }
         return null;
     }
