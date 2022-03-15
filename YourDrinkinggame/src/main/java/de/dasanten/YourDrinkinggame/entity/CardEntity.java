@@ -24,7 +24,7 @@ public class CardEntity {
     @Enumerated(EnumType.STRING)
     private CardType type;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "card_id")
     private CardEntity relativeCard;
 

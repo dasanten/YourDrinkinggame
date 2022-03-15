@@ -22,9 +22,16 @@ paths:
   /cardset:
     get:
       operationId: getTopCardSets
-      description: Returns a list of top 20 Cardsets.
+      description: Returns a list of 20 Cardsets sorted by likes.
       tags:
         - Cardset
+      parameters:
+        - name: start
+          required: true
+          in: query
+          schema:
+            type: integer
+          description: Sets start point
       responses:
         '200':
           description: A JSON array of top 20 Cardsets
@@ -68,6 +75,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CardSetDto'
+  /cardset/search:
+    get:
+      operationId: searchCardSets
+      description: Returns a list of 20 Cardsets similar to query.
+      tags:
+        - Cardset
+      parameters:
+        - name: query
+          required: true
+          in: query
+          schema:
+            type: integer
+          description: Sets start point
+        - name: start
+          required: true
+          in: query
+          schema:
+            type: integer
+          description: Sets start point
+      responses:
+        '200':
+          description: A JSON array of top 20 Cardsets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDtoList'
   /cardset/{id}:
     get:
       operationId: getCardSetById

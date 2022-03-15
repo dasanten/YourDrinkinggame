@@ -29,12 +29,17 @@ public class CardSetController implements CardsetApi {
     }
 
     @Override
-    public ResponseEntity<List<CardSetBasicDto>> getTopCardSets() {
+    public ResponseEntity<List<CardSetBasicDto>> getTopCardSets(Integer start) {
         try {
-            return new ResponseEntity<>(cardSetService.getTopCardSets(), HttpStatus.CREATED);
+            return new ResponseEntity<>(cardSetService.getTopCardSets(start), HttpStatus.CREATED);
         } catch (IllegalArgumentException illegalArgumentException) {
             return new ResponseEntity(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public ResponseEntity<List<CardSetBasicDto>> searchCardSets(Integer query, Integer start) {
+        return CardsetApi.super.searchCardSets(query, start);
     }
 
     @Override

@@ -10,7 +10,11 @@ import de.dasanten.YourDrinkinggame.model.CardSetDto;
 import de.dasanten.YourDrinkinggame.repository.CardRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetCategoryRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
+import de.dasanten.YourDrinkinggame.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,9 +41,8 @@ public class CardSetService {
         throw new IllegalArgumentException("No CardSet with this id found!");
     }
 
-    public List<CardSetBasicDto> getTopCardSets() {
-        //TODO lazy loading list lernen
-        List<CardSetEntity> cardSetEntityList = cardSetRepository.findAll();
+    public List<CardSetBasicDto> getTopCardSets(int start) {
+        List<CardSetEntity> cardSetEntityList = cardSetRepository.getTopCardSets(start);
         List<CardSetBasicDto> cardSetDtoList = new ArrayList<>();
         cardSetEntityList.forEach(cardSet -> cardSetDtoList.add(cardSetMapper.toBasicDto(cardSet)));
         return cardSetDtoList;
