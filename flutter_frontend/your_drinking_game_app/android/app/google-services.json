@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1079576483928",
+    "project_id": "your-drinkinggame",
+    "storage_bucket": "your-drinkinggame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079576483928:android:fcd5b601e53761e1c2922d",
+        "android_client_info": {
+          "package_name": "de.dasanten.your_drinking_game_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ3KIaPHJuPXs6AKk8wz4IWNFlm49-C_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
