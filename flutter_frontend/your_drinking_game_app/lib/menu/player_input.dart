@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'game/card_display.dart';
@@ -16,9 +17,9 @@ class _PlayerInputState extends State<PlayerInput> {
 
   @override
   void initState() {
-    // _handleSignIn();
     super.initState();
     _controller = TextEditingController();
+    _handleSignIn();
   }
 
   @override
@@ -153,17 +154,18 @@ class _PlayerInputState extends State<PlayerInput> {
 
   
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
+    scopes: [ 
       'email',
       'openid'
     ],
   );
-Future<void> _handleSignIn() async {
-  try {
-    print((await _googleSignIn.signIn())?.authentication);
-  } catch (error) {
-    print(error);
+  
+  Future<void> _handleSignIn() async {
+    try {
+      GoogleSignInAccount ?googleSignInAccount = await _googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
   }
-}
   
 }
