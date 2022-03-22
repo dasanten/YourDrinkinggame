@@ -3,18 +3,13 @@ package de.dasanten.YourDrinkinggame.service;
 import de.dasanten.YourDrinkinggame.entity.CardEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetCategoryEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
-import de.dasanten.YourDrinkinggame.mapper.CardMapper;
 import de.dasanten.YourDrinkinggame.mapper.CardSetMapper;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
 import de.dasanten.YourDrinkinggame.repository.CardRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetCategoryRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
-import de.dasanten.YourDrinkinggame.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -93,9 +88,9 @@ public class CardSetService {
 
     private List<CardEntity> saveCards(CardSetEntity savedCardSet) {
         List<CardEntity> cardEntityList = savedCardSet.getCards();
-        cardEntityList.forEach(cardEntity -> {
-            cardEntity.setCardSet(savedCardSet);
-        });
+        cardEntityList.forEach(cardEntity ->
+            cardEntity.setCardSet(savedCardSet)
+        );
         return cardRepository.saveAll(cardEntityList);
     }
 

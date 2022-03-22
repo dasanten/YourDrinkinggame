@@ -1,4 +1,4 @@
-package de.dasanten.YourDrinkinggame.util;
+package de.dasanten.YourDrinkinggame.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;

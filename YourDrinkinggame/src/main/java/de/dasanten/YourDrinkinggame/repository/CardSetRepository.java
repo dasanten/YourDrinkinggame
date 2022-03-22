@@ -17,9 +17,9 @@ public interface CardSetRepository extends JpaRepository<CardSetEntity, String> 
                     "SELECT COUNT(l.card_set_id) FROM user_liked_sets l " +
                     "WHERE l.card_set_id = C.id " +
                     ") DESC " +
-                    "LIMIT 3 " +
+                    "LIMIT 20 " +
                     "OFFSET ?1",
             nativeQuery = true)
-    List<CardSetEntity> getTopCardSets(int start);
+    List<CardSetEntity> getTopCardSets(int offset);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,20 +22,12 @@ public class CardSetController implements CardsetApi {
 
     @Override
     public ResponseEntity<CardSetDto> getCardSetById(String id) {
-        try {
-            return new ResponseEntity<>(cardSetService.getCardSetById(id), HttpStatus.CREATED);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            return new ResponseEntity(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(cardSetService.getCardSetById(id), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<List<CardSetBasicDto>> getTopCardSets(Integer start) {
-        try {
-            return new ResponseEntity<>(cardSetService.getTopCardSets(start), HttpStatus.CREATED);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            return new ResponseEntity(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(cardSetService.getTopCardSets(start), HttpStatus.CREATED);
     }
 
     @Override
@@ -44,20 +37,12 @@ public class CardSetController implements CardsetApi {
 
     @Override
     public ResponseEntity<CardSetDto> addCardSet(CardSetDto cardSetDto) {
-        try {
-            return new ResponseEntity<>(cardSetService.addCardSet(cardSetDto), HttpStatus.CREATED);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            return new ResponseEntity(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(cardSetService.addCardSet(cardSetDto), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<CardSetDto> editCardSet(CardSetDto cardSetDto) {
-        try {
-            return new ResponseEntity<>(cardSetService.editCardSet(cardSetDto), HttpStatus.CREATED);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            return new ResponseEntity(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return new ResponseEntity<>(cardSetService.editCardSet(cardSetDto), HttpStatus.CREATED);
     }
 
     @Override
