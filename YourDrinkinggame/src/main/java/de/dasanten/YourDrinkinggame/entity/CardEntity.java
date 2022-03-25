@@ -29,7 +29,7 @@ public class CardEntity {
     private CardEntity relativeCard;
 
     @ManyToOne
-    @JoinColumn(name = "card_set_id")
+    @JoinColumn(name = "card_set_id", updatable = false)
     private CardSetEntity cardSet;
 
 }

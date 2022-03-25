@@ -27,7 +27,7 @@ public class CardSetController implements CardsetApi {
 
     @Override
     public ResponseEntity<List<CardSetBasicDto>> getTopCardSets(Integer start) {
-        return new ResponseEntity<>(cardSetService.getTopCardSets(start), HttpStatus.CREATED);
+        return new ResponseEntity<>(cardSetService.getTopCardSets(start), HttpStatus.OK);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class CardSetController implements CardsetApi {
 
     @Override
     public ResponseEntity<CardSetDto> editCardSet(CardSetDto cardSetDto) {
-        return new ResponseEntity<>(cardSetService.editCardSet(cardSetDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(cardSetService.editCardSet(cardSetDto), HttpStatus.OK);
     }
 
     @Override

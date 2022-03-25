@@ -362,16 +362,50 @@ paths:
   /auth:
     put:
       operationId: login
-      description: login with google
+      description: checks if user does exist
       tags:
         - Auth
       responses:
         '200':
-          description: Succesfull login
+          description: User mail
           content:
             application/json:
               schema:
                 type: string
+  /auth/userNameChange:
+    put:
+      operationId: changeUsername
+      description: changes Username
+      tags:
+        - Auth
+      parameters:
+        - name: username
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: New name
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/register:
+    post:
+      operationId: register
+      description: Registers new User
+      tags:
+        - Auth
+      parameters:
+        - name: username
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: User id
 
 components:
   schemas:

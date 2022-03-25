@@ -1,20 +1,19 @@
 package de.dasanten.YourDrinkinggame.service;
 
-import de.dasanten.YourDrinkinggame.entity.CardEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetCategoryEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
 import de.dasanten.YourDrinkinggame.mapper.CardSetMapper;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
-import de.dasanten.YourDrinkinggame.repository.CardRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetCategoryRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -22,7 +21,6 @@ import java.util.Optional;
 public class CardSetService {
 
     private final CardSetRepository cardSetRepository;
-    private final CardRepository cardRepository;
     private final CardSetCategoryRepository categoryRepository;
 
     private final CardSetMapper cardSetMapper;
@@ -43,7 +41,7 @@ public class CardSetService {
         return cardSetDtoList;
     }
 
-
+    @Transactional
     public CardSetDto addCardSet(CardSetDto cardSetDto) {
         if(cardSetDto.getId()!= null) {
             throw new IllegalArgumentException("Can't add with id");
@@ -54,8 +52,12 @@ public class CardSetService {
         CardSetCategoryEntity category = getCategoryFromDataBase(cardSetDto.getCategory());
         mappedCardSet.setCategory(category);
         CardSetEntity savedCardSet = cardSetRepository.save(mappedCardSet);
-        List<CardEntity> savedCards = saveCards(savedCardSet);
-        savedCardSet.setCards(savedCards);
+        savedCardSet.getCards().forEach(cardEntity -> {
+            cardEntity.setCardSet(savedCardSet);
+            if (cardEntity.getRelativeCard()!=null) {
+                cardEntity.getRelativeCard().setCardSet(savedCardSet);
+            }
+        });
         return  cardSetMapper.toDto(savedCardSet);
     }
 
@@ -66,12 +68,26 @@ public class CardSetService {
             throw new IllegalArgumentException("Can't edit without id");
         }
         validation(cardSetDto);
-        CardSetEntity dbCardSet = cardSetRepository.getById(cardSetDto.getId());
+        Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDto.getId());
+        if (cardSetEntityOptional.isEmpty()){
+            throw new NoSuchElementException("No CardSet with given id");
+        }
+        CardSetEntity dbCardSet = cardSetEntityOptional.get();
         CardSetEntity mappedCardSet = cardSetMapper.toEntity(cardSetDto);
         mappedCardSet.setVersion(dbCardSet.getVersion()+1);
-        mappedCardSet.setCards(editCards(dbCardSet, mappedCardSet));
+        mappedCardSet.getCards().forEach(cardEntity -> {
+            cardEntity.setCardSet(mappedCardSet);
+            if (cardEntity.getRelativeCard()!=null) {
+                cardEntity.getRelativeCard().setCardSet(mappedCardSet);
+            }
+        });
         CardSetEntity editedCardSet = cardSetRepository.save(mappedCardSet);
         return cardSetMapper.toDto(editedCardSet);
+    }
+
+    private CardSetCategoryEntity getCategoryFromDataBase(String categoryName) {
+        Optional<CardSetCategoryEntity> category = categoryRepository.findByName(categoryName);
+        return category.orElse(null);
     }
 
     private void validation(CardSetDto cardSetDto) {
@@ -86,62 +102,7 @@ public class CardSetService {
         }
     }
 
-    private List<CardEntity> saveCards(CardSetEntity savedCardSet) {
-        List<CardEntity> cardEntityList = savedCardSet.getCards();
-        cardEntityList.forEach(cardEntity ->
-            cardEntity.setCardSet(savedCardSet)
-        );
-        return cardRepository.saveAll(cardEntityList);
-    }
-
-    private List<CardEntity> editCards(CardSetEntity dbCardSet, CardSetEntity mappedCardSet) {
-        //find removed sets
-        List<CardEntity> finalCards = new ArrayList<>();
-        List<CardEntity> removeList = new ArrayList<>();
-        for (CardEntity dtoCard: mappedCardSet.getCards()) {
-            Optional<CardEntity> card = dbCardSet.getCards()
-                    .stream()
-                    .filter(cardEntity -> cardEntity.getId().equals(dtoCard.getId()))
-                    .findAny();
-            if (card.isPresent()) {
-                finalCards.add(card.get());
-                CardEntity dbCardEntity = card.get();
-                dbCardEntity.setContent(dtoCard.getContent());
-                dbCardEntity.setType(dtoCard.getType());
-                if (dtoCard.getRelativeCard() != null) {
-                    if(dbCardEntity.getRelativeCard()==null) {
-                        dbCardEntity.setRelativeCard(new CardEntity());
-                    }
-                    dbCardEntity.getRelativeCard().setContent(dtoCard.getRelativeCard().getContent());
-                    dbCardEntity.getRelativeCard().setType(dtoCard.getRelativeCard().getType());
-                } else {
-                    if(dbCardEntity.getRelativeCard()!=null) {
-                        removeList.add(dbCardEntity.getRelativeCard());
-                    }
-                    dbCardEntity.setRelativeCard(null);
-                }
-            } else {
-                dtoCard.setCardSet(dbCardSet);
-                finalCards.add(dtoCard);
-            }
-        }
-        dbCardSet.getCards().forEach(cardEntity -> {
-            if(finalCards.stream().noneMatch(cardEntity1 -> Objects.equals(cardEntity1.getId(), cardEntity.getId()))) {
-                removeList.add(cardEntity);
-            }
-        });
-        cardRepository.deleteAll(removeList);
-        List<CardEntity> savedCards =  cardRepository.saveAll(finalCards);
-        for (CardEntity card: savedCards) {
-            if(card.getRelativeCard()!=null) {
-                card.setRelativeCard(cardRepository.save(card.getRelativeCard()));
-            }
-        }
-        return savedCards;
-    }
-
-    private CardSetCategoryEntity getCategoryFromDataBase(String categoryName) {
-        Optional<CardSetCategoryEntity> category = categoryRepository.findByName(categoryName);
-        return category.orElse(null);
+    private boolean isOwner() {
+        return true;
     }
 }

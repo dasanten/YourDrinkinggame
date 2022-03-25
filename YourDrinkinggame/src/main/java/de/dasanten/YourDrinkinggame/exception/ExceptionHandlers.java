@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.MethodNotAllowedException;
 
 import java.util.NoSuchElementException;
 
@@ -18,6 +19,16 @@ public class ExceptionHandlers {
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<ApiException> handleBadRequestExceptions(Exception e) {
         return createApiExceptionResponse(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {MethodNotAllowedException.class})
+    public ResponseEntity<ApiException> handleForbiddenExceptions(Exception e) {
+        return createApiExceptionResponse(e, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiException> handleInternalErrorExceptions(Exception e) {
+        return createApiExceptionResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<ApiException> createApiExceptionResponse(Exception e, HttpStatus httpStatus) {
