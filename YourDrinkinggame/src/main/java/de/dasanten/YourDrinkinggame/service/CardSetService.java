@@ -6,6 +6,7 @@ import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
 import de.dasanten.YourDrinkinggame.entity.UserEntity;
 import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
 import de.dasanten.YourDrinkinggame.entity.keys.CardSetRoleKey;
+import de.dasanten.YourDrinkinggame.exception.custom.MissingPermissionException;
 import de.dasanten.YourDrinkinggame.mapper.CardSetMapper;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
@@ -17,11 +18,9 @@ import de.dasanten.YourDrinkinggame.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.MethodNotAllowedException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -46,6 +45,13 @@ public class CardSetService {
 
     public List<CardSetBasicDto> getTopCardSets(int start) {
         List<CardSetEntity> cardSetEntityList = cardSetRepository.getTopCardSets(start);
+        List<CardSetBasicDto> cardSetDtoList = new ArrayList<>();
+        cardSetEntityList.forEach(cardSet -> cardSetDtoList.add(cardSetMapper.toBasicDto(cardSet)));
+        return cardSetDtoList;
+    }
+
+    public List<CardSetBasicDto> searchCardSets(int start, String query) {
+        List<CardSetEntity> cardSetEntityList = cardSetRepository.search(start, query);
         List<CardSetBasicDto> cardSetDtoList = new ArrayList<>();
         cardSetEntityList.forEach(cardSet -> cardSetDtoList.add(cardSetMapper.toBasicDto(cardSet)));
         return cardSetDtoList;
@@ -90,7 +96,6 @@ public class CardSetService {
     }
 
     public CardSetDto editCardSet(CardSetDto cardSetDto) {
-        //TODO Berechtigungs check einbauen
         if(cardSetDto.getId().isEmpty()) {
             throw new IllegalArgumentException("Can't edit without id");
         }
@@ -101,6 +106,17 @@ public class CardSetService {
         }
         CardSetEntity dbCardSet = cardSetEntityOptional.get();
         CardSetEntity mappedCardSet = cardSetMapper.toEntity(cardSetDto);
+        if (!hasRole(dbCardSet.getCardSetRoles())) {
+            throw new MissingPermissionException("No permissions for cardset");
+        }
+        if (!(mappedCardSet.getName().equals(dbCardSet.getName())
+                &&  mappedCardSet.getDescription().equals(dbCardSet.getDescription())
+                && mappedCardSet.isNsfw()!=dbCardSet.isNsfw())) {
+            if (!checkForRole(dbCardSet.getCardSetRoles(), CardSetRole.OWNER, CardSetRole.ADMIN)) {
+                throw new MissingPermissionException("Just Admins or Owner can change Description");
+            }
+        }
+
         mappedCardSet.setVersion(dbCardSet.getVersion()+1);
         mappedCardSet.getCards().forEach(cardEntity -> {
             cardEntity.setCardSet(mappedCardSet);
@@ -129,7 +145,17 @@ public class CardSetService {
         }
     }
 
-    private boolean isOwner() {
-        return true;
+    private boolean checkForRole(List<CardSetRoleEntity> cardSetRoles, CardSetRole ...role) {
+        return cardSetRoles.stream()
+            .anyMatch(cardSetRoleEntity ->
+                (cardSetRoleEntity.getUser().getId().equals(SecurityUtil.getAuthId())
+                && Arrays.stream(role).anyMatch(role1 -> role1.equals(cardSetRoleEntity.getRole()))));
     }
+
+    private boolean hasRole(List<CardSetRoleEntity> cardSetRoles) {
+        return cardSetRoles.stream()
+            .anyMatch(cardSetRoleEntity -> cardSetRoleEntity.getUser().getId().equals(SecurityUtil.getAuthId()));
+    }
+
+
 }

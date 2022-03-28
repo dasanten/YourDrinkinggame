@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,8 +30,8 @@ public class CardSetController implements CardsetApi {
     }
 
     @Override
-    public ResponseEntity<List<CardSetBasicDto>> searchCardSets(Integer query, Integer start) {
-        return CardsetApi.super.searchCardSets(query, start);
+    public ResponseEntity<List<CardSetBasicDto>> searchCardSets(String query, Integer start) {
+        return new ResponseEntity<>(cardSetService.searchCardSets(start, query), HttpStatus.OK);
     }
 
     @Override

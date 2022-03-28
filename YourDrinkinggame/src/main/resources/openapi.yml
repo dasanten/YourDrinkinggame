@@ -86,7 +86,7 @@ paths:
           required: true
           in: query
           schema:
-            type: integer
+            type: string
           description: Sets start point
         - name: start
           required: true

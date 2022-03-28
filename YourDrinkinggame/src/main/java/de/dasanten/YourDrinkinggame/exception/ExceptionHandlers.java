@@ -1,5 +1,6 @@
 package de.dasanten.YourDrinkinggame.exception;
 
+import de.dasanten.YourDrinkinggame.exception.custom.MissingPermissionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,7 +22,7 @@ public class ExceptionHandlers {
         return createApiExceptionResponse(e, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {MethodNotAllowedException.class})
+    @ExceptionHandler(value = {MissingPermissionException.class})
     public ResponseEntity<ApiException> handleForbiddenExceptions(Exception e) {
         return createApiExceptionResponse(e, HttpStatus.FORBIDDEN);
     }

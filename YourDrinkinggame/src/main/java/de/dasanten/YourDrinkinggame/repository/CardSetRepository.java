@@ -39,7 +39,4 @@ public interface CardSetRepository extends JpaRepository<CardSetEntity, String> 
             nativeQuery = true)
     List<CardSetEntity> search(int offset, String search);
 
-    @Query("SELECT CR.role FROM card_set_role CR WHERE CR.user = ?2 AND CR.cardSet = ?1")
-    CardSetRole userRole(String cardSetId, String userId);
-
 }
