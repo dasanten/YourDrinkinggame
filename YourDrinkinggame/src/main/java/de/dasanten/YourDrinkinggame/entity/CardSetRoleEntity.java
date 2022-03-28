@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "card_set_role")
 @RequiredArgsConstructor
 @Getter
 @Setter
@@ -27,6 +27,7 @@ public class CardSetRoleEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
+    @Enumerated(EnumType.STRING)
     private CardSetRole role;
 
 }

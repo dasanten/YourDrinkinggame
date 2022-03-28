@@ -36,7 +36,7 @@ public class CardSetEntity {
     @OneToMany(mappedBy = "cardSet", cascade =CascadeType.ALL, orphanRemoval = true)
     private List<CardEntity> cards;
 
-    @OneToMany(mappedBy = "cardSet")
+    @OneToMany(mappedBy = "cardSet", cascade = CascadeType.ALL)
     private List<CardSetRoleEntity> cardSetRoles;
 
     @ManyToMany

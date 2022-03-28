@@ -18,8 +18,6 @@ import java.util.List;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid2")
     private String id;
 
     private String username;

@@ -2,11 +2,18 @@ package de.dasanten.YourDrinkinggame.service;
 
 import de.dasanten.YourDrinkinggame.entity.CardSetCategoryEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
+import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
+import de.dasanten.YourDrinkinggame.entity.UserEntity;
+import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
+import de.dasanten.YourDrinkinggame.entity.keys.CardSetRoleKey;
 import de.dasanten.YourDrinkinggame.mapper.CardSetMapper;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
 import de.dasanten.YourDrinkinggame.repository.CardSetCategoryRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
+import de.dasanten.YourDrinkinggame.repository.CardSetRoleRepository;
+import de.dasanten.YourDrinkinggame.repository.UserRepository;
+import de.dasanten.YourDrinkinggame.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +30,8 @@ public class CardSetService {
 
     private final CardSetRepository cardSetRepository;
     private final CardSetCategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final CardSetRoleRepository cardSetRoleRepository;
 
     private final CardSetMapper cardSetMapper;
 
@@ -47,10 +57,11 @@ public class CardSetService {
             throw new IllegalArgumentException("Can't add with id");
         }
         validation(cardSetDto);
-        //TODO Logik für Owner setzen
         CardSetEntity mappedCardSet = cardSetMapper.toEntity(cardSetDto);
         CardSetCategoryEntity category = getCategoryFromDataBase(cardSetDto.getCategory());
         mappedCardSet.setCategory(category);
+        mappedCardSet.setCardSetRoles(new ArrayList<>());
+        mappedCardSet.getCardSetRoles().add(createOwner(mappedCardSet));
         CardSetEntity savedCardSet = cardSetRepository.save(mappedCardSet);
         savedCardSet.getCards().forEach(cardEntity -> {
             cardEntity.setCardSet(savedCardSet);
@@ -61,6 +72,22 @@ public class CardSetService {
         return  cardSetMapper.toDto(savedCardSet);
     }
 
+    private CardSetRoleEntity createOwner(CardSetEntity cardSet) {
+        Optional<UserEntity> userEntityOptional = userRepository.findById(SecurityUtil.getAuthId());
+        if (userEntityOptional.isEmpty()) {
+            throw new IllegalArgumentException("User does not exist");
+        }
+        UserEntity user = userEntityOptional.get();
+        CardSetRoleEntity cardSetRoleEntity = new CardSetRoleEntity();
+        cardSetRoleEntity.setRole(CardSetRole.OWNER);
+        cardSetRoleEntity.setUser(user);
+        cardSetRoleEntity.setCardSet(cardSet);
+        CardSetRoleKey cardSetRoleKey = new CardSetRoleKey();
+        cardSetRoleKey.setCardSetId(cardSet.getId());
+        cardSetRoleKey.setUserId(user.getId());
+        cardSetRoleEntity.setId(cardSetRoleKey);
+        return cardSetRoleEntity;
+    }
 
     public CardSetDto editCardSet(CardSetDto cardSetDto) {
         //TODO Berechtigungs check einbauen
