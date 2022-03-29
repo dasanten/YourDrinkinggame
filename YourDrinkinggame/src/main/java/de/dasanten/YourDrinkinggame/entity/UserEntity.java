@@ -35,6 +35,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<CardSetRoleEntity> cardSetRoles;
 
-    @ManyToMany(mappedBy = "likes")
+    @ManyToMany(mappedBy = "likes", cascade = CascadeType.ALL)
     private List<CardSetEntity> likedSets;
 }

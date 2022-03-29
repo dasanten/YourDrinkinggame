@@ -46,16 +46,19 @@ public class CardSetController implements CardsetApi {
 
     @Override
     public ResponseEntity<Void> deleteCardSet(String id) {
-        return CardsetApi.super.deleteCardSet(id);
+        cardSetService.deleteCardSet(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CardSetBasicDto> favorCardSet(String id) {
-        return CardsetApi.super.favorCardSet(id);
+        cardSetService.favor(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<CardSetBasicDto> reportCardSet(String id) {
-        return CardsetApi.super.reportCardSet(id);
+        cardSetService.report(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

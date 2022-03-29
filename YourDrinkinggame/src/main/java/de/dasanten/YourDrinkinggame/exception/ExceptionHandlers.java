@@ -27,11 +27,6 @@ public class ExceptionHandlers {
         return createApiExceptionResponse(e, HttpStatus.FORBIDDEN);
     }
 
-//    @ExceptionHandler
-//    public ResponseEntity<ApiException> handleInternalErrorExceptions(Exception e) {
-//        return createApiExceptionResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-
     private ResponseEntity<ApiException> createApiExceptionResponse(Exception e, HttpStatus httpStatus) {
         ApiException apiException = new ApiException(e.getMessage(), httpStatus);
         return new ResponseEntity<>(apiException, httpStatus);
