@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.Role;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CardSetRepository extends JpaRepository<CardSetEntity, String> {
@@ -40,6 +41,8 @@ public interface CardSetRepository extends JpaRepository<CardSetEntity, String> 
                     "WHERE C.name LIKE %?2%",
             nativeQuery = true)
     List<CardSetEntity> search(int offset, String search);
+
+    Optional<CardSetEntity> findByCardsId(String cardId);
 
     @Transactional
     @Modifying

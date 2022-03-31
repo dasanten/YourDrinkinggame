@@ -14,6 +14,7 @@ public interface UserMapper {
     @Mapping(target = "cardSetRoles", ignore = true)
     @Mapping(target = "banned", ignore = true)
     @Mapping(target = "EMail", source = "eMail")
+    @Mapping(target = "strikes", ignore = true)
     UserEntity toEntity(UserDto userDto);
 
     @Mapping(target = "eMail", source = "EMail")

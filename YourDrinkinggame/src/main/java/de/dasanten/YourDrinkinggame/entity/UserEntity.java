@@ -26,6 +26,8 @@ public class UserEntity {
 
     private boolean banned;
 
+    private int strikes;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
