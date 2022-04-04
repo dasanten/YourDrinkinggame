@@ -50,7 +50,7 @@ public class ConfigureService {
         if (userRole.ordinal() >= promoteRole.ordinal()) {
             throw new MissingPermissionException("User has not the permission to set this role");
         }
-        CardSetRoleEntity cardSetRole = createUserRole(cardSet, user, promoteRole);
+        CardSetRoleEntity cardSetRole = createUserRole(cardSet, promoteUser, promoteRole);
         cardSetRoleRepository.save(cardSetRole);
         return userMapper.toDto(promoteUser);
     }
