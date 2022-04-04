@@ -134,6 +134,9 @@ public class CardSetService {
             throw new IllegalArgumentException("Cardset does not exist");
         }
         CardSetEntity cardSet = cardSetEntityOptional.get();
+        if (cardSet.getLikes().stream().anyMatch(user -> user.getId().equals(SecurityUtil.getAuthId()))) {
+            throw new IllegalArgumentException("CardSet already liked");
+        }
         cardSet.getLikes().add(userEntityOptional.get());
         cardSetRepository.save(cardSet);
     }
