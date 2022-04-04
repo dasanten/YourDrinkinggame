@@ -1,10 +1,16 @@
 package de.dasanten.YourDrinkinggame.mapper;
 
+import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
 import de.dasanten.YourDrinkinggame.entity.UserEntity;
+import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
 import de.dasanten.YourDrinkinggame.model.UserBasicDto;
 import de.dasanten.YourDrinkinggame.model.UserDto;
+import de.dasanten.YourDrinkinggame.model.UserWithCardSetRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -21,5 +27,8 @@ public interface UserMapper {
     UserDto toDto(UserEntity userEntity);
 
     UserBasicDto toBasicDto(UserEntity userEntity);
+
+    @Mapping(target = "role", source = "cardSetRole")
+    UserWithCardSetRole toWithCardSetRole(UserEntity user, CardSetRole cardSetRole);
 
 }

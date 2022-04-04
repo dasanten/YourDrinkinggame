@@ -2,6 +2,7 @@ package de.dasanten.YourDrinkinggame.util;
 
 import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
+import de.dasanten.YourDrinkinggame.entity.UserEntity;
 import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
 import de.dasanten.YourDrinkinggame.security.SecurityUtil;
@@ -33,6 +34,11 @@ public class CardSetUtil {
     public static boolean hasRole(List<CardSetRoleEntity> cardSetRoles) {
         return cardSetRoles.stream()
                 .anyMatch(cardSetRoleEntity -> cardSetRoleEntity.getUser().getId().equals(SecurityUtil.getAuthId()));
+    }
+
+    public static CardSetRoleEntity getUserRole(List<CardSetRoleEntity> cardSetRoles, UserEntity user) {
+        return cardSetRoles.stream()
+                .filter(cardSetRoleEntity -> cardSetRoleEntity.getUser().getId().equals(user.getId())).findAny().orElseThrow(() -> new IllegalArgumentException("User has no Role"));
     }
 
     public static boolean mainSettingsChanged(CardSetEntity dbCardSet, CardSetEntity newCardSet) {

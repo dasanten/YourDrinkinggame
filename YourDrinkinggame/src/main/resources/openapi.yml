@@ -192,7 +192,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDtoList'
+                $ref: '#/components/schemas/UserWithCardSetRoleList'
   /configure/cardset/{cardSetId}/user/{e-mail}:
     put:
       operationId: cardSetChangeUserRole
@@ -491,6 +491,20 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/UserBasicDto'
+    UserWithCardSetRole:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        role:
+          $ref: '#/components/schemas/CardSetRole'
+    UserWithCardSetRoleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserWithCardSetRole'
+
 
     FeedbackDto:
       type: object
