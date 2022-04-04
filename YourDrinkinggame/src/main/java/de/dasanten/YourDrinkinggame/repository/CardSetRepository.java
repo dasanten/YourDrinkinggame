@@ -32,13 +32,13 @@ public interface CardSetRepository extends JpaRepository<CardSetEntity, String> 
     @Query(value =
             "SELECT * " +
                     "FROM card_set C " +
+                    "WHERE C.name LIKE %?2% " +
                     "ORDER BY (" +
                     "SELECT COUNT(l.card_set_id) FROM user_liked_sets l " +
                     "WHERE l.card_set_id = C.id " +
                     ") DESC " +
                     "LIMIT 20 " +
-                    "OFFSET ?1" +
-                    "WHERE C.name LIKE %?2%",
+                    "OFFSET ?1 ",
             nativeQuery = true)
     List<CardSetEntity> search(int offset, String search);
 

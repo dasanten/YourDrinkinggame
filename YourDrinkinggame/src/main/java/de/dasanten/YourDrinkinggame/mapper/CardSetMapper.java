@@ -32,7 +32,7 @@ public interface CardSetMapper {
     default UserBasicDto cardSetCreator(List<CardSetRoleEntity> roles) {
         if(roles!=null) {
             CardSetRoleEntity foundCardSetRole = roles.stream()
-                    .filter(cardSetRoleEntity -> cardSetRoleEntity.getRole().equals(CardSetRole.ADMIN))
+                    .filter(cardSetRoleEntity -> cardSetRoleEntity.getRole().equals(CardSetRole.OWNER))
                     .findAny().orElse(null);
             if (foundCardSetRole!=null) {
                 UserBasicDto userBasicDto = new UserBasicDto();

@@ -90,6 +90,8 @@ public class CardSetService {
             throw new MissingPermissionException("No permissions for cardset");
         }
         CardSetEntity mappedCardSet = cardSetMapper.toEntity(cardSetDto);
+        CardSetCategoryEntity category = getCategoryFromDataBase(cardSetDto.getCategory());
+        mappedCardSet.setCategory(category);
         if (!mainSettingsChanged(dbCardSet, mappedCardSet)) {
             if (!checkForRole(dbCardSet.getCardSetRoles(), CardSetRole.OWNER, CardSetRole.ADMIN)) {
                 throw new MissingPermissionException("Just Admins or Owner can change Description");
