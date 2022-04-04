@@ -316,7 +316,7 @@ paths:
       responses:
         '200':
           description:  Sucesfull deleted CardSet
-  /moderating/cardSet/{cardId}:
+  /moderating/card/{cardId}:
     delete:
       operationId: modRemoveCard
       description: Remove Card as Moderator.

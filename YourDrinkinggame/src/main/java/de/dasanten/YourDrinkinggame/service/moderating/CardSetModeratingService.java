@@ -4,6 +4,7 @@ import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
 import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
 import de.dasanten.YourDrinkinggame.entity.UserEntity;
 import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
+import de.dasanten.YourDrinkinggame.entity.enums.UserRole;
 import de.dasanten.YourDrinkinggame.exception.custom.MissingPermissionException;
 import de.dasanten.YourDrinkinggame.repository.CardRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
@@ -39,6 +40,10 @@ public class CardSetModeratingService {
         }
         CardSetEntity cardSet = cardSetEntityOptional.get();
         validateUserCardSetPermission(cardSet, user);
+        userRepository.strike(cardSet.getCardSetRoles().stream()
+                .filter(cardSetRoleEntity ->
+                    cardSetRoleEntity.getRole().equals(CardSetRole.OWNER)).findAny()
+                    .orElseThrow(()-> new IllegalArgumentException("User does not exist")).getUser().getId());
         cardSetRepository.deleteById(cardSetId);
     }
 
@@ -63,7 +68,7 @@ public class CardSetModeratingService {
     private void validateUserCardSetPermission(CardSetEntity cardSet, UserEntity user) {
         if (isMod(cardSet.getCardSetRoles().stream()
                 .filter(cardSetRoleEntity -> cardSetRoleEntity.getRole().equals(CardSetRole.OWNER))
-                .findAny().orElse(new CardSetRoleEntity()).getUser().getRole()) && !isAdmin(user.getRole())) {
+                .findAny().orElseThrow(() -> new IllegalArgumentException("User does not exist")).getUser().getRole()) && !isAdmin(user.getRole())) {
             throw new MissingPermissionException("You are not allowed to delete a set from user with permission");
         }
     }
