@@ -60,12 +60,20 @@ public class CardSetService {
         if(cardSetDto.getId()!= null) {
             throw new IllegalArgumentException("Can't add with id");
         }
+        Optional<UserEntity> userEntityOptional = userRepository.findById(SecurityUtil.getAuthId());
+        if (userEntityOptional.isEmpty()) {
+            throw new IllegalArgumentException("User does not exist");
+        }
+        UserEntity user = userEntityOptional.get();
+        if (user.isBanned()) {
+            throw new MissingPermissionException("You are banned");
+        }
         validation(cardSetDto);
         CardSetEntity mappedCardSet = cardSetMapper.toEntity(cardSetDto);
         CardSetCategoryEntity category = getCategoryFromDataBase(cardSetDto.getCategory());
         mappedCardSet.setCategory(category);
         mappedCardSet.setCardSetRoles(new ArrayList<>());
-        mappedCardSet.getCardSetRoles().add(createOwner(mappedCardSet));
+        mappedCardSet.getCardSetRoles().add(createOwner(mappedCardSet, user));
         CardSetEntity savedCardSet = cardSetRepository.save(mappedCardSet);
         savedCardSet.getCards().forEach(cardEntity -> {
             cardEntity.setCardSet(savedCardSet);
@@ -77,6 +85,13 @@ public class CardSetService {
     }
 
     public CardSetDto editCardSet(CardSetDto cardSetDto) {
+        Optional<UserEntity> user = userRepository.findById(SecurityUtil.getAuthId());
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("User does not exist");
+        }
+        if (user.get().isBanned()) {
+            throw new MissingPermissionException("You are banned");
+        }
         if(cardSetDto.getId().isEmpty()) {
             throw new IllegalArgumentException("Can't edit without id");
         }
@@ -146,12 +161,7 @@ public class CardSetService {
         return category.orElse(null);
     }
 
-    private CardSetRoleEntity createOwner(CardSetEntity cardSet) {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(SecurityUtil.getAuthId());
-        if (userEntityOptional.isEmpty()) {
-            throw new IllegalArgumentException("User does not exist");
-        }
-        UserEntity user = userEntityOptional.get();
+    private CardSetRoleEntity createOwner(CardSetEntity cardSet, UserEntity user) {
         CardSetRoleEntity cardSetRoleEntity = new CardSetRoleEntity();
         cardSetRoleEntity.setRole(CardSetRole.OWNER);
         cardSetRoleEntity.setUser(user);

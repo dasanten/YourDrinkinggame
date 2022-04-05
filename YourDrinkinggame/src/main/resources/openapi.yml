@@ -174,7 +174,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CardSetBasicDto'
 
-  /configure/cardset/{cardSetId}/user/:
+  /configure/cardset/{cardSetId}/user:
     get:
       operationId: getCardSetSpecialUsers
       description: Gets List of special Users of Cardset.
