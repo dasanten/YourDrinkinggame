@@ -1,0 +1,554 @@
+openapi: 3.0.0
+
+info:
+  title: Your Drinkinggame API
+  description: API for \"Dein Trinkspiel"
+  version: 0.1.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local Test Server
+  - url: https://dasanten.de:8080
+    description: Production Server
+
+tags:
+  - name: Cardset
+  - name: Configure
+  - name: Moderrating
+  - name: Auth
+  - name: Feedback
+
+paths:
+  /cardset:
+    get:
+      operationId: getTopCardSets
+      description: Returns a list of 20 Cardsets sorted by likes.
+      tags:
+        - Cardset
+      parameters:
+        - name: start
+          required: true
+          in: query
+          schema:
+            type: integer
+          description: Sets amount of skipped sets
+      responses:
+        '200':
+          description: A JSON array of top 20 Cardsets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDtoList'
+    post:
+      operationId: addCardSet
+      description: Adds Cardset with corresponding Cards.
+      tags:
+        - Cardset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardSetDto'
+      responses:
+        '203':
+          description: A JSON of added Cardset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetDto'
+    put:
+      operationId: editCardSet
+      description: Edits Cardset with corresponding Cards.
+      tags:
+        - Cardset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardSetDto'
+      responses:
+        '200':
+          description:  A JSON of edited Cardset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetDto'
+  /cardset/search:
+    get:
+      operationId: searchCardSets
+      description: Returns a list of 20 Cardsets similar to query.
+      tags:
+        - Cardset
+      parameters:
+        - name: query
+          required: true
+          in: query
+          schema:
+            type: string
+          description: Sets start point
+        - name: start
+          required: true
+          in: query
+          schema:
+            type: integer
+          description: Sets start point
+      responses:
+        '200':
+          description: A JSON array of top 20 Cardsets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDtoList'
+  /cardset/{id}:
+    get:
+      operationId: getCardSetById
+      description: Returns a Cardset by it's id with cards.
+      tags:
+        - Cardset
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON Cardset with it cards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetDto'
+    delete:
+      operationId: deleteCardSet
+      description: Adds Cardset with corresponding Cards.
+      tags:
+        - Cardset
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted Cardset
+
+  /cardset/favor/{id}:
+    post:
+      operationId: favorCardSet
+      description: Favors Cardset.
+      tags:
+        - Cardset
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  A JSON of favored Cardset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDto'
+  /cardset/report/{id}:
+    post:
+      operationId: reportCardSet
+      description: Reports Cardset.
+      tags:
+        - Cardset
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  A JSON of reported Cardset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetBasicDto'
+
+  /configure/cardset/{cardSetId}/user:
+    get:
+      operationId: getCardSetSpecialUsers
+      description: Gets List of special Users of Cardset.
+      tags:
+        - Configure
+      parameters:
+        - in: path
+          name: cardSetId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A JSON of all User with special permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithCardSetRoleList'
+  /configure/cardset/{cardSetId}/user/{e-mail}:
+    put:
+      operationId: cardSetChangeUserRole
+      description: Changes Role of User for Cardset.
+      tags:
+        - Configure
+      parameters:
+        - in: path
+          name: cardSetId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: e-mail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardSetRole'
+      responses:
+        '200':
+          description: A JSON of changed user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+
+  /moderating/ban/:
+    get:
+      operationId: getBannedUsers
+      description: Gets all currently banned Users
+      tags:
+        - Moderrating
+      responses:
+        '200':
+          description:  A JSON of all banned Users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoList'
+
+  /moderating/ban/{userId}:
+    post:
+      operationId: banUser
+      description: Bans User.
+      tags:
+        - Moderrating
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  A JSON of banned User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+  /moderating/unban/{userId}:
+    put:
+      operationId: unbanUser
+      description: Unbans User.
+      tags:
+        - Moderrating
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  A JSON of unbanned User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+  /moderating/role/{e-mail}:
+    post:
+      operationId: setUserRole
+      description: Changes User role.
+      tags:
+        - Moderrating
+      parameters:
+        - in: path
+          name: e-mail
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRole'
+      responses:
+        '200':
+          description:  A JSON of reported Cardset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+  /moderating/cardSet/{cardSetId}:
+    delete:
+      operationId: modRemoveCardSet
+      description: Remove Cardset as Moderator.
+      tags:
+        - Moderrating
+      parameters:
+        - in: path
+          name: cardSetId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  Sucesfull deleted CardSet
+  /moderating/card/{cardId}:
+    delete:
+      operationId: modRemoveCard
+      description: Remove Card as Moderator.
+      tags:
+        - Moderrating
+      parameters:
+        - in: path
+          name: cardId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description:  Sucesfull deleted Card
+  /feedback:
+    get:
+      operationId: getUserFeedback
+      description: Gets all User Feedback
+      tags:
+        - Feedback
+      responses:
+        '200':
+          description:  A JSON of all Feedbacks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackDtoList'
+    post:
+      operationId: sendFeedback
+      description: Saves user Feedback
+      tags:
+        - Feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackDto'
+      responses:
+        '200':
+          description: Succesfully saved Feedback
+
+  /auth:
+    put:
+      operationId: login
+      description: checks if user does exist
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: User mail
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/userNameChange:
+    put:
+      operationId: changeUsername
+      description: changes Username
+      tags:
+        - Auth
+      parameters:
+        - name: username
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: New name
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/register:
+    post:
+      operationId: register
+      description: Registers new User
+      tags:
+        - Auth
+      parameters:
+        - name: username
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: User id
+
+components:
+  schemas:
+    CardSetDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        version:
+          type: number
+        nsfw:
+          type: boolean
+        creator:
+          $ref: '#/components/schemas/UserBasicDto'
+        cards:
+          $ref: '#/components/schemas/CardDtoList'
+    CardSetDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardSetDto'
+    CardSetBasicDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        nsfw:
+          type: boolean
+    CardSetBasicDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardSetBasicDto'
+    CardDto:
+      type: object
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+        card:
+          $ref: '#/components/schemas/CardDto'
+        type:
+          $ref: '#/components/schemas/CardType'
+    CardDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardDto'
+
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        e-mail:
+          type: string
+        role:
+          $ref: '#/components/schemas/UserRole'
+    UserDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserDto'
+    UserBasicDto:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+    UserBasicDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserBasicDto'
+    UserWithCardSetRole:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        role:
+          $ref: '#/components/schemas/CardSetRole'
+    UserWithCardSetRoleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserWithCardSetRole'
+
+
+    FeedbackDto:
+      type: object
+      properties:
+        id:
+          type: string
+        header:
+          type: string
+        description:
+          type: string
+        answerAddress:
+          type: string
+    FeedbackDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/FeedbackDto'
+
+    CardType:
+      type: string
+      enum:
+        - STANDARD
+        - LATER
+        - NEXT
+        - CLEAR
+        - GAME
+    UserRole:
+      type: string
+      enum:
+        - SUPER_ADMIN
+        - ADMIN
+        - MODERATOR
+        - HELPER
+        - USER
+    CardSetRole:
+      type: string
+      enum:
+        - OWNER
+        - ADMIN
+        - MODERATOR
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

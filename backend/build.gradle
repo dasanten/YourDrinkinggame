@@ -1,0 +1,87 @@
+
+
+buildscript {
+	repositories {
+		mavenLocal()
+		maven { url "https://repo1.maven.org/maven2" }
+	}
+	dependencies {
+		classpath "org.openapitools:openapi-generator-gradle-plugin:5.3.0"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.6.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "org.openapi.generator" version "5.3.0"
+	id 'java'
+}
+
+group = 'de.dasanten'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	compileJava.dependsOn tasks.openApiGenerate
+}
+
+repositories {
+	mavenCentral()
+}
+
+apply plugin: 'org.openapi.generator'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation group: 'org.openapitools', name: 'jackson-databind-nullable', version: '0.2.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
+	implementation "org.mapstruct:mapstruct:1.4.2.Final"
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '2.6.4'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+def spec = "$rootDir/src/main/resources/openapi.yml".toString()
+
+openApiGenerate {
+
+	generatorName = "spring"
+	inputSpec = spec
+	outputDir = "$buildDir/generated".toString()
+	apiPackage = "de.dasanten.YourDrinkinggame.api"
+	invokerPackage = "de.dasanten.YourDrinkinggame.invoker"
+	modelPackage = "de.dasanten.YourDrinkinggame.model"
+	configOptions = [
+			dateLibrary: "java11",
+			interfaceOnly: "true",
+	]
+
+	openApiValidate {
+		inputSpec = spec
+		recommend = true
+	}
+
+	sourceSets {
+		getByName("main") {
+			java {
+				srcDir("$buildDir/generated/src/main/java".toString())
+			}
+		}
+	}
+
+}
