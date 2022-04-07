@@ -1,0 +1,31 @@
+FROM gradle:jdk11-alpine AS build
+
+ARG DATABASE_HOST
+ARG DATABASE_PORT
+ARG DATABASE_USERNAME
+ARG DATABASE_PASSWORD
+ARG SERVER_PORT
+ARG KEY_STORE_PASSWORD
+
+ENV ACTIVE_PROFILE=${ACTIVE_PROFILE}
+
+ENV DATABASE_HOST=${DATABASE_HOST}
+ENV DATABASE_PORT=${DATABASE_PORT}
+ENV DATABASE_USERNAME=${DATABASE_USERNAME}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
+ENV SERVER_PORT=${SERVER_PORT}
+ENV KEY_STORE_PASSWORD=${KEY_STORE_PASSWORD}
+
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+
+FROM openjdk:11.0-jre-slim
+
+EXPOSE 8080
+
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+
+ENTRYPOINT ["java", "-jar", "/app/spring-boot-application.jar"]
