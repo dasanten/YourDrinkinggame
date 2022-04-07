@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+
+  letsencrypt:
+    image: certbot/certbot:latest
+    command: sh -c "certbot certonly --standalone -d dasanten.de --text --agree-tos --email domain@dasanten.de --server https://acme-v02.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --preferred-challenges=http"
+    entrypoint: ""
+    ports:
+      - "80:80"
+    volumes:
+      - "letsencrypt:/etc/letsencrypt"
+    environment:
+      - TERM=xterm
+
+volumes:
+  letsencrypt:
+    name: letsencrypt_keys
