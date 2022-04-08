@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import java.time.ZonedDateTime;
 
 @Data
-public class ApiException {
+public class ApiError {
 
     private final String message;
     private final HttpStatus httpStatus;
