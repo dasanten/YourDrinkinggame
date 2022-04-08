@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
   app-backend:
     container_name: AppBackend
-    image: ghcr.io/dasanten/drinkgame-backend:latest
+    image: ghcr.io/dasanten/yourdrinkgame:master
     environment:
       - ACTIVE_PROFILE=prod
       - DATABASE_HOST=app_db
