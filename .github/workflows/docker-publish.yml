@@ -91,7 +91,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: "docker-compose.yml"
-        target: "drinkinggame/docker-compose.yml"
+        target: "drinkinggame/"
         
 
 
