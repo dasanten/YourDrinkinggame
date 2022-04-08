@@ -1,9 +1,9 @@
 services:
   app_db:
-    container_name: AppDB
+    container_name: DrinkinggameDB
     image: mariadb:10
     environment:
-      MYSQL_DATABASE: drinkgame
+      MYSQL_DATABASE: drinkinggame
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
     volumes: 
       - mysql:/var/lib/mysql
