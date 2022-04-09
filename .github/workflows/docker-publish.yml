@@ -109,6 +109,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
+          cat ~/TOKEN.txt | docker login https://ghcr.io -u dasanten --password-stdin
           cd drinkinggame/
           docker-compose down
           docker-compose pull
