@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "1079576483928",
+    "project_id": "your-drinkinggame",
+    "storage_bucket": "your-drinkinggame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079576483928:android:920c028d9ac8071fc2922d",
+        "android_client_info": {
+          "package_name": "de.dasanten.deinTrinkspiel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079576483928-l9q8duriuuhaqudq2qmk5nlehhi1k9bv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.dasanten.deinTrinkspiel",
+            "certificate_hash": "a3f5bab2e46eff7ff85620c4a4e64637f640d7f2"
+          }
+        },
+        {
+          "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ3KIaPHJuPXs6AKk8wz4IWNFlm49-C_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079576483928:android:fcd5b601e53761e1c2922d",
+        "android_client_info": {
+          "package_name": "de.dasanten.your_drinking_game_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079576483928-cgubseumn1o5fevg1cdlkbek1vn3rpv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.dasanten.your_drinking_game_app",
+            "certificate_hash": "a3f5bab2e46eff7ff85620c4a4e64637f640d7f2"
+          }
+        },
+        {
+          "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ3KIaPHJuPXs6AKk8wz4IWNFlm49-C_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
