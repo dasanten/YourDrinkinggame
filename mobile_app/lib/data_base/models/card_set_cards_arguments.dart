@@ -1,4 +1,4 @@
-import '../../http_service/dto/card_set_dto.dart';
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 
 class CardSetCardsArguments {
   final CardSetDto cardSet;

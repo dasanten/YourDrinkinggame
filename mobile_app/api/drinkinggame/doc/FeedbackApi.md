@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 
 # **getUserFeedback**
-> List<FeedbackDto> getUserFeedback()
+> BuiltList<FeedbackDto> getUserFeedback()
 
 
 
@@ -23,19 +23,16 @@ Gets all User Feedback
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = FeedbackApi();
+final api = DrinkinggameApi().getFeedbackApi();
 
 try {
-    final result = api_instance.getUserFeedback();
-    print(result);
-} catch (e) {
+    final response = api.getUserFeedback();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling FeedbackApi->getUserFeedback: $e\n');
 }
 ```
@@ -45,7 +42,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List<FeedbackDto>**](FeedbackDto.md)
+[**BuiltList&lt;FeedbackDto&gt;**](FeedbackDto.md)
 
 ### Authorization
 
@@ -68,19 +65,16 @@ Saves user Feedback
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = FeedbackApi();
-final feedbackDto = FeedbackDto(); // FeedbackDto | 
+final api = DrinkinggameApi().getFeedbackApi();
+final FeedbackDto feedbackDto = ; // FeedbackDto | 
 
 try {
-    api_instance.sendFeedback(feedbackDto);
-} catch (e) {
+    api.sendFeedback(feedbackDto);
+} catch on DioError (e) {
     print('Exception when calling FeedbackApi->sendFeedback: $e\n');
 }
 ```

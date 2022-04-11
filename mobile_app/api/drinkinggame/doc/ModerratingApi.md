@@ -27,20 +27,17 @@ Bans User.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
-final userId = userId_example; // String | 
+final api = DrinkinggameApi().getModerratingApi();
+final String userId = userId_example; // String | 
 
 try {
-    final result = api_instance.banUser(userId);
-    print(result);
-} catch (e) {
+    final response = api.banUser(userId);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->banUser: $e\n');
 }
 ```
@@ -67,7 +64,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getBannedUsers**
-> List<UserDto> getBannedUsers()
+> BuiltList<UserDto> getBannedUsers()
 
 
 
@@ -76,19 +73,16 @@ Gets all currently banned Users
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
+final api = DrinkinggameApi().getModerratingApi();
 
 try {
-    final result = api_instance.getBannedUsers();
-    print(result);
-} catch (e) {
+    final response = api.getBannedUsers();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->getBannedUsers: $e\n');
 }
 ```
@@ -98,7 +92,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**List<UserDto>**](UserDto.md)
+[**BuiltList&lt;UserDto&gt;**](UserDto.md)
 
 ### Authorization
 
@@ -121,19 +115,16 @@ Remove Card as Moderator.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
-final cardId = cardId_example; // String | 
+final api = DrinkinggameApi().getModerratingApi();
+final String cardId = cardId_example; // String | 
 
 try {
-    api_instance.modRemoveCard(cardId);
-} catch (e) {
+    api.modRemoveCard(cardId);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->modRemoveCard: $e\n');
 }
 ```
@@ -169,19 +160,16 @@ Remove Cardset as Moderator.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
-final cardSetId = cardSetId_example; // String | 
+final api = DrinkinggameApi().getModerratingApi();
+final String cardSetId = cardSetId_example; // String | 
 
 try {
-    api_instance.modRemoveCardSet(cardSetId);
-} catch (e) {
+    api.modRemoveCardSet(cardSetId);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->modRemoveCardSet: $e\n');
 }
 ```
@@ -217,21 +205,18 @@ Changes User role.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
-final eMail = eMail_example; // String | 
-final body = String(); // String | 
+final api = DrinkinggameApi().getModerratingApi();
+final String eMail = eMail_example; // String | 
+final String body = ; // String | 
 
 try {
-    final result = api_instance.setUserRole(eMail, body);
-    print(result);
-} catch (e) {
+    final response = api.setUserRole(eMail, body);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->setUserRole: $e\n');
 }
 ```
@@ -268,20 +253,17 @@ Unbans User.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ModerratingApi();
-final userId = userId_example; // String | 
+final api = DrinkinggameApi().getModerratingApi();
+final String userId = userId_example; // String | 
 
 try {
-    final result = api_instance.unbanUser(userId);
-    print(result);
-} catch (e) {
+    final response = api.unbanUser(userId);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ModerratingApi->unbanUser: $e\n');
 }
 ```

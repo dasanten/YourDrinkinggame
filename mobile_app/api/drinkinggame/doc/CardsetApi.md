@@ -29,20 +29,17 @@ Adds Cardset with corresponding Cards.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final cardSetDto = CardSetDto(); // CardSetDto | 
+final api = DrinkinggameApi().getCardsetApi();
+final CardSetDto cardSetDto = ; // CardSetDto | 
 
 try {
-    final result = api_instance.addCardSet(cardSetDto);
-    print(result);
-} catch (e) {
+    final response = api.addCardSet(cardSetDto);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->addCardSet: $e\n');
 }
 ```
@@ -78,19 +75,16 @@ Adds Cardset with corresponding Cards.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final id = id_example; // String | 
+final api = DrinkinggameApi().getCardsetApi();
+final String id = id_example; // String | 
 
 try {
-    api_instance.deleteCardSet(id);
-} catch (e) {
+    api.deleteCardSet(id);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->deleteCardSet: $e\n');
 }
 ```
@@ -126,20 +120,17 @@ Edits Cardset with corresponding Cards.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final cardSetDto = CardSetDto(); // CardSetDto | 
+final api = DrinkinggameApi().getCardsetApi();
+final CardSetDto cardSetDto = ; // CardSetDto | 
 
 try {
-    final result = api_instance.editCardSet(cardSetDto);
-    print(result);
-} catch (e) {
+    final response = api.editCardSet(cardSetDto);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->editCardSet: $e\n');
 }
 ```
@@ -175,20 +166,17 @@ Favors Cardset.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final id = id_example; // String | 
+final api = DrinkinggameApi().getCardsetApi();
+final String id = id_example; // String | 
 
 try {
-    final result = api_instance.favorCardSet(id);
-    print(result);
-} catch (e) {
+    final response = api.favorCardSet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->favorCardSet: $e\n');
 }
 ```
@@ -224,20 +212,17 @@ Returns a Cardset by it's id with cards.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final id = id_example; // String | 
+final api = DrinkinggameApi().getCardsetApi();
+final String id = id_example; // String | 
 
 try {
-    final result = api_instance.getCardSetById(id);
-    print(result);
-} catch (e) {
+    final response = api.getCardSetById(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->getCardSetById: $e\n');
 }
 ```
@@ -264,7 +249,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getTopCardSets**
-> List<CardSetBasicDto> getTopCardSets(start)
+> BuiltList<CardSetBasicDto> getTopCardSets(start)
 
 
 
@@ -273,20 +258,17 @@ Returns a list of 20 Cardsets sorted by likes.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final start = 56; // int | Sets amount of skipped sets
+final api = DrinkinggameApi().getCardsetApi();
+final int start = 56; // int | Sets amount of skipped sets
 
 try {
-    final result = api_instance.getTopCardSets(start);
-    print(result);
-} catch (e) {
+    final response = api.getTopCardSets(start);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->getTopCardSets: $e\n');
 }
 ```
@@ -299,7 +281,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List<CardSetBasicDto>**](CardSetBasicDto.md)
+[**BuiltList&lt;CardSetBasicDto&gt;**](CardSetBasicDto.md)
 
 ### Authorization
 
@@ -322,20 +304,17 @@ Reports Cardset.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final id = id_example; // String | 
+final api = DrinkinggameApi().getCardsetApi();
+final String id = id_example; // String | 
 
 try {
-    final result = api_instance.reportCardSet(id);
-    print(result);
-} catch (e) {
+    final response = api.reportCardSet(id);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->reportCardSet: $e\n');
 }
 ```
@@ -362,7 +341,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **searchCardSets**
-> List<CardSetBasicDto> searchCardSets(query, start)
+> BuiltList<CardSetBasicDto> searchCardSets(query, start)
 
 
 
@@ -371,21 +350,18 @@ Returns a list of 20 Cardsets similar to query.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = CardsetApi();
-final query = query_example; // String | Sets start point
-final start = 56; // int | Sets start point
+final api = DrinkinggameApi().getCardsetApi();
+final String query = query_example; // String | Sets start point
+final int start = 56; // int | Sets start point
 
 try {
-    final result = api_instance.searchCardSets(query, start);
-    print(result);
-} catch (e) {
+    final response = api.searchCardSets(query, start);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling CardsetApi->searchCardSets: $e\n');
 }
 ```
@@ -399,7 +375,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List<CardSetBasicDto>**](CardSetBasicDto.md)
+[**BuiltList&lt;CardSetBasicDto&gt;**](CardSetBasicDto.md)
 
 ### Authorization
 

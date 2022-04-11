@@ -23,22 +23,19 @@ Changes Role of User for Cardset.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ConfigureApi();
-final cardSetId = cardSetId_example; // String | 
-final eMail = eMail_example; // String | 
-final body = String(); // String | 
+final api = DrinkinggameApi().getConfigureApi();
+final String cardSetId = cardSetId_example; // String | 
+final String eMail = eMail_example; // String | 
+final String body = ; // String | 
 
 try {
-    final result = api_instance.cardSetChangeUserRole(cardSetId, eMail, body);
-    print(result);
-} catch (e) {
+    final response = api.cardSetChangeUserRole(cardSetId, eMail, body);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ConfigureApi->cardSetChangeUserRole: $e\n');
 }
 ```
@@ -67,7 +64,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getCardSetSpecialUsers**
-> List<UserWithCardSetRole> getCardSetSpecialUsers(cardSetId)
+> BuiltList<UserWithCardSetRole> getCardSetSpecialUsers(cardSetId)
 
 
 
@@ -76,20 +73,17 @@ Gets List of special Users of Cardset.
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = ConfigureApi();
-final cardSetId = cardSetId_example; // String | 
+final api = DrinkinggameApi().getConfigureApi();
+final String cardSetId = cardSetId_example; // String | 
 
 try {
-    final result = api_instance.getCardSetSpecialUsers(cardSetId);
-    print(result);
-} catch (e) {
+    final response = api.getCardSetSpecialUsers(cardSetId);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling ConfigureApi->getCardSetSpecialUsers: $e\n');
 }
 ```
@@ -102,7 +96,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List<UserWithCardSetRole>**](UserWithCardSetRole.md)
+[**BuiltList&lt;UserWithCardSetRole&gt;**](UserWithCardSetRole.md)
 
 ### Authorization
 

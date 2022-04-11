@@ -1,22 +1,12 @@
-//
-// AUTO-GENERATED FILE, DO NOT MODIFY!
-//
-// @dart=2.0
-
-// ignore_for_file: unused_element, unused_import
-// ignore_for_file: always_put_required_named_parameters_first
-// ignore_for_file: constant_identifier_names
-// ignore_for_file: lines_longer_than_80_chars
-
-import 'package:drinkinggame_api/api.dart';
 import 'package:test/test.dart';
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 
 
 /// tests for CardsetApi
 void main() {
-  final instance = CardsetApi();
+  final instance = DrinkinggameApi().getCardsetApi();
 
-  group('tests for CardsetApi', () {
+  group(CardsetApi, () {
     // Adds Cardset with corresponding Cards.
     //
     //Future<CardSetDto> addCardSet(CardSetDto cardSetDto) async
@@ -54,7 +44,7 @@ void main() {
 
     // Returns a list of 20 Cardsets sorted by likes.
     //
-    //Future<List<CardSetBasicDto>> getTopCardSets(int start) async
+    //Future<BuiltList<CardSetBasicDto>> getTopCardSets(int start) async
     test('test getTopCardSets', () async {
       // TODO
     });
@@ -68,7 +58,7 @@ void main() {
 
     // Returns a list of 20 Cardsets similar to query.
     //
-    //Future<List<CardSetBasicDto>> searchCardSets(String query, int start) async
+    //Future<BuiltList<CardSetBasicDto>> searchCardSets(String query, int start) async
     test('test searchCardSets', () async {
       // TODO
     });

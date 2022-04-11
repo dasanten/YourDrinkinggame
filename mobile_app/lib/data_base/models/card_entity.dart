@@ -1,6 +1,6 @@
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../http_service/dto/card_dto.dart';
 import '../card_set_db.dart';
 
 
@@ -37,7 +37,7 @@ class CardEntity {
       );
 
   factory CardEntity.fromCardDto(CardDto cardDto, int cardSetId) => CardEntity(
-      content: cardDto.content,
+      content: cardDto.content!,
       active: true,
       cardSetId: cardSetId,
       workshopId: cardDto.id

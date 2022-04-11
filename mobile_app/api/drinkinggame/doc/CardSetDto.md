@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **version** | **num** |  | [optional] 
 **nsfw** | **bool** |  | [optional] 
 **creator** | [**UserBasicDto**](UserBasicDto.md) |  | [optional] 
-**cards** | [**List<CardDto>**](CardDto.md) |  | [optional] [default to const []]
+**cards** | [**BuiltList&lt;CardDto&gt;**](CardDto.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

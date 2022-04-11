@@ -24,20 +24,17 @@ changes Username
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = AuthApi();
-final username = username_example; // String | 
+final api = DrinkinggameApi().getAuthApi();
+final String username = username_example; // String | 
 
 try {
-    final result = api_instance.changeUsername(username);
-    print(result);
-} catch (e) {
+    final response = api.changeUsername(username);
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->changeUsername: $e\n');
 }
 ```
@@ -73,19 +70,16 @@ checks if user does exist
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = AuthApi();
+final api = DrinkinggameApi().getAuthApi();
 
 try {
-    final result = api_instance.login();
-    print(result);
-} catch (e) {
+    final response = api.login();
+    print(response);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->login: $e\n');
 }
 ```
@@ -118,19 +112,16 @@ Registers new User
 ### Example
 ```dart
 import 'package:drinkinggame_api/api.dart';
-// TODO Configure HTTP Bearer authorization: bearerAuth
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('bearerAuth').setAccessToken(yourTokenGeneratorFunction);
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
-final api_instance = AuthApi();
-final username = username_example; // String | 
+final api = DrinkinggameApi().getAuthApi();
+final String username = username_example; // String | 
 
 try {
-    api_instance.register(username);
-} catch (e) {
+    api.register(username);
+} catch on DioError (e) {
     print('Exception when calling AuthApi->register: $e\n');
 }
 ```

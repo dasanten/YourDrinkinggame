@@ -2,19 +2,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/page/detail/entity/local_card_view.dart';
+import 'package:your_drinking_game_app/page/detail/dto/workshop_card_view.dart';
+import 'package:your_drinking_game_app/page/form/cardSet/card_set_edit_form.dart';
+import 'package:your_drinking_game_app/page/form/cards/card_edit_form.dart';
+import 'package:your_drinking_game_app/page/form/cards/local_card_form.dart';
+import 'package:your_drinking_game_app/page/game/card_display.dart';
+import 'package:your_drinking_game_app/page/menu/player_input.dart';
 
-import 'menu/card_set_lists/local/cardSet/card_set_edit_form.dart';
-import 'menu/card_set_lists/local/cards/card_edit_form.dart';
-import 'menu/card_set_lists/local/cards/local_card_form.dart';
-import 'menu/card_set_lists/local/cards/local_card_view.dart';
-import 'menu/card_set_lists/workshop/cards/workshop_card_view.dart';
-import 'menu/game/card_display.dart';
-import 'menu/player_input.dart';
-import 'services/update_local_workshop_cardsets.dart';
-import 'viewmodel/current_card_set_viewmodel.dart';
-import 'viewmodel/current_card_viewmodel.dart';
-import 'viewmodel/local_card_sets_viewmodel.dart';
-import 'viewmodel/workshop_card_set_viewmodel.dart';
+// import 'package:your_drinking_game_app/services/update_local_workshop_cardsets.dart';
+import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
+
+
+
 
 void main() {
   runApp(
@@ -36,7 +39,8 @@ void main() {
       child: const MyApp(),
     ),
   );
-  checkForUpdatedCardSets();
+  // checkForUpdatedCardSets();
+  // TODO cardset update check
 }
 
 class MyApp extends StatelessWidget {

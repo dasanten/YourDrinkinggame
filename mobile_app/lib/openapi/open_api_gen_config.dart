@@ -5,6 +5,6 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
     additionalProperties:
     AdditionalProperties(pubName: 'drinkinggame_api', pubAuthor: 'dasanten'),
     inputSpecFile: '../backend/src/main/resources/openapi.yml',
-    generatorName: Generator.dio,
+    generatorName: Generator.dioNext,
     outputDirectory: 'api/drinkinggame',)
 class Example extends OpenapiGeneratorConfig {}

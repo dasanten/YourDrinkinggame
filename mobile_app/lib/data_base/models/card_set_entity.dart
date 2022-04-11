@@ -1,5 +1,5 @@
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/foundation.dart';
-import 'package:your_drinking_game_app/http_service/dto/card_set_dto.dart';
 
 import '../card_set_db.dart';
 
@@ -50,10 +50,10 @@ class CardSetEntity {
       );
 
   factory CardSetEntity.fromCardSetDto(CardSetDto cardSetDto) => CardSetEntity(
-      name: cardSetDto.name,
-      description: cardSetDto.description,
+      name: cardSetDto.name!,
+      description: cardSetDto.description!,
       active: true,
-      version: cardSetDto.version,
+      version: cardSetDto.version as int,
       workshopId: cardSetDto.id
   );
 

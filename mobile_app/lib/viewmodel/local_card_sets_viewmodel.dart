@@ -1,9 +1,9 @@
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 
 import '../data_base/card_set_db.dart';
 import '../data_base/models/card_entity.dart';
 import '../data_base/models/card_set_entity.dart';
 
-import '../http_service/dto/card_set_dto.dart';
 import 'async_viewmodel_base.dart';
 
 class LocalCardSetsViewmodel extends AsyncViewmodelBase {
@@ -50,7 +50,7 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
   Future<bool> importCardSetFromWorkshop(CardSetDto cardSetDto) async {
     final responseCardSet = await CardSetDB.cardSetDB
         .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
-    final cardEntityList = cardSetDto.cardList
+    final cardEntityList = cardSetDto.cards!
         .map<CardEntity>(
           (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
         )
