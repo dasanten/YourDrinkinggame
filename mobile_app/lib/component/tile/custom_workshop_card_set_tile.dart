@@ -8,7 +8,7 @@ import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dar
 import '../../page/detail/dto/workshop_card_view.dart';
 
 class CustomWorkshopCardSetTile extends StatelessWidget {
-  final CardSetDto cardSet;
+  final CardSetBasicDto cardSet;
   final bool isLocal;
 
   const CustomWorkshopCardSetTile({

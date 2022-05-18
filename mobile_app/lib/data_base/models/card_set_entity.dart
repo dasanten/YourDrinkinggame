@@ -8,11 +8,13 @@ class CardSetEntity {
   final int? id;
   final String name;
   final String description;
+  final String? category;
   final int? version;
   final String? editorToken;
   final String? adminToken;
   final String? workshopId;
   final bool active;
+  final bool nsfw;
 
   const CardSetEntity({
     this.id,
@@ -20,9 +22,11 @@ class CardSetEntity {
     this.version,
     this.editorToken,
     this.adminToken,
+    this.category,
     required this.name,
     required this.description,
     required this.active,
+    required this.nsfw,
   });
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -47,6 +51,7 @@ class CardSetEntity {
             cardSetMap[CardSetDB.COLUMN_CARD_SET_DESCRIPTION] as String,
         workshopId: cardSetMap[CardSetDB.COLUMN_CARD_SET_WORKSHOP_ID] as String?,
         active: cardSetMap[CardSetDB.COLUMN_CARD_SET_ACTIVE] == 1,
+        nsfw: false
       );
 
   factory CardSetEntity.fromCardSetDto(CardSetDto cardSetDto) => CardSetEntity(
@@ -54,7 +59,9 @@ class CardSetEntity {
       description: cardSetDto.description!,
       active: true,
       version: cardSetDto.version as int,
-      workshopId: cardSetDto.id
+      workshopId: cardSetDto.id,
+      category: cardSetDto.category,
+      nsfw: false,
   );
 
 
@@ -67,6 +74,7 @@ class CardSetEntity {
     String? name,
     String? description,
     String? workshopId,
+    String? category,
   }) =>
       CardSetEntity(
         name: name ?? this.name,
@@ -77,6 +85,8 @@ class CardSetEntity {
         active: active ?? this.active,
         id: id ?? this.id,
         workshopId: workshopId ?? this.workshopId,
+        category: category ?? this.category,
+        nsfw: false
       );
 
   @override
@@ -86,6 +96,7 @@ class CardSetEntity {
                        'adminToken: $adminToken'
                        'editorToken: $editorToken, '
                        'active: $active, '
+                       'category: $category'
                        'id: $id, '
                        'workshopId: $workshopId)';
 }

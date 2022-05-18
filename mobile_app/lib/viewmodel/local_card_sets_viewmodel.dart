@@ -32,6 +32,7 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
       name: name,
       description: description,
       active: active,
+      nsfw: false,
     );
     await CardSetDB.cardSetDB.insertCardSet(cardSet);
     await getCardSets();
@@ -47,16 +48,17 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
     await getCardSets();
   }
 
-  Future<bool> importCardSetFromWorkshop(CardSetDto cardSetDto) async {
-    final responseCardSet = await CardSetDB.cardSetDB
-        .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
-    final cardEntityList = cardSetDto.cards!
-        .map<CardEntity>(
-          (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
-        )
-        .toList();
+  Future<bool> importCardSetFromWorkshop(CardSetBasicDto cardSetDto) async {
+    // TODO add cardSet from workshop
+    // final responseCardSet = await CardSetDB.cardSetDB
+        // .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
+    // final cardEntityList = cardSetDto.cards!
+    //     .map<CardEntity>(
+    //       (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
+    //     )
+    //     .toList();
     
-    await CardSetDB.cardSetDB.insertCardList(cardEntityList);
+    // await CardSetDB.cardSetDB.insertCardList(cardEntityList);
     await getCardSets();
     return true;
   }

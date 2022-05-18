@@ -89,7 +89,7 @@ class CardSetDB {
               FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
                 ON DELETE NO ACTION ON UPDATE NO ACTION)""",
         );
-        await database.insert(TABLE_CARD_SET, const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0).toMap());  
+        await database.insert(TABLE_CARD_SET, const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false).toMap());  
       },
     );
   }

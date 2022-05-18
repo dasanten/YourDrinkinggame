@@ -10,11 +10,13 @@ class CardEntity {
   final String content;
   final bool active;
   final String? workshopId;
+  final CardType? type;
   final int cardSetId;
 
   const CardEntity({
     this.id,
     this.workshopId,
+    this.type,
     required this.content,
     required this.active,
     required this.cardSetId,
@@ -40,7 +42,8 @@ class CardEntity {
       content: cardDto.content!,
       active: true,
       cardSetId: cardSetId,
-      workshopId: cardDto.id
+      workshopId: cardDto.id,
+      type: cardDto.type
   );
 
   CardEntity copyWith({
@@ -48,6 +51,7 @@ class CardEntity {
     String ?content,
     bool ?active,
     String? workshopId,
+    CardType? cardType,
   }) =>
       CardEntity(
         content: content ?? this.content,
@@ -55,5 +59,6 @@ class CardEntity {
         cardSetId: cardSetId,
         id: id ?? this.id,
         workshopId: workshopId ?? this.workshopId,
+        type: cardType ?? this.type
       );
 }
