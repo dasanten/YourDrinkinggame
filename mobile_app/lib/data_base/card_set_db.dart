@@ -2,49 +2,12 @@ import 'dart:async';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:your_drinking_game_app/data_base/db_namings.dart';
 
-import 'models/card_entity.dart';
-import 'models/card_set_entity.dart';
+import 'model/card_entity.dart';
+import 'model/card_set_entity.dart';
 
 class CardSetDB {
-  // ignore_for_file: constant_identifier_names
-  static const String TABLE_CARD_SET = "card_set";
-
-  static const String COLUMN_CARD_SET_ID = "id";
-  static const String COLUMN_CARD_SET_NAME = "name";
-  static const String COLUMN_CARD_SET_DESCRIPTION = "description";
-  static const String COLUMN_CARD_SET_ACTIVE = "active";
-  static const String COLUMN_CARD_SET_ADMIN_TOKEN = "admin_token";
-  static const String COLUMN_CARD_SET_EDITOR_TOKEN = "editor_token";
-  static const String COLUMN_CARD_SET_WORKSHOP_ID = "workshop_id";
-  static const String COLUMN_CARD_SET_VERSION = "version";
-
-  static const List<String> allCardSetColumns = [
-    COLUMN_CARD_SET_ID,
-    COLUMN_CARD_SET_NAME,
-    COLUMN_CARD_SET_DESCRIPTION,
-    COLUMN_CARD_SET_ACTIVE,
-    COLUMN_CARD_SET_ADMIN_TOKEN,
-    COLUMN_CARD_SET_EDITOR_TOKEN,
-    COLUMN_CARD_SET_WORKSHOP_ID,
-    COLUMN_CARD_SET_VERSION
-  ];
-
-  static const String TABLE_CARD = "card";
-
-  static const String COLUMN_CARD_ID = "id";
-  static const String COLUMN_CARD_CONTENT = "content";
-  static const String COLUMN_CARD_ACTIVE = "active";
-  static const String COLUMN_CARD_WORKSHOP_ID = "workshop_id";
-  static const String COLUMN_CARD_CARD_SET_ID = "card_set_id";
-
-  static const List<String> allCardColumns = [
-    COLUMN_CARD_ID,
-    COLUMN_CARD_CONTENT,
-    COLUMN_CARD_ACTIVE,
-    COLUMN_CARD_WORKSHOP_ID,
-    COLUMN_CARD_CARD_SET_ID
-  ];
 
   CardSetDB._();
   static final CardSetDB cardSetDB = CardSetDB._();
@@ -73,8 +36,6 @@ class CardSetDB {
               $COLUMN_CARD_SET_DESCRIPTION TEXT,
               $COLUMN_CARD_SET_ACTIVE INTEGER,
               $COLUMN_CARD_SET_WORKSHOP_ID TEXT,
-              $COLUMN_CARD_SET_ADMIN_TOKEN TEXT,
-              $COLUMN_CARD_SET_EDITOR_TOKEN TEXT,
               $COLUMN_CARD_SET_VERSION INTEGER)
           """,
         );
@@ -86,8 +47,35 @@ class CardSetDB {
               $COLUMN_CARD_ACTIVE INTEGER,
               $COLUMN_CARD_WORKSHOP_ID TEXT,
               $COLUMN_CARD_CARD_SET_ID INTEGER,
+              $COLUMN_CARD_CARD_ID INTEGER,
+              FOREIGN KEY($COLUMN_CARD_CARD_ID) REFERENCES $TABLE_CARD($COLUMN_CARD_ID)
+                ON DELETE CASCADE ON UPDATE CASCADE,
               FOREIGN KEY($COLUMN_CARD_CARD_SET_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
                 ON DELETE NO ACTION ON UPDATE NO ACTION)""",
+        );
+
+          await database.execute(
+          """
+            CREATE TABLE $TABLE_USER (
+              $COLUMN_USER_ID INTEGER PRIMARY KEY,
+              $COLUMN_USER_WORKSHOP_ID TEXT,
+              $COLUMN_USER_NAME TEXT,
+              $COLUMN_USER_NSFW INTEGER)
+          """
+        );
+
+        await database.execute(
+          """
+            CREATE TABLE $TABLE_USER_ROLE (
+              $COLUMN_USER_ROLE_USER_ID TEXT,
+              $COLUMN_USER_ROLE_CARD_SET_ID TEXT,
+              $COLUMN_USER_ROLE_ROLE TEXT,
+              FOREIGN KEY($COLUMN_USER_ROLE_USER_ID) REFERENCES $TABLE_CARD_SET($COLUMN_CARD_SET_ID)
+                ON DELETE CASCADE ON UPDATE CASCADE,
+              FOREIGN KEY($COLUMN_USER_ROLE_CARD_SET_ID) REFERENCES $TABLE_USER($COLUMN_USER_ID)
+                ON DELETE CASCADE ON UPDATE CASCADE
+            )
+    	    """
         );
         await database.insert(TABLE_CARD_SET, const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false).toMap());  
       },
@@ -95,7 +83,7 @@ class CardSetDB {
   }
 
   //CARD SET DB ACTIONS
-
+  @deprecated
   Future<List<CardSetEntity>> getCardSets() async {
     final db = await database;
     final cardSets = await db.query(
@@ -108,6 +96,7 @@ class CardSetDB {
         .toList();
   }
 
+  @deprecated
   Future<CardSetEntity> insertCardSet(CardSetEntity cardSet) async {
     final db = await database;
     final id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
@@ -117,6 +106,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<int> deleteCardSet(int id) async {
     final db = await database;
 
@@ -133,6 +123,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<int> updateCardSet(CardSetEntity cardSet) async {
     final db = await database;
 
@@ -144,6 +135,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<bool> containsCardSet(String id) async {
     final db = await database;
 
@@ -159,6 +151,7 @@ class CardSetDB {
   }
 
   //CARD DB ACTIONS
+  @deprecated
   Future<List<CardEntity>> getCards(int cardSetId) async {
     final db = await database;
 
@@ -172,6 +165,7 @@ class CardSetDB {
     return cards.map<CardEntity>((e) => CardEntity.fromMap(e)).toList();
   }
 
+  @deprecated
   Future<CardEntity> insertCard(CardEntity card) async {
     final db = await database;
     final id = await db.insert(TABLE_CARD, card.toMap());
@@ -181,6 +175,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<List<CardEntity>> insertCardList(
     List<CardEntity> cardEntityList,
   ) async {
@@ -190,6 +185,7 @@ class CardSetDB {
     return cardEntityList;
   }
 
+  @deprecated
   Future<int> deleteCard(int id) async {
     final db = await database;
 
@@ -200,6 +196,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<int> updateCard(CardEntity card) async {
     final db = await database;
 
@@ -211,6 +208,7 @@ class CardSetDB {
     );
   }
 
+  @deprecated
   Future<List<CardEntity>> getActiveCards() async {
     final db = await database;
 

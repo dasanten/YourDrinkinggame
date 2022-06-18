@@ -1,4 +1,5 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
+import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/openapi/api_client.dart';
 
 import '../data_base/card_set_db.dart';
@@ -28,6 +29,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
 
   Future<void> getWorkshopCardSets() async {
     setLoading();
+    _loadEverything = false;
     await cardsetApi.getTopCardSets(start: 0).then((value) => _cardSetList = List.from(value.data?.asList() ?? []) );
     _cardSetLocal.clear();
     setFinished();
@@ -43,17 +45,25 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
     notifyListeners();
   }
 
-  void getMoreCardSets() async	{
-    if(!_loadEverything && !isLoadingMore) {
+  void getMoreCardSets(BuildContext context) async	{
+
+    
+    if(!isLoadingMore && !loadEverything) {
       _isLoadingMore = true;
+      notifyListeners();
       var lengthBefore = cardSetList.length;
       await cardsetApi.getTopCardSets(start: cardSetList.length).then((value) => cardSetList.addAll(value.data?.asList() ?? []));
       _isLoadingMore = false;
       if(lengthBefore == cardSetList.length ) {
+        ScaffoldMessenger.of(context)
+          .showSnackBar(
+            SnackBar(
+              content: Text("Alle Sets geladen")
+            )
+          );
         _loadEverything = true;
-      } else {
-        notifyListeners();
-      }
+      } 
+      notifyListeners();
     }
   }
 }

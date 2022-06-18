@@ -1,6 +1,6 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/data_base/models/card_set_cards_arguments.dart';
+import 'package:your_drinking_game_app/data_base/model/card_set_cards_arguments.dart';
 
 import '../../../component/tile/custom_workshop_card_tile.dart';
 

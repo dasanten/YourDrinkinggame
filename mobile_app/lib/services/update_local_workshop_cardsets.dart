@@ -1,7 +1,7 @@
 
 // import '../data_base/card_set_db.dart';
-// import '../data_base/models/card_entity.dart';
-// import '../data_base/models/card_set_entity.dart';
+// import '../data_base/model/card_entity.dart';
+// import '../data_base/model/card_set_entity.dart';
 // import '../http_service/dto/card_dto.dart';
 // import '../http_service/dto/card_set_dto.dart';
 // import '../http_service/dto/card_set_version_dto.dart';

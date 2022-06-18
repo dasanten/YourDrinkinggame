@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import '../data_base/card_set_db.dart';
-import '../data_base/models/card_entity.dart';
-import '../data_base/models/card_set_entity.dart';
+import '../data_base/model/card_entity.dart';
+import '../data_base/model/card_set_entity.dart';
 
 import 'async_viewmodel_base.dart';
 
@@ -90,8 +90,9 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     _cardSet = _cardSet!.copyWith(
       name: _nameController.text,
       description: _descriptionController.text,
-      adminToken: _adminTokenController.text,
-      editorToken: _editorTokenController.text,
+      // TODO Gucken was jetzt gemacht werden muss
+      // adminToken: _adminTokenController.text,
+      // editorToken: _editorTokenController.text,
     );
     notifyListeners();
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import '../data_base/models/card_entity.dart';
+import '../data_base/model/card_entity.dart';
 
 class CurrentCardViewmodel extends ChangeNotifier {
   CardEntity? _card;

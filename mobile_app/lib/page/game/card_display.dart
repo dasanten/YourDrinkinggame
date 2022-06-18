@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/data_base/card_set_db.dart';
-import 'package:your_drinking_game_app/data_base/models/card_entity.dart';
+import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
 
 import '../menu/player_input.dart';

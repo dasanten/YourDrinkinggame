@@ -1,7 +1,7 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/foundation.dart';
+import 'package:your_drinking_game_app/data_base/db_namings.dart' as CardSetDB;
 
-import '../card_set_db.dart';
 
 @immutable
 class CardSetEntity {
@@ -10,7 +10,9 @@ class CardSetEntity {
   final String description;
   final String? category;
   final int? version;
+  @deprecated
   final String? editorToken;
+  @deprecated
   final String? adminToken;
   final String? workshopId;
   final bool active;
@@ -34,8 +36,6 @@ class CardSetEntity {
         CardSetDB.COLUMN_CARD_SET_DESCRIPTION: description,
         CardSetDB.COLUMN_CARD_SET_ACTIVE: active ? 1 : 0,
         CardSetDB.COLUMN_CARD_SET_VERSION: version,
-        CardSetDB.COLUMN_CARD_SET_ADMIN_TOKEN: adminToken,
-        CardSetDB.COLUMN_CARD_SET_EDITOR_TOKEN: editorToken,
         CardSetDB.COLUMN_CARD_SET_WORKSHOP_ID: workshopId,
         if (id != null) CardSetDB.COLUMN_CARD_SET_ID: id,
       };
@@ -45,8 +45,6 @@ class CardSetEntity {
         id: cardSetMap[CardSetDB.COLUMN_CARD_SET_ID] as int?,
         name: cardSetMap[CardSetDB.COLUMN_CARD_SET_NAME] as String,
         version: cardSetMap[CardSetDB.COLUMN_CARD_SET_VERSION] as int?,
-        adminToken: cardSetMap[CardSetDB.COLUMN_CARD_SET_ADMIN_TOKEN] as String?,
-        editorToken: cardSetMap[CardSetDB.COLUMN_CARD_SET_EDITOR_TOKEN] as String?,
         description:
             cardSetMap[CardSetDB.COLUMN_CARD_SET_DESCRIPTION] as String,
         workshopId: cardSetMap[CardSetDB.COLUMN_CARD_SET_WORKSHOP_ID] as String?,
@@ -68,8 +66,6 @@ class CardSetEntity {
   CardSetEntity copyWith({
     int? id,
     int? version,
-    String? adminToken,
-    String? editorToken,
     bool? active,
     String? name,
     String? description,
@@ -80,8 +76,6 @@ class CardSetEntity {
         name: name ?? this.name,
         description: description ?? this.description,
         version: version ?? this.version,
-        adminToken: adminToken ?? this.adminToken,
-        editorToken: editorToken ?? this.editorToken,
         active: active ?? this.active,
         id: id ?? this.id,
         workshopId: workshopId ?? this.workshopId,
@@ -93,8 +87,6 @@ class CardSetEntity {
   String toString() => 'CardSetEntity(name: $name, '
                        'description: $description, '
                        'version: $version, '
-                       'adminToken: $adminToken'
-                       'editorToken: $editorToken, '
                        'active: $active, '
                        'category: $category'
                        'id: $id, '

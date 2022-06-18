@@ -1,8 +1,6 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/foundation.dart';
-
-import '../card_set_db.dart';
-
+import 'package:your_drinking_game_app/data_base/db_namings.dart' as CardSetDB;
 
 @immutable
 class CardEntity {

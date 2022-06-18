@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:your_drinking_game_app/data_base/card_set_db.dart';
-import 'package:your_drinking_game_app/data_base/models/card_entity.dart';
-import 'package:your_drinking_game_app/data_base/models/card_set_entity.dart';
+import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
+import 'package:your_drinking_game_app/data_base/model/card_set_entity.dart';
 import 'package:your_drinking_game_app/page/tab/card_sets_tab_view.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
@@ -86,7 +86,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                       if(value.isAdmin) {
                         // card_set_http.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
                         // TODO add deletes
-                        final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "", adminToken: "", editorToken: "");
+                        final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "");
                         value.setCardSet(cardSetEntity);
                         context
                           .read<LocalCardSetsViewmodel>()

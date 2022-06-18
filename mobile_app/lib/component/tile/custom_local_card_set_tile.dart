@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/data_base/models/card_set_entity.dart';
+import 'package:your_drinking_game_app/data_base/model/card_set_entity.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 import '../../page/detail/entity/local_card_view.dart';
