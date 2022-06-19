@@ -1,7 +1,7 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/data_base/model/card_set_cards_arguments.dart';
+import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
 
@@ -43,11 +43,16 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
                     }
                   },
           ),
-        onTap: () => Navigator.pushNamed(
-          context,
-          WorkshopCardView.routeName,
-          arguments: CardSetCardsArguments(cardSet),
-        ),
+        onTap: () => {
+          context.read<CurrentWorkshopCardSetViewmodel>()
+            .setCardSet(
+              cardSet.id!,
+            ),
+          Navigator.pushNamed(
+            context,
+            WorkshopCardView.routeName,
+          ),
+        }
       ),
     );
   }

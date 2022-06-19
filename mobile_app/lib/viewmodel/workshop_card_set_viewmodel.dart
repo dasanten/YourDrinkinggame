@@ -1,8 +1,7 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/data_base/repository/card_Set_repository.dart';
 import 'package:your_drinking_game_app/openapi/api_client.dart';
-
-import '../data_base/card_set_db.dart';
 
 import 'async_viewmodel_base.dart';
 
@@ -35,7 +34,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
     setFinished();
     for (final cardSet in _cardSetList) {
       _cardSetLocal[cardSet.id!] =
-          await CardSetDB.cardSetDB.containsCardSet(cardSet.id!);
+          await containsCardSet(cardSet.id!);
     }
     notifyListeners();
   }
@@ -45,9 +44,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
     notifyListeners();
   }
 
-  void getMoreCardSets(BuildContext context) async	{
-
-    
+  void getMoreCardSets(BuildContext context) async	{    
     if(!isLoadingMore && !loadEverything) {
       _isLoadingMore = true;
       notifyListeners();

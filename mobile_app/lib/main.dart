@@ -13,6 +13,7 @@ import 'package:your_drinking_game_app/page/menu/player_input.dart';
 // import 'package:your_drinking_game_app/services/update_local_workshop_cardsets.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
 
@@ -35,6 +36,9 @@ void main() {
         ChangeNotifierProvider<WorkshopCardSetViewmodel>(
           create: (_) => WorkshopCardSetViewmodel(),
         ),
+        ChangeNotifierProvider<CurrentWorkshopCardSetViewmodel>(
+          create: (_) => CurrentWorkshopCardSetViewmodel(),
+          )
       ],
       child: const MyApp(),
     ),

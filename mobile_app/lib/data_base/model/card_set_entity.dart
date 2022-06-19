@@ -84,11 +84,11 @@ class CardSetEntity {
       );
 
   @override
-  String toString() => 'CardSetEntity(name: $name, '
-                       'description: $description, '
-                       'version: $version, '
-                       'active: $active, '
-                       'category: $category'
-                       'id: $id, '
-                       'workshopId: $workshopId)';
+  String toString() => """CardSetEntity(name: $name,
+                       description: $description,
+                       version: $version,
+                       active: $active,
+                       category: $category,
+                       id: $id,
+                       workshopId: $workshopId)""";
 }
