@@ -14,7 +14,6 @@ class CustomWorkshopCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(card.card);
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(8),
