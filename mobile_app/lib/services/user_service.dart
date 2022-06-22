@@ -12,22 +12,24 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
   clientId: "1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com"
 );
 
-String _currentUserId = "";
+int? _currentUserId;
+String? _currentWorkshopId;
 
-String get currentUserId => _currentUserId;
-bool get isSignedIn => _currentUserId != "";
-bool get canUseWorkshop => _currentUserId != "guest" && _currentUserId != "";
+int? get currentUserId => _currentUserId;
+String? get currentWorkshopId => _currentWorkshopId;
+
+bool get isSignedIn => _currentUserId != null;
+bool get canUseWorkshop => _currentWorkshopId != null;
 
 
 void loadCurrentUser() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  _currentUserId = sharedPreferences.get("user") as String;
+  _currentUserId = sharedPreferences.get("user") as int?;
 }
 
 void loginAsGuest() async {
-  _setActiveUser("guest");
   try {
-    await getUser("guest");
+  _setActiveUser(await getUser("guest"));
   } catch(e) {
     await _createUser("Gast", "guest");
   }
@@ -36,9 +38,8 @@ void loginAsGuest() async {
 void loginWithGoogle() async {
   GoogleSignInAccount? account = await _googleSignIn.signIn();
   if (account != null) {
-    _setActiveUser(account.id);
     try {
-      await getUser(account.id);
+      _setActiveUser(await getUser(account.id));
     } catch(e) {
       if(e.toString().contains("User with id")) {
         await _createUser(account.displayName ?? "User" + Random().nextInt(9999).toString(), account.id);
@@ -56,24 +57,25 @@ void logout() async {
 void registerUser() async {
 }
 
-_setActiveUser(String workshopId) async {
-  _currentUserId = workshopId;
+_setActiveUser(UserEntity userEntity) async {
+  _currentUserId = userEntity.id;
+  _currentWorkshopId = userEntity.workshopId;
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  sharedPreferences.setString("user", workshopId);
+  sharedPreferences.setString("user", userEntity.id.toString());
 }
 
 Future<void> _createUser(String username, String workshopId) async {
-  await insertUser(
+  UserEntity userEntity = await insertUser(
     UserEntity(
       username: username,
       workshopId: workshopId,
     )
   );
-  _insertStandardSet();
+  _insertStandardSet(userEntity.id!);
 }
 
-void _insertStandardSet() {
-  insertCardSet(const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false));
+void _insertStandardSet(int userId) {
+  insertCardSet(const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false), userId);
 }
 
 

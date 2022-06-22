@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/page/menu/player_input.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
 class LoginPage extends StatelessWidget {
@@ -21,7 +22,10 @@ class LoginPage extends StatelessWidget {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.man),
                   label: const Text("Gast"),
-                  onPressed: () => loginAsGuest(), 
+                  onPressed: () { 
+                    loginAsGuest(); 
+                    navigateToHome(context);
+                    }, 
                 ),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.login),
@@ -34,5 +38,11 @@ class LoginPage extends StatelessWidget {
       ),      
     );     
   }
+
+   navigateToHome(BuildContext context) => Navigator.push(
+      context,
+      MaterialPageRoute(
+      builder: (context) => PlayerInput()),
+    );
   
 }

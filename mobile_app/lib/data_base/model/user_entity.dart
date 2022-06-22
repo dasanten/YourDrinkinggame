@@ -26,14 +26,14 @@ class UserEntity {
   Map<String, dynamic> toMap() => {
     if (id != null) COLUMN_USER_ID: id,
     COLUMN_USER_NAME: username,
-    COLUMN_USER_WORKSHOP_ID: id,
+    COLUMN_USER_WORKSHOP_ID: workshopId,
     COLUMN_USER_NSFW: nsfw ?? false ? 1 : 0,
   };
 
   factory UserEntity.fromMap(Map<String, dynamic> map) => UserEntity(
     id: map[COLUMN_USER_ID] as int,
     username: map[COLUMN_USER_NAME] as String,
-    workshopId: map[COLUMN_USER_WORKSHOP_ID] as String,
+    workshopId: (map[COLUMN_USER_WORKSHOP_ID] ?? '' ) as String,
     nsfw: map[COLUMN_USER_NSFW] as int == 1,
   );
 
