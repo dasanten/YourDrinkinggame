@@ -77,7 +77,6 @@ class CardSetDB {
             )
     	    """
         );
-        await database.insert(TABLE_CARD_SET, const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false).toMap());  
       },
     );
   }

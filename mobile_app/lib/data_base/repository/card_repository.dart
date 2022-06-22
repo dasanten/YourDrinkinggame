@@ -3,9 +3,8 @@ import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
-Future<Database> get database {
-  return CardSetDB.cardSetDB.database;
-}
+Future<Database> get database => CardSetDB.cardSetDB.database;
+
 
 //CARD DB ACTIONS
 Future<List<CardEntity>> getCards(int cardSetId) async {
