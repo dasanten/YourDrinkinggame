@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
                   icon: const Icon(Icons.man),
                   label: const Text("Gast"),
                   onPressed: () { 
-                    loginAsGuest(); 
+                    loginAsGuest(context); 
                     navigateToHome(context);
                     }, 
                 ),
@@ -31,7 +31,13 @@ class LoginPage extends StatelessWidget {
                   icon: const Icon(Icons.login),
                   label: const Text("Google"),
                   style: ElevatedButton.styleFrom(primary: Colors.white),
-                  onPressed: () => loginWithGoogle(),
+                  onPressed: () async {
+                    await loginWithGoogle(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PlayerInput()),
+                    ); 
+                  },
                 ),
               ],
             ),

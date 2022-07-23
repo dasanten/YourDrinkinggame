@@ -32,8 +32,8 @@ Future<List<UserEntity>> getUsers() async {
   );
 
   return users
-      .map<UserEntity>((e) => UserEntity.fromMap(e))
-      .toList();
+    .map<UserEntity>((e) => UserEntity.fromMap(e))
+    .toList();
 }
 
 Future<UserEntity> insertUser(UserEntity user) async {
@@ -54,5 +54,4 @@ Future<UserEntity> updateUser(UserEntity user) async {
   );
 
   return user.copyWith(id: id);
-  
 }

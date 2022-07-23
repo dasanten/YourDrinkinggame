@@ -1,6 +1,7 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
+import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as cardSetRepository;
+import 'package:your_drinking_game_app/services/user_service.dart';
 
-import '../data_base/card_set_db.dart';
 import '../data_base/model/card_set_entity.dart';
 
 import 'async_viewmodel_base.dart';
@@ -18,7 +19,9 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
 
   Future<void> getCardSets() async {
     setLoading();
-    _cardSetList = await CardSetDB.cardSetDB.getCardSets();
+    if(currentUserId != null){
+      _cardSetList = await cardSetRepository.getCardSetsByUserId(currentUserId!);
+    } 
     setFinished();
   }
 
@@ -33,17 +36,17 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
       active: active,
       nsfw: false,
     );
-    await CardSetDB.cardSetDB.insertCardSet(cardSet);
+    await cardSetRepository.insertCardSet(cardSet, currentUserId!);
     await getCardSets();
   }
 
   Future<void> updateCardSet(CardSetEntity cardSet) async {
-    await CardSetDB.cardSetDB.updateCardSet(cardSet);
+    await cardSetRepository.updateCardSet(cardSet);
     await getCardSets();
   }
 
   Future<void> deleteCardSet(int id) async {
-    await CardSetDB.cardSetDB.deleteCardSet(id);
+    await cardSetRepository.deleteCardSet(id);
     await getCardSets();
   }
 

@@ -1,5 +1,5 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart' as CardSetDB;
 
 @immutable
@@ -51,12 +51,12 @@ class CardEntity {
     String? workshopId,
     CardType? cardType,
   }) =>
-      CardEntity(
-        content: content ?? this.content,
-        active: active ?? this.active,
-        cardSetId: cardSetId,
-        id: id ?? this.id,
-        workshopId: workshopId ?? this.workshopId,
-        type: cardType ?? this.type
-      );
+    CardEntity(
+      content: content ?? this.content,
+      active: active ?? this.active,
+      cardSetId: cardSetId,
+      id: id ?? this.id,
+      workshopId: workshopId ?? this.workshopId,
+      type: cardType ?? this.type
+    );
 }

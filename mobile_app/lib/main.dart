@@ -19,9 +19,6 @@ import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewm
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
 
-
-
-
 void main() {
   runApp(
     MultiProvider(
@@ -46,7 +43,6 @@ void main() {
     ),
   );
   loadCurrentUser();
-  // checkForUpdatedCardSets();
   // TODO cardset update check
 }
 
