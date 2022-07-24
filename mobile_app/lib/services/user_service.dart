@@ -25,13 +25,13 @@ bool get isSignedIn => _currentUserId != null;
 bool get canUseWorkshop => _currentWorkshopId != null;
 
 
-void loadCurrentUser() async {
+Future loadCurrentUser() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   _currentUserId = sharedPreferences.getInt("user");
   _currentWorkshopId = sharedPreferences.getString("workshop");
 }
 
-void loginAsGuest(BuildContext context) async {
+Future loginAsGuest(BuildContext context) async {
   try {
     _setActiveUser(await getUser("guest"), context);
   } catch(e) {
@@ -86,7 +86,7 @@ Future<void> _createUser(String username, String workshopId, BuildContext contex
 }
 
 void _insertStandardSet(int userId, BuildContext context) {
-  insertCardSet(const CardSetEntity(workshopId: 'base-set' ,name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false), userId);
+  insertCardSet(const CardSetEntity(workshopId: 'base-set', name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false), userId);
   context.read<LocalCardSetsViewmodel>().getCardSets();
 }
 

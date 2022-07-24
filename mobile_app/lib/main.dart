@@ -12,7 +12,6 @@ import 'package:your_drinking_game_app/page/login/login_page.dart';
 import 'package:your_drinking_game_app/page/menu/player_input.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
-// import 'package:your_drinking_game_app/services/update_local_workshop_cardsets.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewmodel.dart';
@@ -53,8 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dein Trinkspiel',
-      // home: PlayerInput(),
-      home: LoginPage(),
+      home: isSignedIn ? PlayerInput(): LoginPage(),
       routes: {
         CardDisplay.routeName: (context) => CardDisplay(),
         LocalCardForm.routeName: (context) => LocalCardForm(),
@@ -68,11 +66,12 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         primaryColorDark: Colors.blueAccent,
         bottomAppBarColor: Colors.grey.shade300,
-        textTheme: GoogleFonts.ubuntuTextTheme(), colorScheme: ColorScheme.fromSwatch(
-
-        ).copyWith(secondary: Colors.orangeAccent),
+        textTheme: GoogleFonts.ubuntuTextTheme(), 
+        // colorScheme: ColorScheme.fromSwatch( Colors.blue
+        //   ).copyWith(secondary: Colors.orangeAccent),
       ),
       darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
     );
   }
+
 }

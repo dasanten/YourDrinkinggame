@@ -6,6 +6,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _navigateIfSignedIn(context);
     return Scaffold(
       body: 
         Container(
@@ -22,9 +23,9 @@ class LoginPage extends StatelessWidget {
                 ElevatedButton.icon(
                   icon: const Icon(Icons.man),
                   label: const Text("Gast"),
-                  onPressed: () { 
-                    loginAsGuest(context); 
-                    navigateToHome(context);
+                  onPressed: () async { 
+                    await loginAsGuest(context); 
+                    _navigateToHome(context);
                     }, 
                 ),
                 ElevatedButton.icon(
@@ -33,10 +34,7 @@ class LoginPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(primary: Colors.white),
                   onPressed: () async {
                     await loginWithGoogle(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PlayerInput()),
-                    ); 
+                    _navigateToHome( context);
                   },
                 ),
               ],
@@ -45,10 +43,19 @@ class LoginPage extends StatelessWidget {
     );     
   }
 
-   navigateToHome(BuildContext context) => Navigator.push(
-      context,
-      MaterialPageRoute(
-      builder: (context) => PlayerInput()),
-    );
+  _navigateToHome(BuildContext context) => Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => PlayerInput()),
+  );
+
+  _navigateIfSignedIn(BuildContext context) async {
+    if (!isSignedIn) {
+      await loadCurrentUser();
+    }
+    if (isSignedIn) {
+      _navigateToHome(context);
+    }
+  }
   
 }
