@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
 
+import '../../services/user_service.dart';
 import '../game/card_display.dart';
 
 class PlayerInput extends StatefulWidget {
@@ -30,6 +31,13 @@ class _PlayerInputState extends State<PlayerInput> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Spieler Auswahl"),
+        actions: [
+          //Logout Button,
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => logout(context),
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(

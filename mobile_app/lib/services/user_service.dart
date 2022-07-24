@@ -54,12 +54,16 @@ Future loginWithGoogle(BuildContext context) async {
   }
 }
 
-
-void logout() async {
-  await _googleSignIn.signOut();
-}
-
-void registerUser() async {
+void logout(BuildContext context) async {
+  if (canUseWorkshop) {
+    await _googleSignIn.signOut();
+  }
+  _currentUserId = null;
+  _currentWorkshopId = null;
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.remove("user");
+  sharedPreferences.remove("workshop");
+  Navigator.popUntil(context, (route) => route.isFirst);
 }
 
 _setActiveUser(UserEntity userEntity, BuildContext context) async {
