@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
 import 'package:your_drinking_game_app/page/login/login_page.dart';
 
-import '../../services/user_service.dart';
 import '../game/card_display.dart';
 
 class PlayerInput extends StatefulWidget {
@@ -50,47 +49,52 @@ class _PlayerInputState extends State<PlayerInput> {
           children: menuDrawer(context),
         ),
       ),
-      body: Builder(
-        builder: (context) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Spacer(), 
+      body: _body(context),
+    );
+  }
+
+  Center _body(BuildContext context) {
+    return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if(MediaQuery.of(context).orientation==Orientation.portrait) ... [
+              const SizedBox(height: 20),
               Flexible(
                 flex: 3,
                 child:  Image.asset(
                   'assets/images/Dein-Trinkspiel-Full.png',
                 ), 
               ),
-              Flexible(
-                child: playerChips(),
-              ),  
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Spacer(),
-                    Flexible(
-                      flex: 9,
-                      child: _inputField,
-                    ),
-                    const Spacer(),
-                    Expanded(
-                      flex: 2,
-                      child: IconButton(
-                        onPressed: () => startGame(context),
-                        icon: const Icon(Icons.play_arrow),
-                      ),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-              ),
             ],
-          ),
+            Flexible(
+              child: playerChips(),
+            ),  
+            Align(
+              alignment: FractionalOffset.bottomCenter,
+              child: Column(
+                children: [ 
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 9,
+                        child: _inputField,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: IconButton(
+                          onPressed: () => startGame(context),
+                          icon: const Icon(Icons.play_arrow),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]
+              ),
+            ),
+          ],
         ),
-      ),
-    );
+      );
   }
 
   Widget playerChips() {
@@ -145,13 +149,14 @@ class _PlayerInputState extends State<PlayerInput> {
   TextFormField get _inputField => TextFormField(
       decoration: InputDecoration(
         labelText: 'Spieler hinzufügen',
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.person),
         suffixIcon: IconButton(
           onPressed: _addPlayer,
           icon: const Icon(Icons.add),
         ),
       ),
       controller: _controller,
-      maxLength: 10,
       autofocus: true,
       textInputAction: TextInputAction.next,
       focusNode: _playerInputField,
