@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/page/tab/card_sets_tab_view.dart';
+import 'package:your_drinking_game_app/services/user_service.dart';
 
 
 List<Widget> menuDrawer(BuildContext context) =>  [
   DrawerHeader(
-    decoration: const BoxDecoration(
-      color: Color.fromRGBO(0, 0, 0, 0.1),
-    ),
-    child: Image.asset(
-      'assets/images/Dein-Trinkspiel-Full.png',
-    ),     
+    child: Row(
+      children: [
+          Icon(Icons.account_circle),
+          SizedBox(width: 10),
+          Text(
+            '${currentUser?.username}',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+    )
+    // child: Image.asset(
+    //   'assets/images/Dein-Trinkspiel-Full.png',
+    // ),     
   ),
   ListTile(
     title: const Text("Kartensets",

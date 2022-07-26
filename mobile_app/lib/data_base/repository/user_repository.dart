@@ -23,6 +23,23 @@ Future<UserEntity> getUser(String workshopId) async {
   return user.map<UserEntity>((e) => UserEntity.fromMap(e)).toList().first;
 }
 
+Future<UserEntity> getUserById(int id) async {
+  final db = await database;
+
+  final user = await db.query(
+    TABLE_USER,
+    columns: allUserColumns,
+    where: "$COLUMN_USER_ID = ?",
+    whereArgs: [id],
+  );
+
+  if(user.isEmpty) {
+    throw Exception("User with id $id not found");
+  }
+
+  return user.map<UserEntity>((e) => UserEntity.fromMap(e)).toList().first;
+}
+
 Future<List<UserEntity>> getUsers() async {
   final db = await database;
 

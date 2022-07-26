@@ -8,7 +8,6 @@ import 'package:your_drinking_game_app/page/form/cardSet/card_set_edit_form.dart
 import 'package:your_drinking_game_app/page/form/cards/card_edit_form.dart';
 import 'package:your_drinking_game_app/page/form/cards/local_card_form.dart';
 import 'package:your_drinking_game_app/page/game/card_display.dart';
-import 'package:your_drinking_game_app/page/login/login_page.dart';
 import 'package:your_drinking_game_app/page/menu/player_input.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
@@ -52,7 +51,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dein Trinkspiel',
-      home: isSignedIn ? PlayerInput(): LoginPage(),
+      home: PlayerInput(),
       routes: {
         CardDisplay.routeName: (context) => CardDisplay(),
         LocalCardForm.routeName: (context) => LocalCardForm(),

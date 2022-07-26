@@ -16,82 +16,84 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 int? _currentUserId;
-String? _currentWorkshopId;
+UserEntity? _userEntity;
 
 int? get currentUserId => _currentUserId;
-String? get currentWorkshopId => _currentWorkshopId;
+UserEntity? get currentUser => _userEntity;
 
 bool get isSignedIn => _currentUserId != null;
-bool get canUseWorkshop => _currentWorkshopId != null;
-
+bool get canUseWorkshop => _userEntity?.workshopId != null;
 
 Future loadCurrentUser() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   _currentUserId = sharedPreferences.getInt("user");
-  _currentWorkshopId = sharedPreferences.getString("workshop");
-}
-
-Future loginAsGuest(BuildContext context) async {
-  try {
-    _setActiveUser(await getUser("guest"), context);
-  } catch(e) {
-    await _createUser("Gast", "guest", context);
+  if(canUseWorkshop) {
+    _googleSignIn.signInSilently();
+  }
+  if (isSignedIn) {
+    _userEntity = await getUserById(_currentUserId!);
   }
 }
 
-Future loginWithGoogle(BuildContext context) async {
+Future loginAsGuest() async {
+  try {
+    _setActiveUser(await getUser("guest"));
+  } catch(e) {
+    await _createUser("Gast", "guest");
+  }
+  _userEntity = await getUserById(_currentUserId!);
+}
+
+Future loginWithGoogle() async {
   GoogleSignInAccount? account = await _googleSignIn.signIn();
   if (account != null) {
     try {
-      _setActiveUser(await getUser(account.id), context);
+      _setActiveUser(await getUser(account.id));
     } catch(e) {
       if(e.toString().contains("User with id")) {
-        await _createUser(account.displayName ?? "User" + Random().nextInt(9999).toString(), account.id, context);
+        await _createUser(account.displayName ?? "User" + Random().nextInt(9999).toString(), account.id);
       } else {
         throw e;
       }
     }
+    _userEntity = await getUserById(_currentUserId!);
+  } else {
+    throw Exception("Login abgebrochen");
   }
 }
 
-void logout(BuildContext context) async {
+void logout() async {
   if (canUseWorkshop) {
     await _googleSignIn.signOut();
   }
   _currentUserId = null;
-  _currentWorkshopId = null;
+  _userEntity = null;
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   sharedPreferences.remove("user");
   sharedPreferences.remove("workshop");
-  Navigator.popUntil(context, (route) => route.isFirst);
 }
 
-_setActiveUser(UserEntity userEntity, BuildContext context) async {
+_setActiveUser(UserEntity userEntity) async {
   _currentUserId = userEntity.id;
-  _currentWorkshopId = userEntity.workshopId;
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   if(currentUserId != null) {
     sharedPreferences.setInt("user", _currentUserId!);
+    _userEntity = await getUserById(_currentUserId!);
   }
-  if(currentWorkshopId != null) {
-    sharedPreferences.setString("workshop", _currentWorkshopId!);
-  }
-  context.read<LocalCardSetsViewmodel>().getCardSets();
 }
 
-Future<void> _createUser(String username, String workshopId, BuildContext context) async {
+Future<void> _createUser(String username, String workshopId) async {
   UserEntity userEntity = await insertUser(
     UserEntity(
       username: username,
       workshopId: workshopId,
     )
   );
-  _insertStandardSet(userEntity.id!, context);
+  _insertStandardSet(userEntity.id!);
 }
 
-void _insertStandardSet(int userId, BuildContext context) {
+void _insertStandardSet(int userId) {
   insertCardSet(const CardSetEntity(workshopId: 'base-set', name: 'Standard Set', active: true, description: 'Standard Set', version: 0, nsfw: false), userId);
-  context.read<LocalCardSetsViewmodel>().getCardSets();
 }
 
 

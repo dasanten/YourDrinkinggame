@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
+import 'package:your_drinking_game_app/page/login/login_page.dart';
 
 import '../../services/user_service.dart';
 import '../game/card_display.dart';
@@ -34,8 +35,12 @@ class _PlayerInputState extends State<PlayerInput> {
         actions: [
           //Logout Button,
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => logout(context),
+            icon: const Icon(Icons.login),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            ),
           ),
         ],
       ),
