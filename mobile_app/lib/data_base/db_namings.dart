@@ -11,6 +11,7 @@ const String COLUMN_CARD_SET_ADMIN_TOKEN = "admin_token";
 const String COLUMN_CARD_SET_EDITOR_TOKEN = "editor_token";
 const String COLUMN_CARD_SET_WORKSHOP_ID = "workshop_id";
 const String COLUMN_CARD_SET_VERSION = "version";
+const String COLUMN_CARD_SET_CATEGORY = "category";
 
 const List<String> allCardSetColumns = [
   COLUMN_CARD_SET_ID,
@@ -18,7 +19,8 @@ const List<String> allCardSetColumns = [
   COLUMN_CARD_SET_DESCRIPTION,
   COLUMN_CARD_SET_ACTIVE,
   COLUMN_CARD_SET_WORKSHOP_ID,
-  COLUMN_CARD_SET_VERSION
+  COLUMN_CARD_SET_VERSION,
+  COLUMN_CARD_SET_CATEGORY,
 ];
 
 //CARD
@@ -30,6 +32,7 @@ const String COLUMN_CARD_ACTIVE = "active";
 const String COLUMN_CARD_WORKSHOP_ID = "workshop_id";
 const String COLUMN_CARD_CARD_SET_ID = "card_set_id";
 const String COLUMN_CARD_CARD_ID = "card_id";
+const String COLUMN_CARD_TYPE = "type";
 
 
 const List<String> allCardColumns = [
@@ -39,6 +42,7 @@ const List<String> allCardColumns = [
   COLUMN_CARD_WORKSHOP_ID,
   COLUMN_CARD_CARD_SET_ID,
   COLUMN_CARD_CARD_ID,
+  COLUMN_CARD_TYPE,
 ];
 
 //USER

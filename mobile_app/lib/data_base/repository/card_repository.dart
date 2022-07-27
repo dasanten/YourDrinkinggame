@@ -3,6 +3,8 @@ import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
+import '../../services/user_service.dart';
+
 Future<Database> get database => CardSetDB.cardSetDB.database;
 
 
@@ -60,16 +62,23 @@ Future<int> updateCard(CardEntity card) async {
 Future<List<CardEntity>> getActiveCards() async {
   final db = await database;
 
-  final newCards = await db.rawQuery(
-    "SELECT C.$COLUMN_CARD_ID, "
-    "       C.$COLUMN_CARD_CONTENT, "
-    "       C.$COLUMN_CARD_ACTIVE, "
-    "       C.$COLUMN_CARD_WORKSHOP_ID, "
-    "       C.$COLUMN_CARD_CARD_SET_ID "
-    "FROM $TABLE_CARD_SET CS "
-    " JOIN $TABLE_CARD C "
-    "   ON C.$COLUMN_CARD_CARD_SET_ID = CS.$COLUMN_CARD_SET_ID "
-    "WHERE CS.$COLUMN_CARD_SET_ACTIVE = 1 AND C.$COLUMN_CARD_ACTIVE = 1",
+  final newCards = await db.rawQuery("""
+    SELECT C.$COLUMN_CARD_ID, 
+           C.$COLUMN_CARD_CONTENT, 
+           C.$COLUMN_CARD_ACTIVE, 
+           C.$COLUMN_CARD_WORKSHOP_ID, 
+           C.$COLUMN_CARD_CARD_SET_ID,
+           UR.$COLUMN_USER_ROLE_USER_ID
+    FROM $TABLE_CARD C 
+      JOIN $TABLE_CARD_SET CS
+        ON C.$COLUMN_CARD_CARD_SET_ID = CS.$COLUMN_CARD_SET_ID 
+      JOIN $TABLE_USER_ROLE UR
+        ON CS.$COLUMN_CARD_SET_ID = UR.$COLUMN_USER_ROLE_CARD_SET_ID
+          WHERE 
+            UR.$COLUMN_USER_ROLE_USER_ID = $currentUserId AND         
+            CS.$COLUMN_CARD_SET_ACTIVE = 1 AND 
+            C.$COLUMN_CARD_ACTIVE = 1
+    """,
   );
   if (newCards.isNotEmpty) {
     return newCards.map((e) => CardEntity.fromMap(e)).toList();

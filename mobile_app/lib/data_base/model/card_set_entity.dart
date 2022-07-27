@@ -45,11 +45,11 @@ class CardSetEntity {
         id: cardSetMap[CardSetDB.COLUMN_CARD_SET_ID] as int?,
         name: cardSetMap[CardSetDB.COLUMN_CARD_SET_NAME] as String,
         version: cardSetMap[CardSetDB.COLUMN_CARD_SET_VERSION] as int?,
-        description:
-            cardSetMap[CardSetDB.COLUMN_CARD_SET_DESCRIPTION] as String,
+        description: cardSetMap[CardSetDB.COLUMN_CARD_SET_DESCRIPTION] as String,
         workshopId: cardSetMap[CardSetDB.COLUMN_CARD_SET_WORKSHOP_ID] as String?,
         active: cardSetMap[CardSetDB.COLUMN_CARD_SET_ACTIVE] == 1,
-        nsfw: false
+        nsfw: false,
+        category: cardSetMap[CardSetDB.COLUMN_CARD_SET_CATEGORY] as String?,
       );
 
   factory CardSetEntity.fromCardSetDto(CardSetDto cardSetDto) => CardSetEntity(

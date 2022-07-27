@@ -32,15 +32,7 @@ class _PlayerInputState extends State<PlayerInput> {
       appBar: AppBar(
         title: const Text("Spieler Auswahl"),
         actions: [
-          //Logout Button,
-          IconButton(
-            icon: const Icon(Icons.login),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
-            ),
-          ),
+          _loginButton(context),
         ],
       ),
       drawer: Drawer(
@@ -58,7 +50,8 @@ class _PlayerInputState extends State<PlayerInput> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if(MediaQuery.of(context).orientation==Orientation.portrait) ... [
+            if(MediaQuery.of(context).orientation==Orientation.portrait) 
+            ...[
               const SizedBox(height: 20),
               Flexible(
                 flex: 3,
@@ -82,9 +75,9 @@ class _PlayerInputState extends State<PlayerInput> {
                       ),
                       Expanded(
                         flex: 2,
-                        child: IconButton(
+                        child: ElevatedButton(
                           onPressed: () => startGame(context),
-                          icon: const Icon(Icons.play_arrow),
+                          child: const Icon(Icons.play_arrow),
                         ),
                       ),
                     ],
@@ -145,6 +138,19 @@ class _PlayerInputState extends State<PlayerInput> {
       );
     }
   }
+
+  _loginButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.login),
+      onPressed: () => _login(context),
+    );
+  }
+
+  _login(BuildContext context) => Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => LoginPage(),
+    ),
+  );
 
   TextFormField get _inputField => TextFormField(
       decoration: InputDecoration(

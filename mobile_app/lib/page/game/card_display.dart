@@ -2,10 +2,9 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
-
+import '../../data_base/repository/card_repository.dart';
 import '../menu/player_input.dart';
 
 class CardDisplay extends StatefulWidget {
@@ -25,7 +24,7 @@ class _CardDisplayState extends State<CardDisplay> {
   @override
   void initState() {
     super.initState();
-    CardSetDB.cardSetDB.getActiveCards().then((value) => _cards = value);
+    getActiveCards().then((value) => _cards = value);
   }
 
   @override

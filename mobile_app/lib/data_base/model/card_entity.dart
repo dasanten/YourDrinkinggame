@@ -26,6 +26,7 @@ class CardEntity {
         CardSetDB.COLUMN_CARD_WORKSHOP_ID: workshopId,
         CardSetDB.COLUMN_CARD_CARD_SET_ID: cardSetId,
         if (id != null) CardSetDB.COLUMN_CARD_ID: id,
+        CardSetDB.COLUMN_CARD_TYPE: type?.name,
       };
 
   factory CardEntity.fromMap(Map<String, dynamic> map) => CardEntity(
@@ -34,6 +35,7 @@ class CardEntity {
         active: map[CardSetDB.COLUMN_CARD_ACTIVE] as int == 1,
         workshopId: map[CardSetDB.COLUMN_CARD_WORKSHOP_ID] as String?,
         cardSetId: map[CardSetDB.COLUMN_CARD_CARD_SET_ID] as int,
+        type: CardType.valueOf(map[CardSetDB.COLUMN_CARD_TYPE] ?? CardType.STANDARD.name),
       );
 
   factory CardEntity.fromCardDto(CardDto cardDto, int cardSetId) => CardEntity(

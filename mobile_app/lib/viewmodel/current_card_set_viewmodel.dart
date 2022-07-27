@@ -57,13 +57,13 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   Future<void> getCards() async {
     if (_cardSet != null) {
       setLoading();
-      _cards = await CardSetDB.cardSetDB.getCards(_cardSet!.id!);
+      // _cards = await CardSetDB.cardSetDB.getCards(_cardSet!.id!);
       setFinished();
     }
   }
 
   Future<void> insertCard(CardEntity card) async {
-    await CardSetDB.cardSetDB.insertCard(card);
+    // await CardSetDB.cardSetDB.insertCard(card);
     await getCards();
   }
 
@@ -77,12 +77,12 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   }
 
   Future<void> updateCard(CardEntity card) async {
-    await CardSetDB.cardSetDB.updateCard(card);
+    // await CardSetDB.cardSetDB.updateCard(card);
     await getCards();
   }
 
   Future<void> deleteCard(int id) async {
-    await CardSetDB.cardSetDB.deleteCard(id);
+    // await CardSetDB.cardSetDB.deleteCard(id);
     await getCards();
   }
 
