@@ -30,50 +30,50 @@ class _PublishCardSetFormState extends State<PublishCardSetForm> {
         padding: const EdgeInsets.all(8),
         child: Form(
           child: ListView(
-            children: context.select<CurrentCardSetViewmodel, List<Widget>>((value) => 
-              (value.isEditor || value.isAdmin) ? [
-                TextFormField(
-                  controller: value.adminTokenController,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Bitte gebe einen Token ein!';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Admin Token',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLength: 12,  
-                ),
-                ElevatedButton.icon(
-                  onPressed: () async => _checkOrUpdateAdminToken(value.isAdmin, context, value.cardSet!), 
-                  icon: const Icon(Icons.check), 
-                  label: Text(value.isAdmin ? "Token ändern": "Token überprüfen")
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                ),
-                TextFormField(
-                  controller: value.editorTokenController,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Bitte gebe einen Token ein!';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    labelText: 'Editor Token',
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLength: 12,  
-                ),
-                ElevatedButton.icon(
-                  onPressed: () async => _checkOrUpdateEditorToken(value.isAdmin, context, value.cardSet!), 
-                  icon: const Icon(Icons.check), 
-                  label: Text(value.isAdmin ? "Token ändern": "Token überprüfen")
-                ),
-              ]: noTokenWidgets()),
+            // children: context.select<CurrentCardSetViewmodel, List<Widget>>((value) => 
+            //   (value.isEditor || value.isAdmin) ? [
+            //     TextFormField(
+            //       controller: value.adminTokenController,
+            //       validator: (value) {
+            //         if (value?.isEmpty ?? true) {
+            //           return 'Bitte gebe einen Token ein!';
+            //         }
+            //         return null;
+            //       },
+            //       decoration: const InputDecoration(
+            //         labelText: 'Admin Token',
+            //         border: OutlineInputBorder(),
+            //       ),
+            //       maxLength: 12,  
+            //     ),
+            //     ElevatedButton.icon(
+            //       onPressed: () async => _checkOrUpdateAdminToken(value.isAdmin, context, value.cardSet!), 
+            //       icon: const Icon(Icons.check), 
+            //       label: Text(value.isAdmin ? "Token ändern": "Token überprüfen")
+            //     ),
+            //     const Padding(
+            //       padding: EdgeInsets.symmetric(vertical: 5),
+            //     ),
+            //     TextFormField(
+            //       controller: value.editorTokenController,
+            //       validator: (value) {
+            //         if (value?.isEmpty ?? true) {
+            //           return 'Bitte gebe einen Token ein!';
+            //         }
+            //         return null;
+            //       },
+            //       decoration: const InputDecoration(
+            //         labelText: 'Editor Token',
+            //         border: OutlineInputBorder(),
+            //       ),
+            //       maxLength: 12,  
+            //     ),
+            //     ElevatedButton.icon(
+            //       onPressed: () async => _checkOrUpdateEditorToken(value.isAdmin, context, value.cardSet!), 
+            //       icon: const Icon(Icons.check), 
+            //       label: Text(value.isAdmin ? "Token ändern": "Token überprüfen")
+            //     ),
+            //   ]: noTokenWidgets()),
               
           )
         ),

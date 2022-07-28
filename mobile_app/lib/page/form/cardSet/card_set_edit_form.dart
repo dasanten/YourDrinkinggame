@@ -29,7 +29,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
   @override
   Widget build(BuildContext context) {
     published = context.read<CurrentCardSetViewmodel>().cardSet?.workshopId?.isNotEmpty ?? false;
-    editable = context.select<CurrentCardSetViewmodel, bool>((value) => value.isAdmin || value.isEditor);
+    // editable = context.select<CurrentCardSetViewmodel, bool>((value) => value.isAdmin || value.isEditor);
     return Scaffold(
       appBar: AppBar(
         title: Consumer<CurrentCardSetViewmodel>(
@@ -83,28 +83,28 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                   value: published, 
                   onChanged: editable ? (_) async {
                     if (published) {
-                      if(value.isAdmin) {
-                        // card_set_http.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
-                        // TODO add deletes
-                        final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "");
-                        value.setCardSet(cardSetEntity);
-                        context
-                          .read<LocalCardSetsViewmodel>()
-                          .updateCardSet(cardSetEntity);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Kartenset ${value.cardSet!.name} veröffentlichung rückgängig gemacht"),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      } else if(value.isEditor) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Nur Besitzer können ein Set löschen!"),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      }
+                      // if(value.isAdmin) {
+                      //   // card_set_http.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
+                      //   // TODO add deletes
+                      //   final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "");
+                      //   value.setCardSet(cardSetEntity);
+                      //   context
+                      //     .read<LocalCardSetsViewmodel>()
+                      //     .updateCardSet(cardSetEntity);
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       content: Text("Kartenset ${value.cardSet!.name} veröffentlichung rückgängig gemacht"),
+                      //       behavior: SnackBarBehavior.floating,
+                      //     ),
+                      //   );
+                      // } else if(value.isEditor) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text("Nur Besitzer können ein Set löschen!"),
+                      //       behavior: SnackBarBehavior.floating,
+                      //     ),
+                      //   );
+                      // }
                     } else {
                       final String token = await _publishDialog(context);
                       if (token.isNotEmpty && value.cardSet != null) {

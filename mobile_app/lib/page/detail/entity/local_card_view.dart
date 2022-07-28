@@ -58,7 +58,7 @@ class LocalCardView extends StatelessWidget {
           }
         },
       ),
-      floatingActionButton: context.select<CurrentCardSetViewmodel, bool>((value) => value.isAdmin || value.isEditor) ? FloatingActionButton(
+      floatingActionButton: context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated) ? FloatingActionButton(
         onPressed: () => Navigator.pushNamed(
           context,
           LocalCardForm.routeName,

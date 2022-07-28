@@ -1,12 +1,9 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart';
 import 'package:your_drinking_game_app/data_base/repository/user_repository.dart';
-import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 
 import '../data_base/model/card_set_entity.dart';
 import '../data_base/model/user_entity.dart';
@@ -29,17 +26,21 @@ Future loadCurrentUser() async {
   _currentUserId = sharedPreferences.getInt("user");
   if(canUseWorkshop) {
     _googleSignIn.signInSilently();
+  }  
+  if(currentUserId==null) {
+    loginAsGuest();
   }
   if (isSignedIn) {
     _userEntity = await getUserById(_currentUserId!);
   }
+
 }
 
 Future loginAsGuest() async {
   try {
     _setActiveUser(await getUser("guest"));
   } catch(e) {
-    await _createUser("Gast", "guest");
+    _setActiveUser(await _createUser("Gast", null));
   }
   _userEntity = await getUserById(_currentUserId!);
 }
@@ -51,7 +52,7 @@ Future loginWithGoogle() async {
       _setActiveUser(await getUser(account.id));
     } catch(e) {
       if(e.toString().contains("User with id")) {
-        await _createUser(account.displayName ?? "User" + Random().nextInt(9999).toString(), account.id);
+        _setActiveUser(await _createUser(account.displayName ?? "User" + Random().nextInt(9999).toString(), account.id));
       } else {
         throw e;
       }
@@ -82,7 +83,7 @@ _setActiveUser(UserEntity userEntity) async {
   }
 }
 
-Future<void> _createUser(String username, String workshopId) async {
+Future<UserEntity> _createUser(String username, String? workshopId) async {
   UserEntity userEntity = await insertUser(
     UserEntity(
       username: username,
@@ -90,6 +91,7 @@ Future<void> _createUser(String username, String workshopId) async {
     )
   );
   _insertStandardSet(userEntity.id!);
+  return userEntity;
 }
 
 void _insertStandardSet(int userId) {

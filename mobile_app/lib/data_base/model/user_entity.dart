@@ -6,7 +6,7 @@ import 'package:your_drinking_game_app/data_base/db_namings.dart';
 class UserEntity {
   final int? id;
   final String username;
-  final String workshopId;
+  final String? workshopId;
   final bool? nsfw;
 
   const UserEntity({

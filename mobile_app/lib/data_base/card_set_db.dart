@@ -34,7 +34,7 @@ class CardSetDB {
               $COLUMN_CARD_SET_ACTIVE INTEGER,
               $COLUMN_CARD_SET_WORKSHOP_ID TEXT,
               $COLUMN_CARD_SET_VERSION INTEGER,
-              $COLUMN_CARD_SET_CATEGORY TEXT,)
+              $COLUMN_CARD_SET_CATEGORY TEXT)
           """,
         );
         await database.execute(
