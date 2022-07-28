@@ -1,7 +1,9 @@
+import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_set_entity.dart';
+import 'package:your_drinking_game_app/data_base/model/user_entity.dart';
 
 Future<Database> get database => CardSetDB.cardSetDB.database;
 
@@ -32,13 +34,14 @@ Future<List<CardSetEntity>> getCardSetsByUserId(int userId) async {
 }
 
 
-Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId) async {
+Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId, {CardSetRole? role}) async {
   final db = await database;
   final id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
 
   await db.insert(TABLE_USER_ROLE, {
     COLUMN_USER_ROLE_USER_ID: userId,
     COLUMN_USER_ROLE_CARD_SET_ID: id,
+    if(role!=null) COLUMN_USER_ROLE_ROLE: role,
   });
 
   return cardSet.copyWith(
@@ -85,4 +88,19 @@ Future<bool> containsCardSet(String id) async {
   );
 
   return result.isNotEmpty;
+}
+
+Future<CardSetRole?> getUserRole(int cardSetId, int userId) async {
+  final db = await database;
+
+  final result = await db.rawQuery("""
+    SELECT $COLUMN_USER_ROLE_ROLE FROM $TABLE_USER_ROLE
+    WHERE $COLUMN_USER_ROLE_CARD_SET_ID = $cardSetId
+    AND $COLUMN_USER_ROLE_USER_ID = $userId
+  """);
+
+  if(result.isEmpty || result.first[COLUMN_USER_ROLE_ROLE] == null) {
+    return null;
+  }
+  return CardSetRole.valueOf(result.first[COLUMN_USER_ROLE_ROLE] as String);
 }

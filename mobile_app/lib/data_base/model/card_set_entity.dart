@@ -10,10 +10,6 @@ class CardSetEntity {
   final String description;
   final String? category;
   final int? version;
-  @deprecated
-  final String? editorToken;
-  @deprecated
-  final String? adminToken;
   final String? workshopId;
   final bool active;
   final bool nsfw;
@@ -22,8 +18,6 @@ class CardSetEntity {
     this.id,
     this.workshopId,
     this.version,
-    this.editorToken,
-    this.adminToken,
     this.category,
     required this.name,
     required this.description,

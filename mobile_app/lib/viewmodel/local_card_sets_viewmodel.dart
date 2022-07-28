@@ -36,7 +36,7 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
       active: active,
       nsfw: false,
     );
-    await cardSetRepository.insertCardSet(cardSet, currentUserId!);
+    await cardSetRepository.insertCardSet(cardSet, currentUserId!, role: CardSetRole.OWNER);
     await getCardSets();
   }
 

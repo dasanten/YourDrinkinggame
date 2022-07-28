@@ -1,6 +1,8 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_repository.dart' as card_repository;
+import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as card_set_repository;
+import 'package:your_drinking_game_app/services/user_service.dart';
 import '../data_base/model/card_entity.dart';
 import '../data_base/model/card_set_entity.dart';
 
@@ -28,7 +30,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   TextEditingController get nameController => _nameController;
   TextEditingController get descriptionController => _descriptionController;
   
-  bool get canBeUpdated => _cardSet != null && _cardSet!.workshopId == null;
+  bool get canBeUpdated => _cardSet?.workshopId == null || (_cardSet?.workshopId != null && _cardSetRole != null);
 
   void setCardSet(CardSetEntity newCardSet) {
     _cardSet = newCardSet;
@@ -36,6 +38,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     _descriptionController.text = _cardSet!.description;
     notifyListeners();
     getCards();
+    getUserRole();
   }
 
   void reset() {
@@ -50,6 +53,13 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
       _cards = await card_repository.getCards(_cardSet!.id!);
       setFinished();
     }
+  }
+
+  Future getUserRole() async {
+    if (_cardSet != null && currentUserId != null) {
+      _cardSetRole = await card_set_repository.getUserRole(_cardSet!.id!, currentUserId!);
+    }
+    notifyListeners();
   }
 
   Future<void> insertCard(CardEntity card) async {
