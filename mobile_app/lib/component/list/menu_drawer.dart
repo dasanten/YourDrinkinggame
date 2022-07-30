@@ -9,18 +9,18 @@ List<Widget> menuDrawer(BuildContext context) =>  [
       children: [
           Icon(Icons.account_circle),
           SizedBox(width: 10),
-          Text(
-            '${currentUser?.username}',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          ValueListenableBuilder(
+            builder: (context, value, child) => Text(
+              '${currentUser?.username}',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            valueListenable: userEntity,
           ),
         ],
     )
-    // child: Image.asset(
-    //   'assets/images/Dein-Trinkspiel-Full.png',
-    // ),     
   ),
   ListTile(
     title: const Text("Kartensets",

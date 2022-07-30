@@ -1,5 +1,6 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as cardSetRepository;
+import 'package:your_drinking_game_app/openapi/api_client.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
 import '../data_base/model/card_set_entity.dart';
@@ -14,10 +15,16 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
 
   LocalCardSetsViewmodel() {
     _cardSetList = <CardSetEntity>[];
-    getCardSets();
+    userEntity.addListener(() {
+      if(userEntity.value != null) {
+        getCardSets();
+      }
+    });
   }
 
   Future<void> getCardSets() async {
+
+    print("object");
     setLoading();
     if(currentUserId != null){
       _cardSetList = await cardSetRepository.getCardSetsByUserId(currentUserId!);
@@ -51,6 +58,7 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
   }
 
   Future<bool> importCardSetFromWorkshop(CardSetBasicDto cardSetDto) async {
+    print(await api.getCardsetApi().getCardSetById(id: cardSetDto.id!));
     // TODO add cardSet from workshop
     // final responseCardSet = await CardSetDB.cardSetDB
         // .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));

@@ -11,7 +11,7 @@ class CurrentWorkshopCardSetViewmodel extends AsyncViewmodelBase {
   void setCardSet(String cardSetId) async {
     setLoading();
     try {
-      _cardSet = (await cardsetApi.getCardSetById(id: cardSetId)).data;
+      _cardSet = (await api.getCardsetApi().getCardSetById(id: cardSetId)).data;
     } catch (e) {
       print("CardSet with id: $cardSetId does not exist");
     }

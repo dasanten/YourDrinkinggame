@@ -29,7 +29,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
   Future<void> getWorkshopCardSets() async {
     setLoading();
     _loadEverything = false;
-    await cardsetApi.getTopCardSets(start: 0).then((value) => _cardSetList = List.from(value.data?.asList() ?? []) );
+    await api.getCardsetApi().getTopCardSets(start: 0).then((value) => _cardSetList = List.from(value.data?.asList() ?? []) );
     _cardSetLocal.clear();
     setFinished();
     for (final cardSet in _cardSetList) {
@@ -49,7 +49,7 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
       _isLoadingMore = true;
       notifyListeners();
       var lengthBefore = cardSetList.length;
-      await cardsetApi.getTopCardSets(start: cardSetList.length).then((value) => cardSetList.addAll(value.data?.asList() ?? []));
+      await api.getCardsetApi().getTopCardSets(start: cardSetList.length).then((value) => cardSetList.addAll(value.data?.asList() ?? []));
       _isLoadingMore = false;
       if(lengthBefore == cardSetList.length ) {
         ScaffoldMessenger.of(context)

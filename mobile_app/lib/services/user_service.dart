@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart';
@@ -13,13 +14,13 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 
 int? _currentUserId;
-UserEntity? _userEntity;
+ValueNotifier<UserEntity?> userEntity = ValueNotifier<UserEntity?>(null);
 
 int? get currentUserId => _currentUserId;
-UserEntity? get currentUser => _userEntity;
+UserEntity? get currentUser => userEntity.value;
 
 bool get isSignedIn => _currentUserId != null;
-bool get canUseWorkshop => _userEntity?.workshopId != null;
+bool get canUseWorkshop => userEntity.value?.workshopId != null;
 
 Future loadCurrentUser() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -31,7 +32,7 @@ Future loadCurrentUser() async {
     loginAsGuest();
   }
   if (isSignedIn) {
-    _userEntity = await getUserById(_currentUserId!);
+    userEntity.value = await getUserById(_currentUserId!);
   }
 
 }
@@ -42,7 +43,7 @@ Future loginAsGuest() async {
   } catch(e) {
     _setActiveUser(await _createUser("Gast", null));
   }
-  _userEntity = await getUserById(_currentUserId!);
+  userEntity.value = await getUserById(_currentUserId!);
 }
 
 Future loginWithGoogle() async {
@@ -57,7 +58,7 @@ Future loginWithGoogle() async {
         throw e;
       }
     }
-    _userEntity = await getUserById(_currentUserId!);
+    userEntity.value = await getUserById(_currentUserId!);
   } else {
     throw Exception("Login abgebrochen");
   }
@@ -68,18 +69,18 @@ void logout() async {
     await _googleSignIn.signOut();
   }
   _currentUserId = null;
-  _userEntity = null;
+  userEntity.value = null;
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   sharedPreferences.remove("user");
   sharedPreferences.remove("workshop");
 }
 
-_setActiveUser(UserEntity userEntity) async {
-  _currentUserId = userEntity.id;
+_setActiveUser(UserEntity newUser) async {
+  _currentUserId = newUser.id;
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   if(currentUserId != null) {
     sharedPreferences.setInt("user", _currentUserId!);
-    _userEntity = await getUserById(_currentUserId!);
+    userEntity.value = await getUserById(_currentUserId!);
   }
 }
 
