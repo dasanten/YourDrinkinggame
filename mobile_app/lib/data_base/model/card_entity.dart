@@ -9,12 +9,14 @@ class CardEntity {
   final bool active;
   final String? workshopId;
   final CardType? type;
-  final int cardSetId;
+  final int? cardSetId;
+  final CardEntity? card;
 
   const CardEntity({
     this.id,
     this.workshopId,
     this.type,
+    this.card,
     required this.content,
     required this.active,
     required this.cardSetId,
@@ -27,6 +29,7 @@ class CardEntity {
         CardSetDB.COLUMN_CARD_CARD_SET_ID: cardSetId,
         if (id != null) CardSetDB.COLUMN_CARD_ID: id,
         CardSetDB.COLUMN_CARD_TYPE: type?.name,
+        CardSetDB.COLUMN_CARD_CARD_ID: card?.id,
       };
 
   factory CardEntity.fromMap(Map<String, dynamic> map) => CardEntity(
@@ -34,16 +37,17 @@ class CardEntity {
         content: map[CardSetDB.COLUMN_CARD_CONTENT] as String,
         active: map[CardSetDB.COLUMN_CARD_ACTIVE] as int == 1,
         workshopId: map[CardSetDB.COLUMN_CARD_WORKSHOP_ID] as String?,
-        cardSetId: map[CardSetDB.COLUMN_CARD_CARD_SET_ID] as int,
+        cardSetId: map[CardSetDB.COLUMN_CARD_CARD_SET_ID] as int?,
         type: CardType.valueOf(map[CardSetDB.COLUMN_CARD_TYPE] ?? CardType.STANDARD.name),
       );
 
-  factory CardEntity.fromCardDto(CardDto cardDto, int cardSetId) => CardEntity(
+  factory CardEntity.fromCardDto(CardDto cardDto, int? cardSetId) => CardEntity(
       content: cardDto.content!,
       active: true,
       cardSetId: cardSetId,
       workshopId: cardDto.id,
-      type: cardDto.type
+      type: cardDto.type,
+      card: cardDto.card != null ? CardEntity.fromCardDto(cardDto.card!, null): null,
   );
 
   CardEntity copyWith({
@@ -52,6 +56,7 @@ class CardEntity {
     bool ?active,
     String? workshopId,
     CardType? cardType,
+    CardEntity? card,
   }) =>
     CardEntity(
       content: content ?? this.content,
@@ -59,6 +64,7 @@ class CardEntity {
       cardSetId: cardSetId,
       id: id ?? this.id,
       workshopId: workshopId ?? this.workshopId,
-      type: cardType ?? this.type
+      type: cardType ?? this.type,
+      card: card ?? this.card,
     );
 }

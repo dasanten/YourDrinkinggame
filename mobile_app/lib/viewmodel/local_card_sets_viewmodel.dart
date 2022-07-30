@@ -1,8 +1,10 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
+import 'package:your_drinking_game_app/data_base/repository/card_repository.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as cardSetRepository;
 import 'package:your_drinking_game_app/openapi/api_client.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
+import '../data_base/model/card_entity.dart';
 import '../data_base/model/card_set_entity.dart';
 
 import 'async_viewmodel_base.dart';
@@ -15,6 +17,7 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
 
   LocalCardSetsViewmodel() {
     _cardSetList = <CardSetEntity>[];
+    getCardSets();
     userEntity.addListener(() {
       if(userEntity.value != null) {
         getCardSets();
@@ -23,8 +26,6 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
   }
 
   Future<void> getCardSets() async {
-
-    print("object");
     setLoading();
     if(currentUserId != null){
       _cardSetList = await cardSetRepository.getCardSetsByUserId(currentUserId!);
@@ -58,18 +59,28 @@ class LocalCardSetsViewmodel extends AsyncViewmodelBase {
   }
 
   Future<bool> importCardSetFromWorkshop(CardSetBasicDto cardSetDto) async {
-    print(await api.getCardsetApi().getCardSetById(id: cardSetDto.id!));
-    // TODO add cardSet from workshop
-    // final responseCardSet = await CardSetDB.cardSetDB
-        // .insertCardSet(CardSetEntity.fromCardSetDto(cardSetDto));
-    // final cardEntityList = cardSetDto.cards!
-    //     .map<CardEntity>(
-    //       (e) => CardEntity.fromCardDto(e, responseCardSet.id!),
-    //     )
-    //     .toList();
-    
-    // await CardSetDB.cardSetDB.insertCardList(cardEntityList);
+    CardSetDto? cardSet = (await api.getCardsetApi().getCardSetById(id: cardSetDto.id!)).data;
+    if(cardSet == null) {
+      return false;
+    }
+    CardSetRole? cardSetRole;
+    if(canUseWorkshop) {
+      cardSetRole = await getCardSetRole(cardSet.id!);
+    }
+    CardSetEntity cardSetEntity = await cardSetRepository.insertCardSet(CardSetEntity.fromCardSetDto(cardSet), currentUserId!, role: cardSetRole);
+    insertCardList((cardSet.cards?.asList() ?? []).map((card) => CardEntity.fromCardDto(card, cardSetEntity.id!)).toList());
     await getCardSets();
     return true;
+  }
+
+
+  Future<CardSetRole?> getCardSetRole(String cardSetId) async {
+    final userWithRole = (await api.getConfigureApi().getCardSetSpecialUsers(cardSetId: cardSetId)).data?.asList() ?? [];
+    for(final user in userWithRole) {
+      if(user.id == currentUser!.workshopId) {
+        return user.role;
+      }
+    }
+    return null;
   }
 }

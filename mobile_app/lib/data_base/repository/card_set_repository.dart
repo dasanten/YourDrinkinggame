@@ -5,6 +5,8 @@ import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_set_entity.dart';
 import 'package:your_drinking_game_app/data_base/model/user_entity.dart';
 
+import '../../services/user_service.dart';
+
 Future<Database> get database => CardSetDB.cardSetDB.database;
 
 Future<List<CardSetEntity>> getCardSets() async {
@@ -51,6 +53,12 @@ Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId, {CardSetR
 
 Future<int> deleteCardSet(int id) async {
   final db = await database;
+
+  await db.delete(
+    TABLE_USER_ROLE, 
+    where: "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?", 
+    whereArgs: [id, currentUserId]
+  );
 
   await db.delete(
     TABLE_CARD,

@@ -22,6 +22,26 @@ Future<List<CardEntity>> getCards(int cardSetId) async {
   return cards.map<CardEntity>((e) => CardEntity.fromMap(e)).toList();
 }
 
+Future<CardEntity?> getRelatedCardById(int cardId) async {
+  final db = await CardSetDB.cardSetDB.database;
+
+  // var card = await db.query(
+  //   TABLE_CARD,
+  //   columns: allCardColumns,
+  //   where: "$COLUMN_CARD_CARD_ID = SELECT $COLUMN_CARD_CARD_ID FROM $TABLE_CARD WHERE $COLUMN_CARD_ID = ?",
+  //   whereArgs: [cardId],
+  // );
+   
+  var card = await db.rawQuery("""
+    SELECT * FROM $TABLE_CARD C1, $TABLE_CARD C2
+    WHERE C1.$COLUMN_CARD_ID = $cardId AND C2.$COLUMN_CARD_ID = C1.$COLUMN_CARD_CARD_ID""");
+
+  if (card.isEmpty) {
+    return null;
+  }
+  return CardEntity.fromMap(card.first);
+}
+
 Future<CardEntity> insertCard(CardEntity card) async {
   final db = await database;
   final id = await db.insert(TABLE_CARD, card.toMap());
@@ -33,7 +53,14 @@ Future<CardEntity> insertCard(CardEntity card) async {
 
 Future<List<CardEntity>> insertCardList(List<CardEntity> cardEntityList) async {
   cardEntityList.forEach((card) async {
-    card = await insertCard(card);
+    var savedCard;
+    if (card.card != null) {
+      savedCard = await insertCard(card.card!);
+    }
+    print(savedCard?.id);
+    card = await insertCard(card.copyWith(
+      card: savedCard,
+    ));
   });
   return cardEntityList;
 }
@@ -74,12 +101,11 @@ Future<List<CardEntity>> getActiveCards() async {
         ON C.$COLUMN_CARD_CARD_SET_ID = CS.$COLUMN_CARD_SET_ID 
       JOIN $TABLE_USER_ROLE UR
         ON CS.$COLUMN_CARD_SET_ID = UR.$COLUMN_USER_ROLE_CARD_SET_ID
-          WHERE 
-            UR.$COLUMN_USER_ROLE_USER_ID = $currentUserId AND         
-            CS.$COLUMN_CARD_SET_ACTIVE = 1 AND 
-            C.$COLUMN_CARD_ACTIVE = 1
-    """,
-  );
+    WHERE 
+      UR.$COLUMN_USER_ROLE_USER_ID = $currentUserId AND         
+      CS.$COLUMN_CARD_SET_ACTIVE = 1 AND 
+      C.$COLUMN_CARD_ACTIVE = 1
+  """,);
   if (newCards.isNotEmpty) {
     return newCards.map((e) => CardEntity.fromMap(e)).toList();
   }

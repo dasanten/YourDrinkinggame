@@ -18,7 +18,6 @@ class LocalCardSetsView extends StatelessWidget {
               separatorBuilder: (_, index) => const Divider(),
               itemBuilder: (context, i) {
                 final cardSet = viewmodel.cardSetList.elementAt(i);
-
                 return CustomCardSetTile(
                   cardSet: cardSet,
                   onActiveChanged: (value) async {

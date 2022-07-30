@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
+import 'package:your_drinking_game_app/data_base/repository/card_repository.dart';
+import 'package:your_drinking_game_app/extension/card_extension.dart';
 import 'package:your_drinking_game_app/page/form/cards/card_edit_form.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
@@ -21,6 +23,7 @@ class CustomLocalCardTile extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(8),
+      color: card.color,
       child: ListTile(
         title: Text(card.content),
         trailing: Switch(

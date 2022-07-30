@@ -40,6 +40,12 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
                           content: Text("Kartenset hinzugefügt!"),
                         ),
                       );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Kartenset konnte nicht hinzugefügt werden!"),
+                        ),
+                      );
                     }
                   },
           ),
