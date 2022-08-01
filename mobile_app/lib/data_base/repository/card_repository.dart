@@ -24,13 +24,6 @@ Future<List<CardEntity>> getCards(int cardSetId) async {
 
 Future<CardEntity?> getRelatedCardById(int cardId) async {
   final db = await CardSetDB.cardSetDB.database;
-
-  // var card = await db.query(
-  //   TABLE_CARD,
-  //   columns: allCardColumns,
-  //   where: "$COLUMN_CARD_CARD_ID = SELECT $COLUMN_CARD_CARD_ID FROM $TABLE_CARD WHERE $COLUMN_CARD_ID = ?",
-  //   whereArgs: [cardId],
-  // );
    
   var card = await db.rawQuery("""
     SELECT * FROM $TABLE_CARD C1, $TABLE_CARD C2

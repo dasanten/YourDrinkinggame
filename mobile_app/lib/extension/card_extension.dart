@@ -4,6 +4,9 @@ import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
 final Map<CardType, Color> _cardColorMap = {
   CardType.CLEAR: Colors.red.shade600,
+  CardType.GAME: Colors.blue.shade600,
+  CardType.LATER: Colors.purple.shade600,
+  CardType.NEXT: Colors.orange.shade600,
 };
 
 extension CardColorExtension on CardDto{
@@ -19,5 +22,9 @@ extension CardEntityColorExtension on CardEntity {
 } 
 
 extension CardTypeExtenionX on CardType {
-  bool get hasMultipleCards => this == CardType.STANDARD || this == CardType.CLEAR || this == CardType.GAME;
+  bool get hasMultipleCards => !(this == CardType.STANDARD || this == CardType.CLEAR || this == CardType.GAME);
+
+  Color get color {
+    return _cardColorMap[this] ?? Colors.green.shade600;
+  }
 }

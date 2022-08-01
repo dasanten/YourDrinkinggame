@@ -77,6 +77,13 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   }
 
   Future<void> updateCard(CardEntity card) async {
+    if(card.card != null) {
+      if (card.card?.id == null) {
+        card = card.copyWith(card: await card_repository.insertCard(card.card!));
+      } else {
+        await card_repository.updateCard(card.card!);
+      }
+    }
     await card_repository.updateCard(card);
     await getCards();
   }
