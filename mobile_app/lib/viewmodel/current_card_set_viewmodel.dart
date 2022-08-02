@@ -27,6 +27,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
 
   CardSetEntity? get cardSet => _cardSet;
   List<CardEntity> get cards => _cards ;
+  CardSetRole? get userRole => _cardSetRole;
   TextEditingController get nameController => _nameController;
   TextEditingController get descriptionController => _descriptionController;
   

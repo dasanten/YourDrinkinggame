@@ -1,8 +1,8 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/component/bottom_sheet/info_bottom_sheet.dart';
 import 'package:your_drinking_game_app/extension/card_extension.dart';
-import 'package:your_drinking_game_app/viewmodel/async_viewmodel_base.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
 
@@ -20,9 +20,21 @@ class _CardEditFormState extends State<CardEditForm> {
 
   @override
   Widget build(BuildContext context) {
+    final cardEditable = context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Karte bearbeiten"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context, 
+                builder: (_) => InfoBottomSheet(),
+              );	
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -32,25 +44,23 @@ class _CardEditFormState extends State<CardEditForm> {
               key: _formKey,
               child: ListView(
                 children: <Widget>[
-                  _cardTypeDropdown(),
+                  _cardTypeDropdown(cardEditable),
                   SizedBox(height: 8),
-                  _cardInput(viewmodel, viewmodel.contentController),
+                  _cardInput(viewmodel, viewmodel.contentController, cardEditable),
                   SizedBox(height: 8),
                   if (viewmodel.cardType?.hasMultipleCards ?? false)
-                  _cardInput(viewmodel, viewmodel.relatedCardController),
+                  _cardInput(viewmodel, viewmodel.relatedCardController, cardEditable),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () async => deleteCard(context),
+                        onPressed: context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated) ? () async => deleteCard(context): null,
                         style: ElevatedButton.styleFrom(primary: Colors.red),
                         child: const Text("Karte löschen!"),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                      ),
+                      const SizedBox(width: 10),
                       ElevatedButton(
-                        onPressed: () async => updateCard(context),
+                        onPressed: context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated) ? () async => updateCard(context): null,
                         child: const Text("Karte updaten!"),
                       ),
                     ],
@@ -64,14 +74,14 @@ class _CardEditFormState extends State<CardEditForm> {
     );
   }
 
-  Widget _cardTypeDropdown() =>
+  Widget _cardTypeDropdown(bool enabled) =>
     DropdownButtonFormField<CardType>(
       decoration: const InputDecoration(
         labelText: 'Kartentyp',
         border: OutlineInputBorder(),
       ),
       value: Provider.of<CurrentCardViewmodel>(context, listen: false).cardType,
-      onChanged: (value) => Provider.of<CurrentCardViewmodel>(context, listen: false).setCardType(value),
+      onChanged: enabled ? (value) => Provider.of<CurrentCardViewmodel>(context, listen: false).setCardType(value): null,
       items: CardType.values.map<DropdownMenuItem<CardType>>((type) => 
         DropdownMenuItem(
           value: type,
@@ -81,9 +91,11 @@ class _CardEditFormState extends State<CardEditForm> {
     );
   
 
-  Widget _cardInput(CurrentCardViewmodel viewmodel, TextEditingController controller) =>                   
-    TextFormField(
+  Widget _cardInput(CurrentCardViewmodel viewmodel, TextEditingController controller, bool enabled) { 
+    final border = OutlineInputBorder(borderSide: BorderSide(color: viewmodel.cardType?.color ?? Colors.green.shade600));                
+    return TextFormField(
       controller: controller,
+      enabled: enabled,
       maxLines: 5,
       validator: (value) {
         if (value?.isEmpty ?? true) {
@@ -93,13 +105,15 @@ class _CardEditFormState extends State<CardEditForm> {
       },
       decoration: InputDecoration(
         labelText: 'Regel',
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: viewmodel.cardType?.color ?? Colors.green.shade600)),
+        enabledBorder: border,
+        disabledBorder: border,
         border: OutlineInputBorder(),
         fillColor: viewmodel.cardType?.color,
       ),
       maxLength: 256,
       textInputAction: TextInputAction.next,
     );
+  }
 
   Future<void> updateCard(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
