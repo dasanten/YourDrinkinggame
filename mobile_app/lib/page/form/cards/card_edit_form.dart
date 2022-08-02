@@ -108,7 +108,6 @@ class _CardEditFormState extends State<CardEditForm> {
         enabledBorder: border,
         disabledBorder: border,
         border: OutlineInputBorder(),
-        fillColor: viewmodel.cardType?.color,
       ),
       maxLength: 256,
       textInputAction: TextInputAction.next,

@@ -2,6 +2,7 @@ import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/widgets.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_repository.dart' as card_repository;
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as card_set_repository;
+import 'package:your_drinking_game_app/extension/card_extension.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 import '../data_base/model/card_entity.dart';
 import '../data_base/model/card_set_entity.dart';
@@ -68,11 +69,23 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     await getCards();
   }
 
-  Future<void> insertCardFromContent(String content) async {
+  Future<void> insertCardFromContent(String content1, String content2, CardType? cardType) async {
+    CardEntity? relatedCard;
+    if(cardType!.hasMultipleCards) {
+      relatedCard = await card_repository.insertCard(
+        CardEntity(
+          content: content2, 
+          active: true, 
+          cardSetId: null,
+        )
+      );
+    }
     final card = CardEntity(
       active: true,
       cardSetId: _cardSet!.id!,
-      content: content,
+      content: content1,
+      type: cardType,
+      card: relatedCard,
     );
     await insertCard(card);
   }
