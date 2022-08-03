@@ -88,6 +88,7 @@ Future<List<CardEntity>> getActiveCards() async {
            C.$COLUMN_CARD_ACTIVE, 
            C.$COLUMN_CARD_WORKSHOP_ID, 
            C.$COLUMN_CARD_CARD_SET_ID,
+           C.$COLUMN_CARD_TYPE,
            UR.$COLUMN_USER_ROLE_USER_ID
     FROM $TABLE_CARD C 
       JOIN $TABLE_CARD_SET CS

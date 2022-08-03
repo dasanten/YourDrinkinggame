@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
 import 'package:your_drinking_game_app/page/login/login_page.dart';
+import 'package:your_drinking_game_app/services/game_service.dart' as game;
 
 import '../game/card_display.dart';
 
@@ -128,7 +129,8 @@ class _PlayerInputState extends State<PlayerInput> {
   void startGame(BuildContext context) {
     _addPlayer();
     if (_players.length >= 2) {
-      Navigator.pushNamed(context, CardDisplay.routeName, arguments: _players);
+      game.players = _players;
+      Navigator.pushNamed(context, CardDisplay.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

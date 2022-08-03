@@ -77,6 +77,7 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
           content: content2, 
           active: true, 
           cardSetId: null,
+          type: cardType,
         )
       );
     }

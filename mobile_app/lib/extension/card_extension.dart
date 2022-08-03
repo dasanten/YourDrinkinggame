@@ -25,6 +25,11 @@ final Map<CardType, String> _cardDescriptionMap = {
   CardType.NEXT: "Diese Karte besteht aus zwei Regeln. Die zweite Karte wird direkt nach der ersten Karte angezeigt",
 };
 
+final Map<CardType, String> _titleMap = {
+  CardType.CLEAR: "Ex",
+  CardType.GAME: "Spiel",
+};
+
 extension CardColorExtension on CardDto{
   Color get color {
     return _cardColorMap[type] ?? Colors.green.shade600;
@@ -45,5 +50,7 @@ extension CardTypeExtenionX on CardType {
   String get description => _cardDescriptionMap[this] ?? "";
 
   Icon get icon => _cardIconMap[this] ?? Icon(Icons.remove_red_eye);
+
+  String? get title => _titleMap[this];
   
 }

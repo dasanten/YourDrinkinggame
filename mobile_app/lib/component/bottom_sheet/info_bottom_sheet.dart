@@ -2,6 +2,7 @@ import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/extension/card_extension.dart';
+import 'package:your_drinking_game_app/services/game_service.dart';
 
 class InfoBottomSheet extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class InfoBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.all(8),
           child: ListTile(
             title: const Text("Alle Karten"),
-            subtitle: const Text("Um einen Spieler inenrhalb einer Regel zu nennen, musst du an die Stelle ein \"@\" einfügen. Die Farben innerhalb dieser Info sind die Farben mit denen diese im Spiel angezeigt werden"),
+            subtitle: Text("Um einen Spieler inenrhalb einer Regel zu nennen, musst du an die Stelle ein \"$replaceString\" einfügen. Die Farben innerhalb dieser Info sind die Farben mit denen diese im Spiel angezeigt werden"),
             leading: const Icon(Icons.list),
           ),
         ),
