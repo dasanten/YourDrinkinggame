@@ -23,12 +23,13 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
     this._buildContext = context;
     return Consumer<WorkshopCardSetViewmodel>(
       builder: (context, viewmodel, child) {
-        if (viewmodel.isLoading) {
+        if (viewmodel.isLoading && !viewmodel.hasError) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (viewmodel.cardSetList.isNotEmpty) {
           return RefreshIndicator(
+            backgroundColor: Colors.amber,
             onRefresh: viewmodel.getWorkshopCardSets,
             child: ListView.separated(
                 controller: _scrollController,
@@ -50,6 +51,10 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
                   );
                 } 
               ),
+          );
+        } else if (viewmodel.hasError) {
+          return const Center(
+            child: Text('Es konnte keien Verbindung zum Server hergestellt werden.'),
           );
         }
         return const Center(

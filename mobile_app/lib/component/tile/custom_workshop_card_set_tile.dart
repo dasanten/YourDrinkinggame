@@ -30,11 +30,16 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
             onPressed: isLocal
                 ? null
                 : () async {
-                    final result = await context
-                        .read<LocalCardSetsViewmodel>()
-                        .importCardSetFromWorkshop(cardSet);
-                      context.read<WorkshopCardSetViewmodel>().refreshCardSetLocalById(cardSet.id!, isLocal: result,);
-                    if (result) {
+                  var result;
+                  try {
+                    result = await context
+                      .read<LocalCardSetsViewmodel>()
+                      .importCardSetFromWorkshop(cardSet);
+                    context.read<WorkshopCardSetViewmodel>().refreshCardSetLocalById(cardSet.id!, isLocal: result,);
+                  } catch (e) {
+                    result = null;
+                  }
+                    if (result != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Kartenset hinzugefügt!"),

@@ -34,6 +34,18 @@ class CardSetEntity {
         if (id != null) CardSetDB.COLUMN_CARD_SET_ID: id,
       };
 
+  CardSetDto toDto() => CardSetDto((b) {
+        b.id = workshopId;
+        b.name = name;
+        b.cards.build();
+        b.description = description;
+        b.category = category;
+        b.nsfw = nsfw;
+      });
+  
+
+  
+
   factory CardSetEntity.fromMap(Map<String, dynamic> cardSetMap) =>
       CardSetEntity(
         id: cardSetMap[CardSetDB.COLUMN_CARD_SET_ID] as int?,

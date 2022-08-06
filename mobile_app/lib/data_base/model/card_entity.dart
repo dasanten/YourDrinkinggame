@@ -32,6 +32,16 @@ class CardEntity {
         CardSetDB.COLUMN_CARD_CARD_ID: card?.id,
       };
 
+  CardDto toDto() => CardDto((b) {
+        b.content = content;
+        b.type = type;
+        b.id = workshopId;
+        if(card != null) {
+          b.card.build();
+          b.card.replace(card!.toDto());
+        }
+      });
+
   factory CardEntity.fromMap(Map<String, dynamic> map) => CardEntity(
         id: map[CardSetDB.COLUMN_CARD_ID] as int?,
         content: map[CardSetDB.COLUMN_CARD_CONTENT] as String,

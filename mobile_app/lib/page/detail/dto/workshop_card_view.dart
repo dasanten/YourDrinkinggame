@@ -19,8 +19,10 @@ class _WorkshopCardViewState extends State<WorkshopCardView> {
     return Consumer<CurrentWorkshopCardSetViewmodel>(
       builder: (context, viewmodel, child) {
         if (viewmodel.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (viewmodel.cardSet != null) {
           return Scaffold(
@@ -38,8 +40,10 @@ class _WorkshopCardViewState extends State<WorkshopCardView> {
             ),
           );
         }
-        return const Center(
-          child: Text('Keine Sets gefunden.'),
+        return Scaffold(
+          body: const Center(
+            child: Text('Keine Karten gefunden.'),
+          ),
         );
       }
     );

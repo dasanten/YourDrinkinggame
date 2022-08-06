@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_repository.dart' as card_repository;
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as card_set_repository;
 import 'package:your_drinking_game_app/extension/card_extension.dart';
+import 'package:your_drinking_game_app/extension/role_extension.dart';
+import 'package:your_drinking_game_app/openapi/api_client.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 import '../data_base/model/card_entity.dart';
 import '../data_base/model/card_set_entity.dart';
@@ -33,6 +35,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   TextEditingController get descriptionController => _descriptionController;
   
   bool get canBeUpdated => _cardSet?.workshopId == null || (_cardSet?.workshopId != null && _cardSetRole != null);
+  bool get isPublished => cardSet?.workshopId?.isNotEmpty ?? false;
+  bool get canBePublished => _cardSetRole?.canUpdateCardSet ?? false;
 
   void setCardSet(CardSetEntity newCardSet) {
     _cardSet = newCardSet;
@@ -115,6 +119,20 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
       // TODO Gucken was jetzt gemacht werden muss (Publish to workshop)
     );
     notifyListeners();
+  }
+
+  Future publish() async {
+    if(_cardSet != null) {
+      setLoading();
+      var cardSet = _cardSet!.toDto();
+      List<CardEntity> cards = _cards;
+      for(var card in cards) {
+        card = card.copyWith(card: await card_repository.getRelatedCardById(card.id!));
+      }
+      cardSet.cards?.rebuild((builder) => builder.addAll(cards.map((e) => e.toDto())));
+      await api.getCardsetApi().addCardSet(cardSetDto: cardSet);
+      setFinished();
+    }
   }
 
   @override

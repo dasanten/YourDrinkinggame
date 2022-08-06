@@ -23,13 +23,11 @@ class CardSetEditForm extends StatefulWidget {
 
 class _CardSetEditFormState extends State<CardSetEditForm> {
 
-  bool published = false;
-  bool editable = false;
 
   @override
   Widget build(BuildContext context) {
-    published = context.read<CurrentCardSetViewmodel>().cardSet?.workshopId?.isNotEmpty ?? false;
-    // editable = context.select<CurrentCardSetViewmodel, bool>((value) => value.isAdmin || value.isEditor);
+    final published = context.read<CurrentCardSetViewmodel>().isPublished;
+    final editable = context.read<CurrentCardSetViewmodel>().canBeUpdated;
     return Scaffold(
       appBar: AppBar(
         title: Consumer<CurrentCardSetViewmodel>(
@@ -80,52 +78,16 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
               context.select<CurrentCardSetViewmodel, SwitchListTile>((value) =>
                 SwitchListTile(
                   title: const Text("Kartenset veröffentlicht"),
-                  value: published, 
+                  value: value.canBePublished, 
                   onChanged: editable ? (_) async {
-                    if (published) {
-                      // if(value.isAdmin) {
-                      //   // card_set_http.deleteCardSet(value.cardSet!.workshopId!, value.cardSet!.adminToken!);
-                      //   // TODO add deletes
-                      //   final CardSetEntity cardSetEntity = value.cardSet!.copyWith(workshopId: "");
-                      //   value.setCardSet(cardSetEntity);
-                      //   context
-                      //     .read<LocalCardSetsViewmodel>()
-                      //     .updateCardSet(cardSetEntity);
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     SnackBar(
-                      //       content: Text("Kartenset ${value.cardSet!.name} veröffentlichung rückgängig gemacht"),
-                      //       behavior: SnackBarBehavior.floating,
-                      //     ),
-                      //   );
-                      // } else if(value.isEditor) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text("Nur Besitzer können ein Set löschen!"),
-                      //       behavior: SnackBarBehavior.floating,
-                      //     ),
-                      //   );
-                      // }
-                    } else {
-                      final String token = await _publishDialog(context);
-                      if (token.isNotEmpty && value.cardSet != null) {
-                        // TODO add cardset 
-                        // final CardSetDto cardSetDto = await card_set_http.addCardSet(CardSetDto.fromCardSetEntity(value.cardSet!.copyWith(adminToken: token)));
-                        // if(value.cards.isNotEmpty) {
-                        //   final List<CardDto> cardList = value.cards.map<CardDto>((card) => CardDto.fromCardEntity(card, cardSetDto.id)).toList();
-                        //   card_set_http.addCards(cardList, token);
-                        // }
-                        // final CardSetEntity newCardSet = value.cardSet!.copyWith(adminToken: cardSetDto.token, workshopId: cardSetDto.id);  
-                        // value.setCardSet(newCardSet);
-                        // context
-                        //   .read<LocalCardSetsViewmodel>()
-                        //   .updateCardSet(value.cardSet!);
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   SnackBar(
-                        //     content: Text("Kartenset ${newCardSet.name} veröffentlicht"),
-                        //     behavior: SnackBarBehavior.floating,
-                        //   ),
-                        // );
-                      }
+                    try {
+                      await value.publish();
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Leider ist ein Fehler aufgetreten'),
+                        ),
+                      );
                     }
                   }: null
                 ),
@@ -192,7 +154,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
       context
         .read<LocalCardSetsViewmodel>()
         .updateCardSet(currentCardSetViewmodel.cardSet!);
-      if(published) {
+      // if(published) {
         // TODO update cardset
         // final String token = currentCardSetViewmodel.cardSet!.adminToken!.isNotEmpty ? currentCardSetViewmodel.cardSet!.adminToken!: currentCardSetViewmodel.cardSet!.editorToken!;
         // card_set_http.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
@@ -205,7 +167,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
           
         //   });
         // }
-      }
+      // }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Kartenset ${currentCardSetViewmodel.cardSet!.name} geupdated"),

@@ -13,8 +13,12 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
   bool _isLoadingMore = false;
   bool _loadEverything = false;
 
+  var _error;
+
   get isLoadingMore => _isLoadingMore;
   get loadEverything => _loadEverything;
+
+  bool get hasError => _error != null;
 
   List<CardSetBasicDto> get cardSetList => _cardSetList;
   bool getCardSetLocalById(String id) =>
@@ -29,15 +33,24 @@ class WorkshopCardSetViewmodel extends AsyncViewmodelBase {
   Future<void> getWorkshopCardSets() async {
     setLoading();
     _loadEverything = false;
-    await api.getCardsetApi().getTopCardSets(start: 0).then((value) => _cardSetList = List.from(value.data?.asList() ?? []) );
-    _cardSetLocal.clear();
-    setFinished();
-    for (final cardSet in _cardSetList) {
-      _cardSetLocal[cardSet.id!] =
-          await containsCardSet(cardSet.id!);
+    try {
+      await api.getCardsetApi().getTopCardSets(start: 0).then((value) => _cardSetList = List.from(value.data?.asList() ?? []) );
+      _cardSetLocal.clear();
+      setFinished();
+      for (final cardSet in _cardSetList) {
+        _cardSetLocal[cardSet.id!] =
+            await containsCardSet(cardSet.id!);
+      }
+      _error = null;
+      notifyListeners();
+    } catch (e) { 
+      _error = e;
+      print(e);
+      notifyListeners();
     }
-    notifyListeners();
   }
+
+
 
   void refreshCardSetLocalById(String id, {required bool isLocal}) {
     _cardSetLocal[id] = isLocal;
