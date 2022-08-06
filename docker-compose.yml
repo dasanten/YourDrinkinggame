@@ -1,7 +1,7 @@
 services:
   app_db:
     container_name: DrinkinggameDB
-    image: mariadb:10
+    image: mariadb:10.8.2
     environment:
       MYSQL_DATABASE: drinkinggame
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
