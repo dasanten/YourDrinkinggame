@@ -2,19 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/page/detail/entity/local_card_view.dart';
+import 'package:your_drinking_game_app/page/detail/dto/workshop_card_view.dart';
+import 'package:your_drinking_game_app/page/form/cardSet/card_set_edit_form.dart';
+import 'package:your_drinking_game_app/page/form/cards/card_edit_form.dart';
+import 'package:your_drinking_game_app/page/form/cards/local_card_form.dart';
+import 'package:your_drinking_game_app/page/game/card_display.dart';
+import 'package:your_drinking_game_app/page/menu/player_input.dart';
+import 'package:your_drinking_game_app/services/user_service.dart';
 
-import 'menu/card_set_lists/local/cardSet/card_set_edit_form.dart';
-import 'menu/card_set_lists/local/cards/card_edit_form.dart';
-import 'menu/card_set_lists/local/cards/local_card_form.dart';
-import 'menu/card_set_lists/local/cards/local_card_view.dart';
-import 'menu/card_set_lists/workshop/cards/workshop_card_view.dart';
-import 'menu/game/card_display.dart';
-import 'menu/player_input.dart';
-import 'services/update_local_workshop_cardsets.dart';
-import 'viewmodel/current_card_set_viewmodel.dart';
-import 'viewmodel/current_card_viewmodel.dart';
-import 'viewmodel/local_card_sets_viewmodel.dart';
-import 'viewmodel/workshop_card_set_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
 
 void main() {
   runApp(
@@ -32,11 +33,15 @@ void main() {
         ChangeNotifierProvider<WorkshopCardSetViewmodel>(
           create: (_) => WorkshopCardSetViewmodel(),
         ),
+        ChangeNotifierProvider<CurrentWorkshopCardSetViewmodel>(
+          create: (_) => CurrentWorkshopCardSetViewmodel(),
+          )
       ],
       child: const MyApp(),
     ),
   );
-  checkForUpdatedCardSets();
+  loadCurrentUser();
+  // TODO cardset update check
 }
 
 class MyApp extends StatelessWidget {
@@ -56,15 +61,16 @@ class MyApp extends StatelessWidget {
         LocalCardView.routeName: (context) => LocalCardView(),
       },
       theme: ThemeData(
+        useMaterial3: true,
         primaryColor: Colors.blue,
         primaryColorDark: Colors.blueAccent,
         bottomAppBarColor: Colors.grey.shade300,
-        textTheme: GoogleFonts.ubuntuTextTheme(), colorScheme: ColorScheme.fromSwatch(
-
-        ).copyWith(secondary: Colors.orangeAccent),
+        textTheme: GoogleFonts.ubuntuTextTheme(), 
+        // colorScheme: ColorScheme.fromSwatch( Colors.blue
+        //   ).copyWith(secondary: Colors.orangeAccent),
       ),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
     );
   }
-}
 
+}

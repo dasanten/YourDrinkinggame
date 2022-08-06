@@ -13,7 +13,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/cardset", "/configure/cardset/**").permitAll()
+                .mvcMatchers("/cardset/**", "/configure/cardset/**").permitAll()
                 .anyRequest().authenticated();
     }
 }
