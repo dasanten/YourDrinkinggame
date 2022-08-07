@@ -43,7 +43,7 @@ Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId, {CardSetR
   await db.insert(TABLE_USER_ROLE, {
     COLUMN_USER_ROLE_USER_ID: userId,
     COLUMN_USER_ROLE_CARD_SET_ID: id,
-    if(role!=null) COLUMN_USER_ROLE_ROLE: role,
+    if(role!=null) COLUMN_USER_ROLE_ROLE: role.toString(),
   });
 
   return cardSet.copyWith(
