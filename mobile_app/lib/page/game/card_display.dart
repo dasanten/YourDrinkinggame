@@ -74,7 +74,7 @@ class _CardDisplayState extends State<CardDisplay> {
           ),
         ),
         Text(
-          _displayedCard.content,
+          game.replacePlayerNames(_displayedCard.content),
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
@@ -89,7 +89,6 @@ class _CardDisplayState extends State<CardDisplay> {
       final pickerCard = await game.pickCard();
       setState(() {
         _displayedCard = pickerCard;
-        print(pickerCard.type);
       });
     } catch (e) {
       Navigator.pop(context);
