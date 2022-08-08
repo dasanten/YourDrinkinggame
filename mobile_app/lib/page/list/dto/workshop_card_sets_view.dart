@@ -29,7 +29,6 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
           );
         } else if (viewmodel.cardSetList.isNotEmpty) {
           return RefreshIndicator(
-            backgroundColor: Colors.amber,
             onRefresh: viewmodel.getWorkshopCardSets,
             child: ListView.separated(
                 controller: _scrollController,
@@ -53,12 +52,24 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
               ),
           );
         } else if (viewmodel.hasError) {
-          return const Center(
-            child: Text('Es konnte keien Verbindung zum Server hergestellt werden.'),
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Es konnte keien Verbindung zum Server hergestellt werden.'),
+                _loadCardSetsButton(viewmodel.getWorkshopCardSets),
+              ],
+            ),
           );
         }
-        return const Center(
-          child: Text('Keine Sets gefunden.'),
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Keine Sets gefunden.'),
+              _loadCardSetsButton(viewmodel.getWorkshopCardSets),
+            ],
+          ),
         );
       },
     );
@@ -79,5 +90,12 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
   void dispose() {
     super.dispose();
     _scrollController.dispose();
+  }
+
+  Widget _loadCardSetsButton(void Function()? onPressed) {
+    return IconButton(
+      icon: Icon(Icons.refresh),
+      onPressed: onPressed,
+    );
   }
 }
