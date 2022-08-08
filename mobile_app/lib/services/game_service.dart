@@ -53,12 +53,14 @@ Future<CardEntity> pickCard() async {
   return pickedCard;
 }
 
-String replacePlayerNames(String content, List<String> players) {
+String replacePlayerNames(String content) {
+  final players = List.from(_players);
   final rdm = Random();
   return content.replaceAllMapped(replaceString, (match) {
     final pickedPlayerNum = rdm.nextInt(players.length);
+    final pickedPlayer = players[pickedPlayerNum];
     players.removeAt(pickedPlayerNum);
-    return players[pickedPlayerNum];
+    return pickedPlayer;
   });
 }
 
