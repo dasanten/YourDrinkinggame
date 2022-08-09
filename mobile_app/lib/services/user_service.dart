@@ -34,9 +34,7 @@ bool get canUseWorkshop => userEntity.value?.workshopId != null;
 String? get authToken => _authToken;
 
 Future<void> setAuthToken(GoogleSignInAccount? account) async {
-  print(account);
   _authToken = (await account?.authentication)?.idToken;
-  print(authToken);
 }
 
 Future loadCurrentUser() async {

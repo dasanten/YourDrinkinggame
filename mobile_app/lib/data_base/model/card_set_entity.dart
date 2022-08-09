@@ -1,6 +1,7 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart' as CardSetDB;
+import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 
 
 @immutable
@@ -34,10 +35,10 @@ class CardSetEntity {
         if (id != null) CardSetDB.COLUMN_CARD_SET_ID: id,
       };
 
-  CardSetDto toDto() => CardSetDto((b) {
+  CardSetDto toDto(List<CardEntity> cards) => CardSetDto((b) {
         b.id = workshopId;
         b.name = name;
-        b.cards.build();
+        b.cards.addAll(cards.map((card) => card.toDto()).toList());
         b.description = description;
         b.category = category;
         b.nsfw = nsfw;

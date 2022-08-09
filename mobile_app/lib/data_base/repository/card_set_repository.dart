@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_set_entity.dart';
-import 'package:your_drinking_game_app/data_base/model/user_entity.dart';
 
 import '../../services/user_service.dart';
 
@@ -88,11 +87,11 @@ Future<bool> containsCardSet(String id) async {
   final db = await database;
 
   final result = await db.query(
-    TABLE_CARD_SET,
-    columns: [COLUMN_CARD_SET_WORKSHOP_ID],
+    TABLE_USER_ROLE,
+    columns: [COLUMN_USER_ROLE_CARD_SET_ID],
     distinct: true,
-    where: "$COLUMN_CARD_SET_WORKSHOP_ID = ?",
-    whereArgs: [id],
+    where: "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?",
+    whereArgs: [id, currentUserId],
   );
 
   return result.isNotEmpty;

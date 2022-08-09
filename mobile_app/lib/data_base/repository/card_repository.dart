@@ -50,7 +50,6 @@ Future<List<CardEntity>> insertCardList(List<CardEntity> cardEntityList) async {
     if (card.card != null) {
       savedCard = await insertCard(card.card!);
     }
-    print(savedCard?.id);
     card = await insertCard(card.copyWith(
       card: savedCard,
     ));
