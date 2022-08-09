@@ -1,5 +1,6 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart';
 import 'package:your_drinking_game_app/data_base/repository/card_repository.dart' as card_repository;
 import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as card_set_repository;
 import 'package:your_drinking_game_app/extension/card_extension.dart';
@@ -124,13 +125,13 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   Future publish() async {
     if(_cardSet != null) {
       setLoading();
-      var cardSet = _cardSet!.toDto();
       List<CardEntity> cards = _cards;
-      for(var card in cards) {
-        card = card.copyWith(card: await card_repository.getRelatedCardById(card.id!));
-      }
-      cardSet.cards?.rebuild((builder) => builder.addAll(cards.map((e) => e.toDto())));
-      await api.getCardsetApi().addCardSet(cardSetDto: cardSet);
+      cards = await Future.wait(cards.map(((card) async => card.copyWith(card: await card_repository.getRelatedCardById(card.id!)))));
+    
+      var cardSet = _cardSet!.toDto(cards);
+      final res = await api.getCardsetApi().addCardSet(cardSetDto: cardSet);
+      //TODO DB workshop id updaten
+      _cardSet = _cardSet!.copyWith(workshopId: res.data?.id);
       setFinished();
     }
   }

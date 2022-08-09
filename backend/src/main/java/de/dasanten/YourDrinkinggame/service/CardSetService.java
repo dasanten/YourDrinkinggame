@@ -77,9 +77,6 @@ public class CardSetService {
         CardSetEntity savedCardSet = cardSetRepository.save(mappedCardSet);
         savedCardSet.getCards().forEach(cardEntity -> {
             cardEntity.setCardSet(savedCardSet);
-            if (cardEntity.getRelativeCard()!=null) {
-                cardEntity.getRelativeCard().setCardSet(savedCardSet);
-            }
         });
         return  cardSetMapper.toDto(savedCardSet);
     }
