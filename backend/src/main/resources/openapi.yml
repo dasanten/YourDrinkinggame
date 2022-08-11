@@ -134,6 +134,25 @@ paths:
       responses:
         '200':
           description: Deleted Cardset
+  /cardset/version:
+    get:
+      operationId: getNewestCardSetVersions
+      description: Returns a list of all cardsets that have a new version.
+      tags:
+        - Cardset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardSetVersionDto'
+      responses:
+        '200':
+          description: A JSON array of updated Cardsets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardSetDtoList'
 
   /cardset/favor/{id}:
     post:
@@ -464,6 +483,13 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CardDto'
+    CardSetVersionDto:
+      type: object
+      properties:
+        id:
+          type: string
+        version:
+          type: number
 
     UserDto:
       type: object
