@@ -7,3 +7,7 @@ DrinkinggameApi api = DrinkinggameApi(dio: Dio(BaseOptions(baseUrl: "https://das
 Map<String, dynamic> get _headers => {
   "Authorization": "Bearer $authToken",
 };
+
+void updateAuthToken() {
+  api.dio.options.headers = _headers;
+}

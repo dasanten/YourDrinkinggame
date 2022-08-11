@@ -39,7 +39,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
         padding: const EdgeInsets.all(8),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: <Widget>[
               TextFormField(
                 readOnly: !editable,

@@ -23,13 +23,14 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 
 int? _currentUserId;
 String? _authToken;
+bool _isGoogleSignedIn = false;
 ValueNotifier<UserEntity?> userEntity = ValueNotifier<UserEntity?>(null);
 
 int? get currentUserId => _currentUserId;
 UserEntity? get currentUser => userEntity.value;
 
 bool get isSignedIn => _currentUserId != null;
-bool get canUseWorkshop => userEntity.value?.workshopId != null;
+bool get canUseWorkshop => userEntity.value?.workshopId != null && _isGoogleSignedIn;
 
 String? get authToken => _authToken;
 
@@ -45,6 +46,7 @@ Future loadCurrentUser() async {
   }
   if (canUseWorkshop) {
     await setAuthToken(await _googleSignIn.signInSilently());
+    _isGoogleSignedIn = await _googleSignIn.isSignedIn();
   }
   if (currentUserId == null) {
     loginAsGuest();
@@ -76,6 +78,8 @@ Future loginWithGoogle() async {
       }
     }
     userEntity.value = await getUserById(_currentUserId!);
+    updateAuthToken();
+    _isGoogleSignedIn = await _googleSignIn.isSignedIn();
     _backendLogin();
   } else {
     throw Exception("Login abgebrochen");
