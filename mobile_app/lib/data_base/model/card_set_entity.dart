@@ -78,6 +78,7 @@ class CardSetEntity {
     String? description,
     String? workshopId,
     String? category,
+    bool? removeWorkshopId,
   }) =>
       CardSetEntity(
         name: name ?? this.name,
@@ -85,7 +86,7 @@ class CardSetEntity {
         version: version ?? this.version,
         active: active ?? this.active,
         id: id ?? this.id,
-        workshopId: workshopId ?? this.workshopId,
+        workshopId: removeWorkshopId ?? false ? null: workshopId ?? this.workshopId,
         category: category ?? this.category,
         nsfw: false
       );

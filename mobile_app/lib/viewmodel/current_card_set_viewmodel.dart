@@ -128,13 +128,22 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
       cards = await Future.wait(cards.map(((card) async => card.copyWith(card: await card_repository.getRelatedCardById(card.id!)))));
       final cardSet = _cardSet!.toDto(cards);
       var res;
-      print(isPublished);
       if (isPublished) {
         res = await api.getCardsetApi().editCardSet(cardSetDto: cardSet);
       } else {
         res = await api.getCardsetApi().addCardSet(cardSetDto: cardSet);
       }
       _cardSet = _cardSet!.copyWith(workshopId: res.data?.id);
+      card_set_repository.updateCardSet(_cardSet!);
+      setFinished();
+    }
+  }
+
+  Future unpublish() async {
+    if(_cardSet != null) {
+      setLoading();
+      await api.getCardsetApi().deleteCardSet(id: _cardSet!.workshopId!);
+      _cardSet = _cardSet!.copyWith(removeWorkshopId: true);
       card_set_repository.updateCardSet(_cardSet!);
       setFinished();
     }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/data_base/card_set_db.dart';
-import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
 import 'package:your_drinking_game_app/page/tab/card_sets_tab_view.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
@@ -80,7 +78,11 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                   value: value.isPublished, 
                   onChanged: editable ? (_) async {
                     try {
-                      await value.publish();
+                      if(value.isPublished) {
+                        await value.unpublish();
+                      } else {
+                        await value.publish();
+                      }
                     } catch (e) {
                       print(e);
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -91,12 +93,7 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                     }
                   }: null
                 ),
-              ),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.settings),
-                onPressed: published ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => PublishCardSetForm())): null,
-                label: const Text("Workshop einstellungen"),
-              ),            
+              ),    
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
