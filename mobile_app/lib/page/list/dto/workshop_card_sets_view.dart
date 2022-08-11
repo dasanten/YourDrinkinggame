@@ -36,11 +36,7 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
                 separatorBuilder: (_, index) => const Divider(),
                 itemBuilder: (context, i) {
                   if(i >= viewmodel.cardSetList.length) {
-                    return ListTile(
-                      title: Text(viewmodel.cardSetList.length.toString()),
-                      subtitle: Text((viewmodel.isLoadingMore ? 3: 0).toString()),
-                      
-                    );
+                    return ListTile();
                   }
                   return CustomWorkshopCardSetTile(
                     cardSet: viewmodel.cardSetList[i],
