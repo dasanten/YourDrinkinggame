@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**editCardSet**](CardsetApi.md#editcardset) | **PUT** /cardset | 
 [**favorCardSet**](CardsetApi.md#favorcardset) | **POST** /cardset/favor/{id} | 
 [**getCardSetById**](CardsetApi.md#getcardsetbyid) | **GET** /cardset/{id} | 
+[**getNewestCardSetVersions**](CardsetApi.md#getnewestcardsetversions) | **GET** /cardset/version | 
 [**getTopCardSets**](CardsetApi.md#gettopcardsets) | **GET** /cardset | 
 [**reportCardSet**](CardsetApi.md#reportcardset) | **POST** /cardset/report/{id} | 
 [**searchCardSets**](CardsetApi.md#searchcardsets) | **GET** /cardset/search | 
@@ -244,6 +245,52 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getNewestCardSetVersions**
+> BuiltList<CardSetDto> getNewestCardSetVersions(cardSetVersionDto)
+
+
+
+Returns a list of all cardsets that have a new version.
+
+### Example
+```dart
+import 'package:drinkinggame_api/api.dart';
+// TODO Configure HTTP basic authorization: bearerAuth
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').username = 'YOUR_USERNAME'
+//defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
+
+final api = DrinkinggameApi().getCardsetApi();
+final CardSetVersionDto cardSetVersionDto = ; // CardSetVersionDto | 
+
+try {
+    final response = api.getNewestCardSetVersions(cardSetVersionDto);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling CardsetApi->getNewestCardSetVersions: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **cardSetVersionDto** | [**CardSetVersionDto**](CardSetVersionDto.md)|  | 
+
+### Return type
+
+[**BuiltList&lt;CardSetDto&gt;**](CardSetDto.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -17,7 +17,7 @@ class _$CardDto extends CardDto {
   final CardType? type;
 
   factory _$CardDto([void Function(CardDtoBuilder)? updates]) =>
-      (new CardDtoBuilder()..update(updates)).build();
+      (new CardDtoBuilder()..update(updates))._build();
 
   _$CardDto._({this.id, this.content, this.card, this.type}) : super._();
 
@@ -47,7 +47,7 @@ class _$CardDto extends CardDto {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CardDto')
+    return (newBuiltValueToStringHelper(r'CardDto')
           ..add('id', id)
           ..add('content', content)
           ..add('card', card)
@@ -103,7 +103,9 @@ class CardDtoBuilder implements Builder<CardDto, CardDtoBuilder> {
   }
 
   @override
-  _$CardDto build() {
+  CardDto build() => _build();
+
+  _$CardDto _build() {
     _$CardDto _$result;
     try {
       _$result = _$v ??
@@ -116,7 +118,7 @@ class CardDtoBuilder implements Builder<CardDto, CardDtoBuilder> {
         _card?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'CardDto', _$failedField, e.toString());
+            r'CardDto', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -125,4 +127,4 @@ class CardDtoBuilder implements Builder<CardDto, CardDtoBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

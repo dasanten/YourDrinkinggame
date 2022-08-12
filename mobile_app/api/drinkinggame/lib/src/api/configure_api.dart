@@ -8,6 +8,7 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:drinkinggame_api/src/model/card_set_role.dart';
 import 'package:drinkinggame_api/src/model/user_dto.dart';
 import 'package:drinkinggame_api/src/model/user_with_card_set_role.dart';
 

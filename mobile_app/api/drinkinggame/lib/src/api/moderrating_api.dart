@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:drinkinggame_api/src/model/user_dto.dart';
+import 'package:drinkinggame_api/src/model/user_role.dart';
 
 class ModerratingApi {
 

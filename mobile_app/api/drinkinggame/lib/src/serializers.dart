@@ -16,6 +16,7 @@ import 'package:drinkinggame_api/src/model/card_dto.dart';
 import 'package:drinkinggame_api/src/model/card_set_basic_dto.dart';
 import 'package:drinkinggame_api/src/model/card_set_dto.dart';
 import 'package:drinkinggame_api/src/model/card_set_role.dart';
+import 'package:drinkinggame_api/src/model/card_set_version_dto.dart';
 import 'package:drinkinggame_api/src/model/card_type.dart';
 import 'package:drinkinggame_api/src/model/feedback_dto.dart';
 import 'package:drinkinggame_api/src/model/user_basic_dto.dart';
@@ -30,6 +31,7 @@ part 'serializers.g.dart';
   CardSetBasicDto,
   CardSetDto,
   CardSetRole,
+  CardSetVersionDto,
   CardType,
   FeedbackDto,
   UserBasicDto,
@@ -39,16 +41,20 @@ part 'serializers.g.dart';
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(FeedbackDto)]),
+        () => ListBuilder<FeedbackDto>(),
+      )
+      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(CardSetBasicDto)]),
         () => ListBuilder<CardSetBasicDto>(),
       )
       ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(UserWithCardSetRole)]),
-        () => ListBuilder<UserWithCardSetRole>(),
+        const FullType(BuiltList, [FullType(CardSetDto)]),
+        () => ListBuilder<CardSetDto>(),
       )
       ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(FeedbackDto)]),
-        () => ListBuilder<FeedbackDto>(),
+        const FullType(BuiltList, [FullType(UserWithCardSetRole)]),
+        () => ListBuilder<UserWithCardSetRole>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(UserDto)]),
