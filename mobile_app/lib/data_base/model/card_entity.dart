@@ -67,6 +67,7 @@ class CardEntity {
     String? workshopId,
     CardType? cardType,
     CardEntity? card,
+    bool? removeRelatedCard,
   }) =>
     CardEntity(
       content: content ?? this.content,
@@ -75,6 +76,6 @@ class CardEntity {
       id: id ?? this.id,
       workshopId: workshopId ?? this.workshopId,
       type: cardType ?? this.type,
-      card: card ?? this.card,
+      card: removeRelatedCard ?? false ? null: card ?? this.card,
     );
 }

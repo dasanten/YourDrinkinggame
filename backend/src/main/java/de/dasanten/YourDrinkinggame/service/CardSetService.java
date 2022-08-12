@@ -112,9 +112,6 @@ public class CardSetService {
         mappedCardSet.setVersion(dbCardSet.getVersion()+1);
         mappedCardSet.getCards().forEach(cardEntity -> {
             cardEntity.setCardSet(mappedCardSet);
-            if (cardEntity.getRelativeCard()!=null) {
-                cardEntity.getRelativeCard().setCardSet(mappedCardSet);
-            }
         });
         CardSetEntity editedCardSet = cardSetRepository.save(mappedCardSet);
         return cardSetMapper.toDto(editedCardSet);

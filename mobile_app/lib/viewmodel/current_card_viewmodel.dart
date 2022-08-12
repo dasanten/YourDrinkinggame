@@ -36,7 +36,7 @@ class CurrentCardViewmodel extends AsyncViewmodelBase {
     if ((newCardType?.hasMultipleCards ?? false)) {
       _card = _card?.copyWith(card: relatedCard!.copyWith(cardType: newCardType), cardType: newCardType);
     } else {
-      _card = _card?.copyWith(card: null, cardType: newCardType);
+      _card = _card?.copyWith(removeRelatedCard: true, cardType: newCardType);
     }
     notifyListeners();
   }

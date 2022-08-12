@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:your_drinking_game_app/data_base/card_set_db.dart';
 import 'package:your_drinking_game_app/data_base/db_namings.dart';
 import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
+import 'package:your_drinking_game_app/extension/card_extension.dart';
 
 import '../../services/user_service.dart';
 
@@ -70,12 +71,25 @@ Future<int> deleteCard(int id) async {
 Future<int> updateCard(CardEntity card) async {
   final db = await database;
 
+  if(!(card.type?.hasMultipleCards ?? false)) {
+    removeRelatedCard(card.id!);
+  }
+
   return db.update(
     TABLE_CARD,
     card.toMap(),
     where: "$COLUMN_CARD_ID = ?",
     whereArgs: [card.id],
   );
+}
+
+Future removeRelatedCard(int cardId) async {
+  final db = await database;
+  await db.rawDelete("""
+    DELETE FROM $TABLE_CARD
+    WHERE $COLUMN_CARD_ID = (
+      SELECT $COLUMN_CARD_CARD_ID FROM $TABLE_CARD WHERE $COLUMN_CARD_CARD_ID = $cardId
+    )""");
 }
 
 Future<List<CardEntity>> getActiveCards() async {

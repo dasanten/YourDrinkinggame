@@ -3,6 +3,7 @@ package de.dasanten.YourDrinkinggame.controller;
 import de.dasanten.YourDrinkinggame.api.CardsetApi;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
+import de.dasanten.YourDrinkinggame.model.CardSetVersionDto;
 import de.dasanten.YourDrinkinggame.service.CardSetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -60,5 +61,10 @@ public class CardSetController implements CardsetApi {
     public ResponseEntity<CardSetBasicDto> reportCardSet(String id) {
         cardSetService.report(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<CardSetDto>> getNewestCardSetVersions(CardSetVersionDto cardSetVersionDto) {
+        return CardsetApi.super.getNewestCardSetVersions(cardSetVersionDto);
     }
 }
