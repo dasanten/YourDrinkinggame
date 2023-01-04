@@ -10,6 +10,7 @@ import de.dasanten.YourDrinkinggame.exception.custom.MissingPermissionException;
 import de.dasanten.YourDrinkinggame.mapper.CardSetMapper;
 import de.dasanten.YourDrinkinggame.model.CardSetBasicDto;
 import de.dasanten.YourDrinkinggame.model.CardSetDto;
+import de.dasanten.YourDrinkinggame.model.CardSetVersionDto;
 import de.dasanten.YourDrinkinggame.repository.CardSetCategoryRepository;
 import de.dasanten.YourDrinkinggame.repository.CardSetRepository;
 import de.dasanten.YourDrinkinggame.repository.UserRepository;
@@ -18,7 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static de.dasanten.YourDrinkinggame.util.CardSetUtil.*;
 
@@ -35,7 +39,7 @@ public class CardSetService {
     public CardSetDto getCardSetById(String cardSetId) {
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetId);
         if (cardSetEntityOptional.isPresent()) {
-            CardSetEntity cardSet =  cardSetEntityOptional.get();
+            CardSetEntity cardSet = cardSetEntityOptional.get();
             return cardSetMapper.toDto(cardSet);
         }
         throw new IllegalArgumentException("No CardSet with this id found!");
@@ -57,7 +61,7 @@ public class CardSetService {
 
     @Transactional
     public CardSetDto addCardSet(CardSetDto cardSetDto) {
-        if(cardSetDto.getId()!= null) {
+        if (cardSetDto.getId() != null) {
             throw new IllegalArgumentException("Can't add with id");
         }
         Optional<UserEntity> userEntityOptional = userRepository.findById(SecurityUtil.getAuthId());
@@ -75,10 +79,10 @@ public class CardSetService {
         mappedCardSet.setCardSetRoles(new ArrayList<>());
         mappedCardSet.getCardSetRoles().add(createOwner(mappedCardSet, user));
         CardSetEntity savedCardSet = cardSetRepository.save(mappedCardSet);
-        savedCardSet.getCards().forEach(cardEntity -> {
-            cardEntity.setCardSet(savedCardSet);
-        });
-        return  cardSetMapper.toDto(savedCardSet);
+        savedCardSet.getCards().forEach(cardEntity ->
+                cardEntity.setCardSet(savedCardSet)
+        );
+        return cardSetMapper.toDto(savedCardSet);
     }
 
     public CardSetDto editCardSet(CardSetDto cardSetDto) {
@@ -89,12 +93,12 @@ public class CardSetService {
         if (user.get().isBanned()) {
             throw new MissingPermissionException("You are banned");
         }
-        if(cardSetDto.getId().isEmpty()) {
+        if (cardSetDto.getId().isEmpty()) {
             throw new IllegalArgumentException("Can't edit without id");
         }
         validation(cardSetDto);
         Optional<CardSetEntity> cardSetEntityOptional = cardSetRepository.findById(cardSetDto.getId());
-        if (cardSetEntityOptional.isEmpty()){
+        if (cardSetEntityOptional.isEmpty()) {
             throw new NoSuchElementException("No CardSet with given id");
         }
         CardSetEntity dbCardSet = cardSetEntityOptional.get();
@@ -109,10 +113,10 @@ public class CardSetService {
                 throw new MissingPermissionException("Just Admins or Owner can change Description");
             }
         }
-        mappedCardSet.setVersion(dbCardSet.getVersion()+1);
-        mappedCardSet.getCards().forEach(cardEntity -> {
-            cardEntity.setCardSet(mappedCardSet);
-        });
+        mappedCardSet.setVersion(dbCardSet.getVersion() + 1);
+        mappedCardSet.getCards().forEach(cardEntity ->
+                cardEntity.setCardSet(mappedCardSet)
+        );
         CardSetEntity editedCardSet = cardSetRepository.save(mappedCardSet);
         return cardSetMapper.toDto(editedCardSet);
     }
@@ -148,6 +152,19 @@ public class CardSetService {
         }
         cardSet.getLikes().add(userEntityOptional.get());
         cardSetRepository.save(cardSet);
+    }
+
+    public List<CardSetDto> getNewestCardSetVersions(List<CardSetVersionDto> cardSetVersionDto) {
+        List<CardSetEntity> cardSetList = new ArrayList<>();
+        cardSetVersionDto.forEach(cardSet -> {
+            var dbCardSet = cardSetRepository.findByIdAndVersionGreaterThan(cardSet.getId(), cardSet.getVersion().intValue());
+            dbCardSet.ifPresent(cardSetList::add);
+        });
+        List<CardSetDto> cardSetDtoList = new ArrayList<>();
+        cardSetList.forEach((cardSet) ->
+                cardSetDtoList.add(cardSetMapper.toDto(cardSet))
+        );
+        return cardSetDtoList;
     }
 
     private CardSetCategoryEntity getCategoryFromDataBase(String categoryName) {

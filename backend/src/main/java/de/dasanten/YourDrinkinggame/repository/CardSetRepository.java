@@ -1,16 +1,12 @@
 package de.dasanten.YourDrinkinggame.repository;
 
 import de.dasanten.YourDrinkinggame.entity.CardSetEntity;
-import de.dasanten.YourDrinkinggame.entity.CardSetRoleEntity;
-import de.dasanten.YourDrinkinggame.entity.UserEntity;
-import de.dasanten.YourDrinkinggame.entity.enums.CardSetRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.management.relation.Role;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +39,8 @@ public interface CardSetRepository extends JpaRepository<CardSetEntity, String> 
     List<CardSetEntity> search(int offset, String search);
 
     Optional<CardSetEntity> findByCardsId(String cardId);
+
+    Optional<CardSetEntity> findByIdAndVersionGreaterThan(String id, int version);
 
     @Transactional
     @Modifying

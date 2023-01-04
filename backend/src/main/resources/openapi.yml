@@ -135,7 +135,7 @@ paths:
         '200':
           description: Deleted Cardset
   /cardset/version:
-    get:
+    post:
       operationId: getNewestCardSetVersions
       description: Returns a list of all cardsets that have a new version.
       tags:
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CardSetVersionDto'
+              $ref: '#/components/schemas/CardSetVersionDtoList'
       responses:
         '200':
           description: A JSON array of updated Cardsets
@@ -388,7 +388,7 @@ paths:
         '200':
           description: User mail
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
   /auth/userNameChange:
@@ -407,7 +407,7 @@ paths:
         '200':
           description: New name
           content:
-            application/json:
+            text/plain:
               schema:
                 type: string
   /auth/register:
@@ -490,6 +490,10 @@ components:
           type: string
         version:
           type: number
+    CardSetVersionDtoList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CardSetVersionDto'
 
     UserDto:
       type: object
