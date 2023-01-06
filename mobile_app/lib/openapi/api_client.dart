@@ -1,13 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:drinkinggame_api/drinkinggame_api.dart';
-import 'package:your_drinking_game_app/services/user_service.dart';
 
-DrinkinggameApi api = DrinkinggameApi(dio: Dio(BaseOptions(baseUrl: "https://dasanten.de:8080/", headers: _headers)));
+DrinkinggameApi api = DrinkinggameApi(
+    dio: Dio(BaseOptions(baseUrl: "http://10.0.2.2:8080/", headers: _headers)));
 
-Map<String, dynamic> get _headers => {
-  "Authorization": "Bearer $authToken",
-};
+Map<String, dynamic> get _headers => authToken != null
+    ? {
+        "Authorization": "Bearer $authToken",
+      }
+    : {};
 
-void updateAuthToken() {
+String? _authToken;
+
+String? get authToken => _authToken;
+
+void updateAuthToken(String? authToken) {
+  _authToken = authToken;
   api.dio.options.headers = _headers;
 }

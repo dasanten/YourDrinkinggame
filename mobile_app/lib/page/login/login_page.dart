@@ -16,21 +16,19 @@ class LoginPage extends StatelessWidget {
               Image.asset(
                 'assets/images/Dein-Trinkspiel-Full.png',
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 10)
-              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               ElevatedButton.icon(
                 icon: const Icon(Icons.man),
                 label: const Text("Gast"),
-                onPressed: () async { 
-                  await loginAsGuest(); 
+                onPressed: () async {
+                  await loginAsGuest();
                   _navigateToHome(context);
-                }, 
+                },
               ),
               ElevatedButton.icon(
                 icon: const Icon(Icons.login),
                 label: const Text("Google"),
-                style: ElevatedButton.styleFrom(primary: Colors.white),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                 onPressed: () async {
                   try {
                     await loginWithGoogle();
@@ -38,17 +36,25 @@ class LoginPage extends StatelessWidget {
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(e.toString().replaceFirst("Exception:", "")),
+                        content:
+                            Text(e.toString().replaceFirst("Exception:", "")),
                       ),
                     );
                   }
                 },
               ),
-              if(canUseWorkshop) 
-              ElevatedButton.icon( 
-                icon: const Icon(Icons.logout),
-                label: const Text("Logout"),
-                onPressed: ()=> logout(), 
+              ValueListenableBuilder(
+                valueListenable: userEntity,
+                builder: (context, value, child) {
+                  if (isSignedIn)
+                    return ElevatedButton.icon(
+                      icon: const Icon(Icons.logout),
+                      label: const Text("Logout"),
+                      onPressed: () => logout(),
+                    );
+                  else
+                    return Container();
+                },
               )
             ],
           ),
@@ -58,5 +64,4 @@ class LoginPage extends StatelessWidget {
   }
 
   _navigateToHome(BuildContext context) => Navigator.pop(context);
-  
 }

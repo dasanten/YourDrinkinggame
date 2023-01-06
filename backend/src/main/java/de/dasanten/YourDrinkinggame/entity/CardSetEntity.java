@@ -33,7 +33,7 @@ public class CardSetEntity {
 
     private boolean nsfw;
 
-    @OneToMany(mappedBy = "cardSet", cascade =CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cardSet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CardEntity> cards;
 
     @OneToMany(mappedBy = "cardSet", cascade = CascadeType.ALL)

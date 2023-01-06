@@ -64,7 +64,7 @@ public class CardSetController implements CardsetApi {
     }
 
     @Override
-    public ResponseEntity<List<CardSetDto>> getNewestCardSetVersions(CardSetVersionDto cardSetVersionDto) {
-        return CardsetApi.super.getNewestCardSetVersions(cardSetVersionDto);
+    public ResponseEntity<List<CardSetDto>> getNewestCardSetVersions(List<CardSetVersionDto> cardSetVersionDto) {
+        return new ResponseEntity<>(cardSetService.getNewestCardSetVersions(cardSetVersionDto), HttpStatus.OK);
     }
 }

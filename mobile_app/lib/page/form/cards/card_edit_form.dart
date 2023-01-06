@@ -6,21 +6,20 @@ import 'package:your_drinking_game_app/extension/card_extension.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
 
-final _formKey = GlobalKey<FormState>();
-
 class CardEditForm extends StatefulWidget {
   static const routeName = '/editCard';
-  
+
   @override
   State<StatefulWidget> createState() => _CardEditFormState();
 }
 
-
 class _CardEditFormState extends State<CardEditForm> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    final cardEditable = context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated);
+    final cardEditable = context
+        .select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Karte bearbeiten"),
@@ -29,9 +28,9 @@ class _CardEditFormState extends State<CardEditForm> {
             icon: const Icon(Icons.info),
             onPressed: () {
               showModalBottomSheet(
-                context: context, 
+                context: context,
                 builder: (_) => InfoBottomSheet(),
-              );	
+              );
             },
           ),
         ],
@@ -39,60 +38,74 @@ class _CardEditFormState extends State<CardEditForm> {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Consumer<CurrentCardViewmodel>(
-          builder: (context, viewmodel, child) {
-            return Form(
-              key: _formKey,
-              child: ListView(
-                children: <Widget>[
-                  _cardTypeDropdown(cardEditable),
-                  SizedBox(height: 8),
-                  _cardInput(viewmodel, viewmodel.contentController, cardEditable),
-                  SizedBox(height: 8),
-                  if (viewmodel.cardType?.hasMultipleCards ?? false)
-                  _cardInput(viewmodel, viewmodel.relatedCardController, cardEditable),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated) ? () async => deleteCard(context): null,
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
-                        child: const Text("Karte löschen!"),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: context.select<CurrentCardSetViewmodel, bool>((value) => value.canBeUpdated) ? () async => updateCard(context): null,
-                        child: const Text("Karte updaten!"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }
-        ),
+            builder: (context, viewmodel, child) {
+          return Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                _cardTypeDropdown(cardEditable),
+                SizedBox(height: 8),
+                _cardInput(
+                    viewmodel, viewmodel.contentController, cardEditable),
+                SizedBox(height: 8),
+                if (viewmodel.cardType?.hasMultipleCards ?? false)
+                  _cardInput(
+                      viewmodel, viewmodel.relatedCardController, cardEditable),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: context.select<CurrentCardSetViewmodel, bool>(
+                              (value) => value.canBeUpdated)
+                          ? () async => deleteCard(context)
+                          : null,
+                      style:
+                          ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child: const Text("Karte löschen!"),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: context.select<CurrentCardSetViewmodel, bool>(
+                              (value) => value.canBeUpdated)
+                          ? () async => updateCard(context)
+                          : null,
+                      child: const Text("Karte updaten!"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Widget _cardTypeDropdown(bool enabled) =>
-    DropdownButtonFormField<CardType>(
-      decoration: const InputDecoration(
-        labelText: 'Kartentyp',
-        border: OutlineInputBorder(),
-      ),
-      value: Provider.of<CurrentCardViewmodel>(context, listen: false).cardType,
-      onChanged: enabled ? (value) => Provider.of<CurrentCardViewmodel>(context, listen: false).setCardType(value): null,
-      items: CardType.values.map<DropdownMenuItem<CardType>>((type) => 
-        DropdownMenuItem(
-          value: type,
-          child: Text(type.toString())
+  Widget _cardTypeDropdown(bool enabled) => DropdownButtonFormField<CardType>(
+        decoration: const InputDecoration(
+          labelText: 'Kartentyp',
+          border: OutlineInputBorder(),
         ),
-      ).toList(),
-    );
-  
+        value:
+            Provider.of<CurrentCardViewmodel>(context, listen: false).cardType,
+        onChanged: enabled
+            ? (value) =>
+                Provider.of<CurrentCardViewmodel>(context, listen: false)
+                    .setCardType(value)
+            : null,
+        items: CardType.values
+            .map<DropdownMenuItem<CardType>>(
+              (type) =>
+                  DropdownMenuItem(value: type, child: Text(type.toString())),
+            )
+            .toList(),
+      );
 
-  Widget _cardInput(CurrentCardViewmodel viewmodel, TextEditingController controller, bool enabled) { 
-    final border = OutlineInputBorder(borderSide: BorderSide(color: viewmodel.cardType?.color ?? Colors.green.shade600));                
+  Widget _cardInput(CurrentCardViewmodel viewmodel,
+      TextEditingController controller, bool enabled) {
+    final border = OutlineInputBorder(
+        borderSide: BorderSide(
+            color: viewmodel.cardType?.color ?? Colors.green.shade600));
     return TextFormField(
       controller: controller,
       enabled: enabled,

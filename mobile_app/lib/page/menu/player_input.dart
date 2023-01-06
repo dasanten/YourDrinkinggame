@@ -30,12 +30,14 @@ class _PlayerInputState extends State<PlayerInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Spieler Auswahl"),
-        actions: [
-          _loginButton(context),
-        ],
-      ),
+      appBar: MediaQuery.of(context).orientation == Orientation.portrait
+          ? AppBar(
+              title: const Text("Spieler Auswahl"),
+              actions: [
+                _loginButton(context),
+              ],
+            )
+          : null,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -48,55 +50,56 @@ class _PlayerInputState extends State<PlayerInput> {
 
   Center _body(BuildContext context) {
     return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if(MediaQuery.of(context).orientation==Orientation.portrait) 
-            ...[
-              const SizedBox(height: 20),
-              Flexible(
-                flex: 3,
-                child:  Image.asset(
-                  'assets/images/Dein-Trinkspiel-Full.png',
-                ), 
-              ),
-            ],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (MediaQuery.of(context).orientation == Orientation.portrait) ...[
+            const SizedBox(height: 20),
             Flexible(
-              child: playerChips(),
-            ),  
-            Align(
-              alignment: FractionalOffset.bottomCenter,
-              child: Column(
-                children: [ 
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 9,
-                        child: _inputField,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton(
-                          onPressed: () => startGame(context),
-                          child: const Icon(Icons.play_arrow),
-                        ),
-                      ),
-                    ],
-                  ),
-                ]
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Image.asset(
+                  'assets/images/Dein-Trinkspiel-Full.png',
+                ),
               ),
             ),
-          ],
-        ),
-      );
+          ] else
+            SizedBox(
+              height: 25,
+            ),
+          Flexible(
+            child: playerChips(),
+          ),
+          Align(
+            alignment: FractionalOffset.bottomCenter,
+            child: Column(children: [
+              Row(
+                children: [
+                  Flexible(
+                    flex: 9,
+                    child: _inputField,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: ElevatedButton(
+                      onPressed: () => startGame(context),
+                      child: const Icon(Icons.play_arrow),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget playerChips() {
-    return ListView(
-      scrollDirection: Axis.horizontal,
-      children: [
-       Wrap(
-        spacing: 6.0, 
+    return ListView(scrollDirection: Axis.horizontal, children: [
+      Wrap(
+        spacing: 6.0,
         runSpacing: 6.0,
         children: List<Widget>.generate(
           _players.length,
@@ -112,8 +115,7 @@ class _PlayerInputState extends State<PlayerInput> {
           },
         ),
       ),
-      ]
-    );
+    ]);
   }
 
   void _addPlayer() {
@@ -149,29 +151,28 @@ class _PlayerInputState extends State<PlayerInput> {
   }
 
   _login(BuildContext context) => Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => LoginPage(),
-    ),
-  );
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
 
   TextFormField get _inputField => TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Spieler hinzufügen',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.person),
-        suffixIcon: IconButton(
-          onPressed: _addPlayer,
-          icon: const Icon(Icons.add),
+        decoration: InputDecoration(
+          labelText: 'Spieler hinzufügen',
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.person),
+          suffixIcon: IconButton(
+            onPressed: _addPlayer,
+            icon: const Icon(Icons.add),
+          ),
         ),
-      ),
-      controller: _controller,
-      autofocus: true,
-      textInputAction: TextInputAction.next,
-      focusNode: _playerInputField,
-      onFieldSubmitted: (value) {
-        _playerInputField.requestFocus();
-        _addPlayer();
-      },
-    );
-    
+        controller: _controller,
+        autofocus: true,
+        textInputAction: TextInputAction.next,
+        focusNode: _playerInputField,
+        onFieldSubmitted: (value) {
+          _playerInputField.requestFocus();
+          _addPlayer();
+        },
+      );
 }

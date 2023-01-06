@@ -1,93 +1,95 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_basic_dto.dart';
+part of 'card_set_version_dto.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$UserBasicDto extends UserBasicDto {
+class _$CardSetVersionDto extends CardSetVersionDto {
   @override
   final String? id;
   @override
-  final String? username;
+  final num? version;
 
-  factory _$UserBasicDto([void Function(UserBasicDtoBuilder)? updates]) =>
-      (new UserBasicDtoBuilder()..update(updates))._build();
+  factory _$CardSetVersionDto(
+          [void Function(CardSetVersionDtoBuilder)? updates]) =>
+      (new CardSetVersionDtoBuilder()..update(updates))._build();
 
-  _$UserBasicDto._({this.id, this.username}) : super._();
+  _$CardSetVersionDto._({this.id, this.version}) : super._();
 
   @override
-  UserBasicDto rebuild(void Function(UserBasicDtoBuilder) updates) =>
+  CardSetVersionDto rebuild(void Function(CardSetVersionDtoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  UserBasicDtoBuilder toBuilder() => new UserBasicDtoBuilder()..replace(this);
+  CardSetVersionDtoBuilder toBuilder() =>
+      new CardSetVersionDtoBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is UserBasicDto &&
+    return other is CardSetVersionDto &&
         id == other.id &&
-        username == other.username;
+        version == other.version;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, id.hashCode), username.hashCode));
+    return $jf($jc($jc(0, id.hashCode), version.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'UserBasicDto')
+    return (newBuiltValueToStringHelper(r'CardSetVersionDto')
           ..add('id', id)
-          ..add('username', username))
+          ..add('version', version))
         .toString();
   }
 }
 
-class UserBasicDtoBuilder
-    implements Builder<UserBasicDto, UserBasicDtoBuilder> {
-  _$UserBasicDto? _$v;
+class CardSetVersionDtoBuilder
+    implements Builder<CardSetVersionDto, CardSetVersionDtoBuilder> {
+  _$CardSetVersionDto? _$v;
 
   String? _id;
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
-  String? _username;
-  String? get username => _$this._username;
-  set username(String? username) => _$this._username = username;
+  num? _version;
+  num? get version => _$this._version;
+  set version(num? version) => _$this._version = version;
 
-  UserBasicDtoBuilder() {
-    UserBasicDto._defaults(this);
+  CardSetVersionDtoBuilder() {
+    CardSetVersionDto._defaults(this);
   }
 
-  UserBasicDtoBuilder get _$this {
+  CardSetVersionDtoBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
-      _username = $v.username;
+      _version = $v.version;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(UserBasicDto other) {
+  void replace(CardSetVersionDto other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$UserBasicDto;
+    _$v = other as _$CardSetVersionDto;
   }
 
   @override
-  void update(void Function(UserBasicDtoBuilder)? updates) {
+  void update(void Function(CardSetVersionDtoBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  UserBasicDto build() => _build();
+  CardSetVersionDto build() => _build();
 
-  _$UserBasicDto _build() {
-    final _$result = _$v ?? new _$UserBasicDto._(id: id, username: username);
+  _$CardSetVersionDto _build() {
+    final _$result = _$v ?? new _$CardSetVersionDto._(id: id, version: version);
     replace(_$result);
     return _$result;
   }

@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 analysis_options.yaml
 doc/AuthApi.md
@@ -7,6 +6,7 @@ doc/CardDto.md
 doc/CardSetBasicDto.md
 doc/CardSetDto.md
 doc/CardSetRole.md
+doc/CardSetVersionDto.md
 doc/CardType.md
 doc/CardsetApi.md
 doc/ConfigureApi.md
@@ -35,6 +35,7 @@ lib/src/model/card_dto.dart
 lib/src/model/card_set_basic_dto.dart
 lib/src/model/card_set_dto.dart
 lib/src/model/card_set_role.dart
+lib/src/model/card_set_version_dto.dart
 lib/src/model/card_type.dart
 lib/src/model/date.dart
 lib/src/model/feedback_dto.dart
@@ -44,18 +45,4 @@ lib/src/model/user_role.dart
 lib/src/model/user_with_card_set_role.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/auth_api_test.dart
-test/card_dto_test.dart
-test/card_set_basic_dto_test.dart
-test/card_set_dto_test.dart
-test/card_set_role_test.dart
-test/card_type_test.dart
-test/cardset_api_test.dart
-test/configure_api_test.dart
-test/feedback_api_test.dart
-test/feedback_dto_test.dart
-test/moderrating_api_test.dart
-test/user_basic_dto_test.dart
-test/user_dto_test.dart
-test/user_role_test.dart
-test/user_with_card_set_role_test.dart
+test/card_set_version_dto_test.dart

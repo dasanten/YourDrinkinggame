@@ -19,6 +19,7 @@ export 'package:drinkinggame_api/src/model/card_dto.dart';
 export 'package:drinkinggame_api/src/model/card_set_basic_dto.dart';
 export 'package:drinkinggame_api/src/model/card_set_dto.dart';
 export 'package:drinkinggame_api/src/model/card_set_role.dart';
+export 'package:drinkinggame_api/src/model/card_set_version_dto.dart';
 export 'package:drinkinggame_api/src/model/card_type.dart';
 export 'package:drinkinggame_api/src/model/feedback_dto.dart';
 export 'package:drinkinggame_api/src/model/user_basic_dto.dart';
