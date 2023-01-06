@@ -15,9 +15,7 @@ Future<List<CardSetEntity>> getCardSets() async {
     columns: allCardSetColumns,
   );
 
-  return cardSets
-      .map<CardSetEntity>((e) => CardSetEntity.fromMap(e))
-      .toList();
+  return cardSets.map<CardSetEntity>((e) => CardSetEntity.fromMap(e)).toList();
 }
 
 // Get Cardset by UserId from UserRole table
@@ -29,20 +27,18 @@ Future<List<CardSetEntity>> getCardSetsByUserId(int userId) async {
     ON $TABLE_CARD_SET.$COLUMN_CARD_SET_ID = $TABLE_USER_ROLE.$COLUMN_USER_ROLE_CARD_SET_ID
     WHERE $TABLE_USER_ROLE.$COLUMN_USER_ROLE_USER_ID = $userId""");
 
-  return cardSets
-      .map<CardSetEntity>((e) => CardSetEntity.fromMap(e))
-      .toList();
+  return cardSets.map<CardSetEntity>((e) => CardSetEntity.fromMap(e)).toList();
 }
 
-
-Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId, {CardSetRole? role}) async {
+Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId,
+    {CardSetRole? role}) async {
   final db = await database;
   final id = await db.insert(TABLE_CARD_SET, cardSet.toMap());
 
   await db.insert(TABLE_USER_ROLE, {
     COLUMN_USER_ROLE_USER_ID: userId,
     COLUMN_USER_ROLE_CARD_SET_ID: id,
-    if(role!=null) COLUMN_USER_ROLE_ROLE: role.toString(),
+    if (role != null) COLUMN_USER_ROLE_ROLE: role.toString(),
   });
 
   return cardSet.copyWith(
@@ -53,11 +49,10 @@ Future<CardSetEntity> insertCardSet(CardSetEntity cardSet, int userId, {CardSetR
 Future<int> deleteCardSet(int id) async {
   final db = await database;
 
-  await db.delete(
-    TABLE_USER_ROLE, 
-    where: "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?", 
-    whereArgs: [id, currentUserId]
-  );
+  await db.delete(TABLE_USER_ROLE,
+      where:
+          "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?",
+      whereArgs: [id, currentUserId]);
 
   await db.delete(
     TABLE_CARD,
@@ -86,13 +81,22 @@ Future<int> updateCardSet(CardSetEntity cardSet) async {
 Future<bool> containsCardSet(String id) async {
   final db = await database;
 
-  final result = await db.query(
+  print(id);
+  final result = await db.rawQuery("""
+    SELECT $COLUMN_USER_ROLE_CARD_SET_ID FROM $TABLE_USER_ROLE
+    JOIN $TABLE_CARD_SET CS ON CS.$COLUMN_CARD_SET_ID = $COLUMN_USER_ROLE_CARD_SET_ID 
+    WHERE $COLUMN_USER_ROLE_USER_ID = $currentUserId AND $COLUMN_CARD_SET_WORKSHOP_ID = ?
+  """, [id]);
+
+  final result2 = await db.query(
     TABLE_USER_ROLE,
     columns: [COLUMN_USER_ROLE_CARD_SET_ID],
     distinct: true,
-    where: "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?",
+    where:
+        "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?",
     whereArgs: [id, currentUserId],
   );
+  print(result);
 
   return result.isNotEmpty;
 }
@@ -106,7 +110,7 @@ Future<CardSetRole?> getUserRole(int cardSetId, int userId) async {
     AND $COLUMN_USER_ROLE_USER_ID = $userId
   """);
 
-  if(result.isEmpty || result.first[COLUMN_USER_ROLE_ROLE] == null) {
+  if (result.isEmpty || result.first[COLUMN_USER_ROLE_ROLE] == null) {
     return null;
   }
   return CardSetRole.valueOf(result.first[COLUMN_USER_ROLE_ROLE] as String);

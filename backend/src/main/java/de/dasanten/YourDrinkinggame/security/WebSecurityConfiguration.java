@@ -14,7 +14,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/cardset/version").permitAll()
                 .antMatchers(HttpMethod.POST, "/cardset/version").permitAll()
                 .antMatchers(HttpMethod.GET, "/cardset/**", "/configure/cardset/**").permitAll()
                 .and()
