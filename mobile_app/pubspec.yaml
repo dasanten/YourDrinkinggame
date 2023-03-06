@@ -31,6 +31,7 @@ dependencies:
   google_sign_in: ^5.2.4
   shared_preferences: ^2.0.15
   openapi_generator_annotations: ^4.0.0
+  built_collection: ^5.1.1
   drinkinggame_api:
     path: ./api/drinkinggame/
 

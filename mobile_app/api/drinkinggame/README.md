@@ -72,7 +72,7 @@ Class | Method | HTTP request | Description
 [*CardsetApi*](doc\CardsetApi.md) | [**editCardSet**](doc\CardsetApi.md#editcardset) | **PUT** /cardset | 
 [*CardsetApi*](doc\CardsetApi.md) | [**favorCardSet**](doc\CardsetApi.md#favorcardset) | **POST** /cardset/favor/{id} | 
 [*CardsetApi*](doc\CardsetApi.md) | [**getCardSetById**](doc\CardsetApi.md#getcardsetbyid) | **GET** /cardset/{id} | 
-[*CardsetApi*](doc\CardsetApi.md) | [**getNewestCardSetVersions**](doc\CardsetApi.md#getnewestcardsetversions) | **GET** /cardset/version | 
+[*CardsetApi*](doc\CardsetApi.md) | [**getNewestCardSetVersions**](doc\CardsetApi.md#getnewestcardsetversions) | **POST** /cardset/version | 
 [*CardsetApi*](doc\CardsetApi.md) | [**getTopCardSets**](doc\CardsetApi.md#gettopcardsets) | **GET** /cardset | 
 [*CardsetApi*](doc\CardsetApi.md) | [**reportCardSet**](doc\CardsetApi.md#reportcardset) | **POST** /cardset/report/{id} | 
 [*CardsetApi*](doc\CardsetApi.md) | [**searchCardSets**](doc\CardsetApi.md#searchcardsets) | **GET** /cardset/search | 

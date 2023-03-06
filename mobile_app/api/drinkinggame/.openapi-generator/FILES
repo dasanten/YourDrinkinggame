@@ -45,4 +45,3 @@ lib/src/model/user_role.dart
 lib/src/model/user_with_card_set_role.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/card_set_version_dto_test.dart

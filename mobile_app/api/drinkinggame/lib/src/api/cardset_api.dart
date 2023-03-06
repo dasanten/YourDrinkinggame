@@ -447,7 +447,7 @@ class CardsetApi {
   /// Returns a [Future] containing a [Response] with a [BuiltList<CardSetDto>] as data
   /// Throws [DioError] if API call or serialization fails
   Future<Response<BuiltList<CardSetDto>>> getNewestCardSetVersions({ 
-    required CardSetVersionDto cardSetVersionDto,
+    required BuiltList<CardSetVersionDto> cardSetVersionDto,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -457,7 +457,7 @@ class CardsetApi {
   }) async {
     final _path = r'/cardset/version';
     final _options = Options(
-      method: r'GET',
+      method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -478,7 +478,7 @@ class CardsetApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(CardSetVersionDto);
+      const _type = FullType(BuiltList, [FullType(CardSetVersionDto)]);
       _bodyData = _serializers.serialize(cardSetVersionDto, specifiedType: _type);
 
     } catch(error, stackTrace) {

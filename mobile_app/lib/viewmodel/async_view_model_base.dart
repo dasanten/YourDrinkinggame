@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-class AsyncViewmodelBase extends ChangeNotifier {
-  AsyncViewmodelBase([this._isLoading = false]);
+class AsyncViewModelBase extends ChangeNotifier {
+  AsyncViewModelBase([this._isLoading = false]);
 
   bool _isLoading;
 

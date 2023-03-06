@@ -153,7 +153,7 @@ public class CardSetService {
         cardSet.getLikes().add(userEntityOptional.get());
         cardSetRepository.save(cardSet);
     }
-
+    
     public List<CardSetDto> getNewestCardSetVersions(List<CardSetVersionDto> cardSetVersionDto) {
         List<CardSetEntity> cardSetList = new ArrayList<>();
         cardSetVersionDto.forEach(cardSet -> {

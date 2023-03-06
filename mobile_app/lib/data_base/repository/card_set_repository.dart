@@ -81,22 +81,11 @@ Future<int> updateCardSet(CardSetEntity cardSet) async {
 Future<bool> containsCardSet(String id) async {
   final db = await database;
 
-  print(id);
   final result = await db.rawQuery("""
     SELECT $COLUMN_USER_ROLE_CARD_SET_ID FROM $TABLE_USER_ROLE
     JOIN $TABLE_CARD_SET CS ON CS.$COLUMN_CARD_SET_ID = $COLUMN_USER_ROLE_CARD_SET_ID 
     WHERE $COLUMN_USER_ROLE_USER_ID = $currentUserId AND $COLUMN_CARD_SET_WORKSHOP_ID = ?
   """, [id]);
-
-  final result2 = await db.query(
-    TABLE_USER_ROLE,
-    columns: [COLUMN_USER_ROLE_CARD_SET_ID],
-    distinct: true,
-    where:
-        "$COLUMN_USER_ROLE_CARD_SET_ID = ? AND $COLUMN_USER_ROLE_USER_ID = ?",
-    whereArgs: [id, currentUserId],
-  );
-  print(result);
 
   return result.isNotEmpty;
 }

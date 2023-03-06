@@ -16,48 +16,72 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
   @override
   Widget build(BuildContext context) {
     this._buildContext = context;
-    return Consumer<WorkshopCardSetViewmodel>(
-      builder: (context, viewmodel, child) {
-        if (viewmodel.isLoading && !viewmodel.hasError) {
+    return Consumer<WorkshopCardSetViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoading && !viewModel.hasError) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (viewmodel.cardSetList.isNotEmpty) {
+        } else if (viewModel.cardSetList.isNotEmpty) {
           return RefreshIndicator(
-              onRefresh: viewmodel.getWorkshopCardSets,
+              onRefresh: viewModel.getWorkshopCardSets,
               child: Scaffold(
-                floatingActionButton: FloatingActionButton.small(
-                  onPressed: viewmodel.getWorkshopCardSets,
-                  tooltip: "refresh",
-                  child: Icon(Icons.refresh),
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerFloat,
-                body: ListView.separated(
-                    controller: _scrollController,
-                    itemCount: viewmodel.cardSetList.length +
-                        (viewmodel.isLoadingMore ? 3 : 0),
-                    separatorBuilder: (_, index) => const Divider(),
-                    itemBuilder: (context, i) {
-                      if (i >= viewmodel.cardSetList.length) {
-                        return ListTile();
-                      }
-                      return CustomWorkshopCardSetTile(
-                        cardSet: viewmodel.cardSetList[i],
-                        isLocal: viewmodel.getCardSetLocalById(
-                          viewmodel.cardSetList[i].id!,
+                  floatingActionButton: FloatingActionButton.small(
+                    onPressed: viewModel.refresh,
+                    tooltip: "refresh",
+                    child: Icon(Icons.refresh),
+                  ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerFloat,
+                  body: Column(
+                    children: [
+                      ColoredBox(
+                        color: Theme.of(context).backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            initialValue: viewModel.searchQuery,
+                            onFieldSubmitted: (query) =>
+                                viewModel.search(query),
+                            decoration: InputDecoration(
+                              label: Text("Suche"),
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                              ),
+                              suffixIcon: Icon(Icons.search),
+                            ),
+                          ),
                         ),
-                      );
-                    }),
-              ));
-        } else if (viewmodel.hasError) {
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                            controller: _scrollController,
+                            itemCount: viewModel.cardSetList.length +
+                                (viewModel.isLoadingMore ? 3 : 0),
+                            separatorBuilder: (_, index) => const Divider(),
+                            itemBuilder: (context, i) {
+                              if (i >= viewModel.cardSetList.length) {
+                                return ListTile();
+                              }
+                              return CustomWorkshopCardSetTile(
+                                cardSet: viewModel.cardSetList[i],
+                                isLocal: viewModel.getCardSetLocalById(
+                                  viewModel.cardSetList[i].id!,
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  )));
+        } else if (viewModel.hasError) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                     'Es konnte keien Verbindung zum Server hergestellt werden.'),
-                _loadCardSetsButton(viewmodel.getWorkshopCardSets),
+                _loadCardSetsButton(viewModel.refresh),
               ],
             ),
           );
@@ -67,7 +91,7 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Keine Sets gefunden.'),
-              _loadCardSetsButton(viewmodel.getWorkshopCardSets),
+              _loadCardSetsButton(viewModel.getWorkshopCardSets),
             ],
           ),
         );
@@ -83,7 +107,7 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
               _scrollController.position.maxScrollExtent &&
           _buildContext != null) {
         _buildContext!
-            .read<WorkshopCardSetViewmodel>()
+            .read<WorkshopCardSetViewModel>()
             .getMoreCardSets(context);
       }
     });
