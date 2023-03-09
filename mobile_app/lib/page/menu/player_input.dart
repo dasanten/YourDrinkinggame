@@ -82,7 +82,7 @@ class _PlayerInputState extends State<PlayerInput> {
                   ),
                   Expanded(
                     flex: 2,
-                    child: ElevatedButton(
+                    child: FloatingActionButton(
                       onPressed: () => startGame(context),
                       child: const Icon(Icons.play_arrow),
                     ),
@@ -160,10 +160,16 @@ class _PlayerInputState extends State<PlayerInput> {
         decoration: InputDecoration(
           labelText: 'Spieler hinzufügen',
           border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: Icon(
+            Icons.person,
+            size: 40,
+          ),
           suffixIcon: IconButton(
             onPressed: _addPlayer,
-            icon: const Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              size: 40,
+            ),
           ),
         ),
         controller: _controller,

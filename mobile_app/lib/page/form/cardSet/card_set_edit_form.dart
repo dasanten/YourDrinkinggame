@@ -94,7 +94,11 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                 children: [
                   ElevatedButton(
                     onPressed: () async => deleteCardSet(context),
-                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).errorColor,
+                      textStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
+                    ),
                     child: const Text("Kartenset löschen!"),
                   ),
                   const Padding(
@@ -148,20 +152,6 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
       context
           .read<LocalCardSetsViewmodel>()
           .updateCardSet(currentCardSetViewmodel.cardSet!);
-      // if(published) {
-      // TODO update cardset
-      // final String token = currentCardSetViewmodel.cardSet!.adminToken!.isNotEmpty ? currentCardSetViewmodel.cardSet!.adminToken!: currentCardSetViewmodel.cardSet!.editorToken!;
-      // card_set_http.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
-      // final List<CardEntity> cards = currentCardSetViewmodel.cards;
-      // if(cards.isNotEmpty) {
-      //   final List<CardDto> cardDtoList = await card_set_http.updateCards(cards.map<CardDto>((e) => CardDto.fromCardEntity(e, currentCardSetViewmodel.cardSet!.workshopId!)).toList(), token);
-      //   cardDtoList.forEach((element) {
-      //     final CardEntity card = cards.firstWhere((card) => card.content==element.content).copyWith(workshopId: element.id);
-      //     CardSetDB.cardSetDB.updateCard(card);
-
-      //   });
-      // }
-      // }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(

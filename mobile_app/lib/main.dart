@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:your_drinking_game_app/config/drinking_game_theme.dart';
 import 'package:your_drinking_game_app/page/detail/dto/workshop_card_view.dart';
 import 'package:your_drinking_game_app/page/detail/entity/local_card_view.dart';
 import 'package:your_drinking_game_app/page/form/cardSet/card_set_edit_form.dart';
@@ -14,6 +14,7 @@ import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart
 import 'package:your_drinking_game_app/viewmodel/current_card_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/current_workshop_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
+import 'package:your_drinking_game_app/viewmodel/option_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/workshop_card_set_viewmodel.dart';
 
 void main() {
@@ -34,14 +35,16 @@ void main() {
         ),
         ChangeNotifierProvider<CurrentWorkshopCardSetViewmodel>(
           create: (_) => CurrentWorkshopCardSetViewmodel(),
-        )
+        ),
+        ChangeNotifierProvider<OptionViewModel>(
+          create: (_) => OptionViewModel(),
+        ),
       ],
       child: const MyApp(),
     ),
   );
   loadCurrentUser();
   CardSetsUtil.checkForUpdates();
-  // TODO cardset update check
 }
 
 class MyApp extends StatelessWidget {
@@ -60,16 +63,9 @@ class MyApp extends StatelessWidget {
         WorkshopCardView.routeName: (context) => WorkshopCardView(),
         LocalCardView.routeName: (context) => LocalCardView(),
       },
-      theme: ThemeData(
-        useMaterial3: true,
-        primaryColor: Colors.blue,
-        primaryColorDark: Colors.blueAccent,
-        bottomAppBarColor: Colors.grey.shade300,
-        textTheme: GoogleFonts.ubuntuTextTheme(),
-        // colorScheme: ColorScheme.fromSwatch( Colors.blue
-        //   ).copyWith(secondary: Colors.orangeAccent),
-      ),
-      darkTheme: ThemeData.dark().copyWith(useMaterial3: true),
+      theme: DrinkingGameTheme.light(),
+      darkTheme: DrinkingGameTheme.dark(),
+      themeMode: context.watch<OptionViewModel>().themeMode,
     );
   }
 }

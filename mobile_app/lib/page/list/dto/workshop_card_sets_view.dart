@@ -35,21 +35,29 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
                       FloatingActionButtonLocation.centerFloat,
                   body: Column(
                     children: [
-                      ColoredBox(
-                        color: Theme.of(context).backgroundColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            initialValue: viewModel.searchQuery,
-                            onFieldSubmitted: (query) =>
-                                viewModel.search(query),
-                            decoration: InputDecoration(
-                              label: Text("Suche"),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          initialValue: viewModel.searchQuery,
+                          onFieldSubmitted: (query) => viewModel.search(query),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Theme.of(context).backgroundColor,
+                            label: Text(
+                              "Suche",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
                               ),
-                              suffixIcon: Icon(Icons.search),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.search,
+                              color: Colors.white,
                             ),
                           ),
                         ),

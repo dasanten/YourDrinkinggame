@@ -13,8 +13,8 @@ class CardDisplay extends StatefulWidget {
 }
 
 class _CardDisplayState extends State<CardDisplay> {
-
-  CardEntity _displayedCard = CardEntity(content: "Don't drink and drive", active: true, cardSetId: null);
+  CardEntity _displayedCard = CardEntity(
+      content: "Don't drink and drive", active: true, cardSetId: null);
 
   @override
   void initState() {
@@ -24,66 +24,60 @@ class _CardDisplayState extends State<CardDisplay> {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: pickCard,
-      child: Scaffold(
-        backgroundColor: _displayedCard.color,
-        body: Stack(
-          children: [
-            Positioned(
-              right: 0,
-              child: _editPlayer()
-            ),
-            Align(
-              child: _displayedCardWidget(),
-            ),
-          ],
-        )
+      child: ColoredBox(
+        color: _displayedCard.color,
+        child: SafeArea(
+          child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Stack(
+                children: [
+                  Positioned(right: 0, child: _editPlayer()),
+                  Align(
+                    child: _displayedCardView(),
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }
 
-  Widget _editPlayer() =>  
-    Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 20,
-      ),
-      child: IconButton(
-        iconSize: 50,
-        icon: Icon(
-          Icons.person_rounded,
-          color: Colors.white, 
-        ),
-        onPressed: () => null
-      ),
-    );
+  Widget _editPlayer() => Padding(
+        padding: EdgeInsets.all(10),
+        child: IconButton(
+            iconSize: 50,
+            icon: Icon(
+              Icons.person_add_rounded,
+              color: Colors.white,
+            ),
+            onPressed: () => null),
+      );
 
-  Widget _displayedCardWidget() => 
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if(_displayedCard.type?.title != null)
-        Text(
-          _displayedCard.type!.title!,
-          style: TextStyle(
-            fontSize: 45,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+  Widget _displayedCardView() => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (_displayedCard.type?.title != null)
+            Text(
+              _displayedCard.type!.title!,
+              style: TextStyle(
+                fontSize: 45,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          Text(
+            game.replacePlayerNames(_displayedCard.content),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            ),
           ),
-        ),
-        Text(
-          game.replacePlayerNames(_displayedCard.content),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-      ],
-    );
-  
+        ],
+      );
+
   Future pickCard() async {
     try {
       final pickerCard = await game.pickCard();
@@ -94,5 +88,4 @@ class _CardDisplayState extends State<CardDisplay> {
       Navigator.pop(context);
     }
   }
-
 }
