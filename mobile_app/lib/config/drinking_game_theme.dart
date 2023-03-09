@@ -7,7 +7,28 @@ class DrinkingGameTheme {
   static Color get secondary => Color.fromRGBO(105, 132, 150, 20);
 
   static ThemeData light() {
-    return ThemeData.light().setStandard().copyWith();
+    return ThemeData.light().setStandard().copyWith(
+          colorScheme: ColorScheme(
+            brightness: Brightness.light,
+            primary: secondary,
+            onPrimary: Colors.white,
+            secondary: Colors.amber,
+            onSecondary: Colors.white,
+            error: Colors.redAccent,
+            onError: Colors.white70,
+            background: Colors.teal,
+            onBackground: Colors.white,
+            surface: secondary,
+            onSurface: Colors.black,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: primary,
+                  foregroundColor: Colors.white,
+                  textStyle: TextStyle(
+                    color: Colors.white,
+                  ))),
+        );
   }
 
   static ThemeData dark() {
@@ -40,8 +61,7 @@ class DrinkingGameTheme {
                 ),
           ),
           buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.primary,
-          ),
+              textTheme: ButtonTextTheme.primary, buttonColor: secondary),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   backgroundColor: secondary,
