@@ -1,44 +1,35 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:your_drinking_game_app/data_base/model/card_entity.dart';
-import 'package:your_drinking_game_app/extension/card_extension.dart';
-import 'package:your_drinking_game_app/services/game_service.dart' as game;
+import 'package:provider/provider.dart';
 
-class CardDisplay extends StatefulWidget {
+import '../../viewmodel/game_view_model.dart';
+
+class CardDisplay extends StatelessWidget {
   static const routeName = '/CardDisplay';
 
   @override
-  State<StatefulWidget> createState() => _CardDisplayState();
-}
-
-class _CardDisplayState extends State<CardDisplay> {
-  CardEntity _displayedCard = CardEntity(
-      content: "Don't drink and drive", active: true, cardSetId: null);
-
-  @override
-  void initState() {
-    super.initState();
-    game.loadCards();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: pickCard,
-      child: ColoredBox(
-        color: _displayedCard.color,
-        child: SafeArea(
-          child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Stack(
-                children: [
-                  Positioned(right: 0, child: _editPlayer()),
-                  Align(
-                    child: _displayedCardView(),
-                  ),
-                ],
-              )),
+    return Consumer<GameViewModel>(
+      builder: (context, value, child) => GestureDetector(
+        onTap: () => _pickCard(context),
+        child: ColoredBox(
+          color: value.currentColor,
+          child: SafeArea(
+            child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: Stack(
+                  children: [
+                    Positioned(right: 0, child: _editPlayer()),
+                    Align(
+                      child: _displayedCardView(
+                        content: value.cardTextWithNames,
+                        title: value.cardTitle,
+                      ),
+                    ),
+                  ],
+                )),
+          ),
         ),
       ),
     );
@@ -55,35 +46,36 @@ class _CardDisplayState extends State<CardDisplay> {
             onPressed: () => null),
       );
 
-  Widget _displayedCardView() => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (_displayedCard.type?.title != null)
+  Widget _displayedCardView({required String content, String? title}) =>
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (title != null)
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 45,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             Text(
-              _displayedCard.type!.title!,
-              style: TextStyle(
-                fontSize: 45,
+              content,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                fontSize: 25,
               ),
             ),
-          Text(
-            game.replacePlayerNames(_displayedCard.content),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
-          ),
-        ],
+          ],
+        ),
       );
 
-  Future pickCard() async {
+  Future _pickCard(BuildContext context) async {
     try {
-      final pickerCard = await game.pickCard();
-      setState(() {
-        _displayedCard = pickerCard;
-      });
+      await context.read<GameViewModel>().pickCard();
     } catch (e) {
       Navigator.pop(context);
     }
