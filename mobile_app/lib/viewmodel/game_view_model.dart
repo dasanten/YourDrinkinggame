@@ -24,16 +24,22 @@ class GameViewModel extends AsyncViewModelBase {
 
   String get replaceString => '@';
 
-  List<String> _players = [];
+  List<String> players = [];
   List<CardEntity> _cards = [];
   CardEntity? _nextCard;
 
-  set players(List<String> players) {
-    _players = players;
+  void removePlayer(String player) {
+    players.remove(player);
+    notifyListeners();
   }
 
-  void startGame(List<String> players) {
-    _players = players;
+  void addPlayer(String player) {
+    players.add(player);
+    notifyListeners();
+  }
+
+  void startGame(List<String> newPlayers) {
+    players = newPlayers;
     loadCards();
   }
 
@@ -82,18 +88,18 @@ class GameViewModel extends AsyncViewModelBase {
   }
 
   String _replacePlayerNames(String content) {
-    final players = List.from(_players);
+    final playersCopy = List.from(players);
     final rdm = Random();
     return content.replaceAllMapped(replaceString, (match) {
-      final pickedPlayerNum = rdm.nextInt(players.length);
-      final pickedPlayer = players[pickedPlayerNum];
-      players.removeAt(pickedPlayerNum);
+      final pickedPlayerNum = rdm.nextInt(playersCopy.length);
+      final pickedPlayer = playersCopy[pickedPlayerNum];
+      playersCopy.removeAt(pickedPlayerNum);
       return pickedPlayer;
     });
   }
 
   bool _enoughPlayersForCard(CardEntity cardEntity) =>
-      cardEntity.content.allMatches(replaceString).length < _players.length &&
+      cardEntity.content.allMatches(replaceString).length < players.length &&
       (cardEntity.card?.content.allMatches(replaceString).length ?? 0) <
-          _players.length;
+          players.length;
 }

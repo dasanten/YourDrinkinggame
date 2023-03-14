@@ -45,7 +45,10 @@ class _PlayerInputState extends State<PlayerInput> {
           children: menuDrawer(context),
         ),
       ),
-      body: _body(context),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _body(context),
+      ),
     );
   }
 
