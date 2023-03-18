@@ -12,6 +12,8 @@ import '../data_base/model/card_set_entity.dart';
 import '../data_base/model/user_entity.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
+  clientId:
+      '1079576483928-26vrcobj4ogt6f1om3hgrhgavl6rsloe.apps.googleusercontent.com',
   scopes: [
     'openid',
     'profile',
