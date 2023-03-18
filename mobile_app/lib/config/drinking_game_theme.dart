@@ -90,12 +90,13 @@ class DrinkingGameTheme {
             onSurface: Colors.white,
           ),
           chipTheme: ChipThemeData(
-              backgroundColor: secondary,
-              checkmarkColor: Colors.white,
-              deleteIconColor: Colors.white,
-              labelStyle: TextStyle(
-                color: Colors.white,
-              )),
+            backgroundColor: secondary,
+            checkmarkColor: Colors.white,
+            deleteIconColor: Colors.white,
+            labelStyle: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           textTheme: TextTheme(
             bodyLarge: TextStyle(
               color: Colors.white,

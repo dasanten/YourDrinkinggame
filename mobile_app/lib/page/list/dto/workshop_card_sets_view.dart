@@ -11,6 +11,8 @@ class WorkshopCardSetsView extends StatefulWidget {
 
 class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController searchController = TextEditingController();
+
   BuildContext? _buildContext;
 
   @override
@@ -41,24 +43,35 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
-                          initialValue: viewModel.searchQuery,
+                          controller: searchController,
                           onFieldSubmitted: (query) => viewModel.search(query),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Theme.of(context).backgroundColor,
                             label: Text(
                               "Suche",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(50),
                               ),
                             ),
-                            suffixIcon: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
+                            suffixIcon: searchController.text.isEmpty
+                                ? Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                  )
+                                : IconButton(
+                                    onPressed: () {
+                                      searchController.clear();
+                                      viewModel.search(searchController.text);
+                                    },
+                                    icon: Icon(Icons.remove),
+                                  ),
                           ),
                         ),
                       ),
@@ -99,7 +112,12 @@ class WorkshopCardSetsViewState extends State<WorkshopCardSetsView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('Keine Sets gefunden.'),
-              _loadCardSetsButton(viewModel.getWorkshopCardSets),
+              _loadCardSetsButton(
+                () {
+                  searchController.clear();
+                  viewModel.search(searchController.text);
+                },
+              ),
             ],
           ),
         );

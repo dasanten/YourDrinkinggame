@@ -28,7 +28,10 @@ class LoginPage extends StatelessWidget {
               ElevatedButton.icon(
                 icon: const Icon(Icons.login),
                 label: const Text("Google"),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.orange,
+                ),
                 onPressed: () async {
                   try {
                     await loginWithGoogle();
