@@ -1,17 +1,19 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
-import 'package:flutter/widgets.dart';
-import 'package:your_drinking_game_app/data_base/repository/card_repository.dart' as card_repository;
-import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart' as card_set_repository;
+import 'package:flutter/material.dart';
+import 'package:your_drinking_game_app/data_base/repository/card_repository.dart'
+    as card_repository;
+import 'package:your_drinking_game_app/data_base/repository/card_set_repository.dart'
+    as card_set_repository;
 import 'package:your_drinking_game_app/extension/card_extension.dart';
 import 'package:your_drinking_game_app/extension/role_extension.dart';
 import 'package:your_drinking_game_app/openapi/api_client.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
+
 import '../data_base/model/card_entity.dart';
 import '../data_base/model/card_set_entity.dart';
+import 'async_view_model_base.dart';
 
-import 'async_viewmodel_base.dart';
-
-class CurrentCardSetViewmodel extends AsyncViewmodelBase {
+class CurrentCardSetViewmodel extends AsyncViewModelBase {
   late List<CardEntity> _cards;
   CardSetEntity? _cardSet;
   CardSetRole? _cardSetRole;
@@ -29,13 +31,21 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   }
 
   CardSetEntity? get cardSet => _cardSet;
-  List<CardEntity> get cards => _cards ;
+
+  List<CardEntity> get cards => _cards;
+
   CardSetRole? get userRole => _cardSetRole;
+
   TextEditingController get nameController => _nameController;
+
   TextEditingController get descriptionController => _descriptionController;
-  
-  bool get canBeUpdated => _cardSet?.workshopId == null || (_cardSet?.workshopId != null && _cardSetRole != null);
+
+  bool get canBeUpdated =>
+      _cardSet?.workshopId == null ||
+      (_cardSet?.workshopId != null && _cardSetRole != null);
+
   bool get isPublished => cardSet?.workshopId?.isNotEmpty ?? false;
+
   bool get canBePublished => _cardSetRole?.canUpdateCardSet ?? false;
 
   void setCardSet(CardSetEntity newCardSet) {
@@ -63,7 +73,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
 
   Future getUserRole() async {
     if (_cardSet != null && currentUserId != null) {
-      _cardSetRole = await card_set_repository.getUserRole(_cardSet!.id!, currentUserId!);
+      _cardSetRole =
+          await card_set_repository.getUserRole(_cardSet!.id!, currentUserId!);
     }
     notifyListeners();
   }
@@ -73,17 +84,16 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     await getCards();
   }
 
-  Future<void> insertCardFromContent(String content1, String content2, CardType? cardType) async {
+  Future<void> insertCardFromContent(
+      String content1, String content2, CardType? cardType) async {
     CardEntity? relatedCard;
-    if(cardType!.hasMultipleCards) {
-      relatedCard = await card_repository.insertCard(
-        CardEntity(
-          content: content2, 
-          active: true, 
-          cardSetId: null,
-          type: cardType,
-        )
-      );
+    if (cardType!.hasMultipleCards) {
+      relatedCard = await card_repository.insertCard(CardEntity(
+        content: content2,
+        active: true,
+        cardSetId: null,
+        type: cardType,
+      ));
     }
     final card = CardEntity(
       active: true,
@@ -96,9 +106,10 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
   }
 
   Future<void> updateCard(CardEntity card) async {
-    if(card.card != null) {
+    if (card.card != null) {
       if (card.card?.id == null) {
-        card = card.copyWith(card: await card_repository.insertCard(card.card!));
+        card =
+            card.copyWith(card: await card_repository.insertCard(card.card!));
       } else {
         await card_repository.updateCard(card.card!);
       }
@@ -112,20 +123,33 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     await getCards();
   }
 
-  void save() {
+  void save(BuildContext context) {
     _cardSet = _cardSet!.copyWith(
       name: _nameController.text,
       description: _descriptionController.text,
     );
-    publish();
+    publish(context: context);
     notifyListeners();
   }
 
-  Future publish() async {
-    if(_cardSet != null) {
+  Future publish({BuildContext? context}) async {
+    if (_cardSet != null) {
+      if (!canUseWorkshop) {
+        if (context != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Du musst angemeldet sein um ein set zu veröffentlichen",
+              ),
+            ),
+          );
+        }
+        return;
+      }
       setLoading();
       List<CardEntity> cards = _cards;
-      cards = await Future.wait(cards.map(((card) async => card.copyWith(card: await card_repository.getRelatedCardById(card.id!)))));
+      cards = await Future.wait(cards.map(((card) async => card.copyWith(
+          card: await card_repository.getRelatedCardById(card.id!)))));
       final cardSet = _cardSet!.toDto(cards);
       var res;
       if (isPublished) {
@@ -139,8 +163,8 @@ class CurrentCardSetViewmodel extends AsyncViewmodelBase {
     }
   }
 
-  Future unpublish() async {
-    if(_cardSet != null) {
+  Future unPublish() async {
+    if (_cardSet != null) {
       setLoading();
       await api.getCardsetApi().deleteCardSet(id: _cardSet!.workshopId!);
       _cardSet = _cardSet!.copyWith(removeWorkshopId: true);

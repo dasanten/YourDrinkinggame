@@ -8,7 +8,6 @@ import '../../services/user_service.dart';
 
 Future<Database> get database => CardSetDB.cardSetDB.database;
 
-
 //CARD DB ACTIONS
 Future<List<CardEntity>> getCards(int cardSetId) async {
   final db = await database;
@@ -25,7 +24,7 @@ Future<List<CardEntity>> getCards(int cardSetId) async {
 
 Future<CardEntity?> getRelatedCardById(int cardId) async {
   final db = await CardSetDB.cardSetDB.database;
-   
+
   var card = await db.rawQuery("""
     SELECT * FROM $TABLE_CARD C1, $TABLE_CARD C2
     WHERE C1.$COLUMN_CARD_ID = $cardId AND C2.$COLUMN_CARD_ID = C1.$COLUMN_CARD_CARD_ID""");
@@ -34,6 +33,62 @@ Future<CardEntity?> getRelatedCardById(int cardId) async {
     return null;
   }
   return CardEntity.fromMap(card.first);
+}
+
+Future<List<CardEntity>> getCardsWithRelatives(int cardSetId) async {
+  final db = await CardSetDB.cardSetDB.database;
+
+  final cards = await db.query(
+    TABLE_CARD,
+    columns: allCardColumns,
+    where: "$COLUMN_CARD_CARD_SET_ID = ?",
+    whereArgs: [cardSetId],
+  );
+
+  final List<int?> relativeIds =
+      cards.map((e) => e[COLUMN_CARD_CARD_ID] as int?).toList();
+
+  relativeIds.removeWhere((element) => element == null);
+
+  final relativeCards = await db.rawQuery("""
+    SELECT * FROM $TABLE_CARD
+    WHERE $COLUMN_CARD_ID IN (?)
+  """, relativeIds.length > 1 ? [relativeIds] : relativeIds);
+
+  final mappedCard =
+      cards.map<CardEntity>((e) => CardEntity.fromMap(e)).toList();
+  final mappedRelativeCards =
+      relativeCards.map<CardEntity>((e) => CardEntity.fromMap(e)).toList();
+
+  return mappedCard.map((card) {
+    try {
+      final relativeId = cards.firstWhere(
+          (element) => element[COLUMN_CARD_ID] == card.id)[COLUMN_CARD_CARD_ID];
+      final relativeCard = mappedRelativeCards
+          .firstWhere((relative) => relative.id == relativeId);
+      return card.copyWith(card: relativeCard);
+    } catch (e) {
+      return card;
+    }
+  }).toList();
+}
+
+Future<void> removeCards(List<int> ids) async {
+  final db = await database;
+  await db.rawDelete("""
+      DELETE FROM $TABLE_CARD WHERE 
+      $COLUMN_CARD_ID IN (?)
+  """, ids);
+}
+
+Future<int> deleteCardsByCardSetId(int id) async {
+  final db = await database;
+
+  return await db.delete(
+    TABLE_CARD,
+    where: "$COLUMN_CARD_CARD_SET_ID = ?",
+    whereArgs: [id],
+  );
 }
 
 Future<CardEntity> insertCard(CardEntity card) async {
@@ -71,7 +126,7 @@ Future<int> deleteCard(int id) async {
 Future<int> updateCard(CardEntity card) async {
   final db = await database;
 
-  if(!(card.type?.hasMultipleCards ?? false)) {
+  if (!(card.type?.hasMultipleCards ?? false)) {
     removeRelatedCard(card.id!);
   }
 
@@ -95,7 +150,8 @@ Future removeRelatedCard(int cardId) async {
 Future<List<CardEntity>> getActiveCards() async {
   final db = await database;
 
-  final newCards = await db.rawQuery("""
+  final newCards = await db.rawQuery(
+    """
     SELECT C.$COLUMN_CARD_ID, 
            C.$COLUMN_CARD_CONTENT, 
            C.$COLUMN_CARD_ACTIVE, 
@@ -112,7 +168,8 @@ Future<List<CardEntity>> getActiveCards() async {
       UR.$COLUMN_USER_ROLE_USER_ID = $currentUserId AND         
       CS.$COLUMN_CARD_SET_ACTIVE = 1 AND 
       C.$COLUMN_CARD_ACTIVE = 1
-  """,);
+  """,
+  );
   if (newCards.isNotEmpty) {
     return newCards.map((e) => CardEntity.fromMap(e)).toList();
   }

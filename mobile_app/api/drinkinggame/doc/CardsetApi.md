@@ -14,7 +14,7 @@ Method | HTTP request | Description
 [**editCardSet**](CardsetApi.md#editcardset) | **PUT** /cardset | 
 [**favorCardSet**](CardsetApi.md#favorcardset) | **POST** /cardset/favor/{id} | 
 [**getCardSetById**](CardsetApi.md#getcardsetbyid) | **GET** /cardset/{id} | 
-[**getNewestCardSetVersions**](CardsetApi.md#getnewestcardsetversions) | **GET** /cardset/version | 
+[**getNewestCardSetVersions**](CardsetApi.md#getnewestcardsetversions) | **POST** /cardset/version | 
 [**getTopCardSets**](CardsetApi.md#gettopcardsets) | **GET** /cardset | 
 [**reportCardSet**](CardsetApi.md#reportcardset) | **POST** /cardset/report/{id} | 
 [**searchCardSets**](CardsetApi.md#searchcardsets) | **GET** /cardset/search | 
@@ -264,7 +264,7 @@ import 'package:drinkinggame_api/api.dart';
 //defaultApiClient.getAuthentication<HttpBasicAuth>('bearerAuth').password = 'YOUR_PASSWORD';
 
 final api = DrinkinggameApi().getCardsetApi();
-final CardSetVersionDto cardSetVersionDto = ; // CardSetVersionDto | 
+final BuiltList<CardSetVersionDto> cardSetVersionDto = ; // BuiltList<CardSetVersionDto> | 
 
 try {
     final response = api.getNewestCardSetVersions(cardSetVersionDto);
@@ -278,7 +278,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **cardSetVersionDto** | [**CardSetVersionDto**](CardSetVersionDto.md)|  | 
+ **cardSetVersionDto** | [**BuiltList&lt;CardSetVersionDto&gt;**](CardSetVersionDto.md)|  | 
 
 ### Return type
 

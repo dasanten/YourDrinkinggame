@@ -4,23 +4,16 @@ import 'package:your_drinking_game_app/page/tab/card_sets_tab_view.dart';
 import 'package:your_drinking_game_app/viewmodel/current_card_set_viewmodel.dart';
 import 'package:your_drinking_game_app/viewmodel/local_card_sets_viewmodel.dart';
 
-import 'publish_card_set_form.dart';
-
 final _formKey = GlobalKey<FormState>();
 
 class CardSetEditForm extends StatefulWidget {
   static const routeName = '/editCardSet';
 
-
-
   @override
   State<StatefulWidget> createState() => _CardSetEditFormState();
-
 }
 
 class _CardSetEditFormState extends State<CardSetEditForm> {
-
-
   @override
   Widget build(BuildContext context) {
     final published = context.read<CurrentCardSetViewmodel>().isPublished;
@@ -72,41 +65,48 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
                 ),
                 maxLength: 256,
               ),
-              context.select<CurrentCardSetViewmodel, SwitchListTile>((value) =>
-                SwitchListTile(
-                  title: const Text("Kartenset veröffentlicht"),
-                  value: value.isPublished, 
-                  onChanged: editable ? (_) async {
-                    try {
-                      if(value.isPublished) {
-                        await value.unpublish();
-                      } else {
-                        await value.publish();
-                      }
-                    } catch (e) {
-                      print(e);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Leider ist ein Fehler aufgetreten'),
-                        ),
-                      );
-                    }
-                  }: null
-                ),
-              ),    
+              context.select<CurrentCardSetViewmodel, SwitchListTile>(
+                (value) => SwitchListTile(
+                    title: const Text("Kartenset veröffentlicht"),
+                    value: value.isPublished,
+                    onChanged: editable
+                        ? (_) async {
+                            try {
+                              if (value.isPublished) {
+                                await value.unPublish();
+                              } else {
+                                await value.publish();
+                              }
+                            } catch (e) {
+                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Leider ist ein Fehler aufgetreten'),
+                                ),
+                              );
+                            }
+                          }
+                        : null),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: () async => deleteCardSet(context),
-                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).errorColor,
+                      textStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground),
+                    ),
                     child: const Text("Kartenset löschen!"),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                   ),
                   ElevatedButton(
-                    onPressed: editable ? () async => updateCardSet(context): null,
+                    onPressed:
+                        editable ? () async => updateCardSet(context) : null,
                     child: const Text("Kartenset updaten!"),
                   ),
                 ],
@@ -127,7 +127,8 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
           );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Kartenset ${currentCardSetViewmodel.cardSet!.name} gelöscht"),
+          content: Text(
+              "Kartenset ${currentCardSetViewmodel.cardSet!.name} gelöscht"),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -147,27 +148,14 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
   Future<void> updateCardSet(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       final currentCardSetViewmodel = context.read<CurrentCardSetViewmodel>()
-        ..save();
+        ..save(context);
       context
-        .read<LocalCardSetsViewmodel>()
-        .updateCardSet(currentCardSetViewmodel.cardSet!);
-      // if(published) {
-        // TODO update cardset
-        // final String token = currentCardSetViewmodel.cardSet!.adminToken!.isNotEmpty ? currentCardSetViewmodel.cardSet!.adminToken!: currentCardSetViewmodel.cardSet!.editorToken!;
-        // card_set_http.editCardSet(CardSetDto.fromCardSetEntity(currentCardSetViewmodel.cardSet!), token);
-        // final List<CardEntity> cards = currentCardSetViewmodel.cards; 
-        // if(cards.isNotEmpty) {
-        //   final List<CardDto> cardDtoList = await card_set_http.updateCards(cards.map<CardDto>((e) => CardDto.fromCardEntity(e, currentCardSetViewmodel.cardSet!.workshopId!)).toList(), token);
-        //   cardDtoList.forEach((element) { 
-        //     final CardEntity card = cards.firstWhere((card) => card.content==element.content).copyWith(workshopId: element.id);
-        //     CardSetDB.cardSetDB.updateCard(card);
-          
-        //   });
-        // }
-      // }
+          .read<LocalCardSetsViewmodel>()
+          .updateCardSet(currentCardSetViewmodel.cardSet!);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Kartenset ${currentCardSetViewmodel.cardSet!.name} geupdated"),
+          content: Text(
+              "Kartenset ${currentCardSetViewmodel.cardSet!.name} geupdated"),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -202,44 +190,43 @@ class _CardSetEditFormState extends State<CardSetEditForm> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final TextEditingController textEditingController = TextEditingController();
     return await showDialog<String?>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) =>
-        AlertDialog(
-          title: const Text("Wirklich veröffentlichen?"),
-          content: Form(
-            key: formKey,
-            child: TextFormField(
-              controller: textEditingController,
-              decoration: const InputDecoration(
-                labelText: 'Neuer Admin Token',
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value?.isEmpty ?? true) {
-                  return 'Bitte gebe einen Token ein!';
-                }
-                return null;
-              },
-              maxLength: 20,
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () =>  
-                Navigator.pop(context, null),
-              child: const Text("ABBRUCH"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  Navigator.pop(context, textEditingController.text.trim());
-                }
-              },
-              child: const Text("Bestätigen"),
-            ),
-          ],
-        )
-    ) ?? "";
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+                  title: const Text("Wirklich veröffentlichen?"),
+                  content: Form(
+                    key: formKey,
+                    child: TextFormField(
+                      controller: textEditingController,
+                      decoration: const InputDecoration(
+                        labelText: 'Neuer Admin Token',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value?.isEmpty ?? true) {
+                          return 'Bitte gebe einen Token ein!';
+                        }
+                        return null;
+                      },
+                      maxLength: 20,
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context, null),
+                      child: const Text("ABBRUCH"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          Navigator.pop(
+                              context, textEditingController.text.trim());
+                        }
+                      },
+                      child: const Text("Bestätigen"),
+                    ),
+                  ],
+                )) ??
+        "";
   }
 }

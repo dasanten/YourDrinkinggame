@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
 import 'package:your_drinking_game_app/page/login/login_page.dart';
-import 'package:your_drinking_game_app/services/game_service.dart' as game;
+import 'package:your_drinking_game_app/viewmodel/game_view_model.dart';
 
 import '../game/card_display.dart';
 
@@ -44,7 +45,10 @@ class _PlayerInputState extends State<PlayerInput> {
           children: menuDrawer(context),
         ),
       ),
-      body: _body(context),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: _body(context),
+      ),
     );
   }
 
@@ -82,7 +86,7 @@ class _PlayerInputState extends State<PlayerInput> {
                   ),
                   Expanded(
                     flex: 2,
-                    child: ElevatedButton(
+                    child: FloatingActionButton(
                       onPressed: () => startGame(context),
                       child: const Icon(Icons.play_arrow),
                     ),
@@ -131,7 +135,7 @@ class _PlayerInputState extends State<PlayerInput> {
   void startGame(BuildContext context) {
     _addPlayer();
     if (_players.length >= 2) {
-      game.players = _players;
+      context.read<GameViewModel>().startGame(_players);
       Navigator.pushNamed(context, CardDisplay.routeName);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -160,10 +164,16 @@ class _PlayerInputState extends State<PlayerInput> {
         decoration: InputDecoration(
           labelText: 'Spieler hinzufügen',
           border: OutlineInputBorder(),
-          prefixIcon: Icon(Icons.person),
+          prefixIcon: Icon(
+            Icons.person,
+            size: 40,
+          ),
           suffixIcon: IconButton(
             onPressed: _addPlayer,
-            icon: const Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              size: 40,
+            ),
           ),
         ),
         controller: _controller,

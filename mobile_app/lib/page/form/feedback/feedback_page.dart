@@ -91,7 +91,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
         b.header = header.text;
       },
     );
-    await api.getFeedbackApi().sendFeedback(feedbackDto: feedback);
+
+    try {
+      await api.getFeedbackApi().sendFeedback(feedbackDto: feedback);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Feedback wurde abgsendet. Vielen Dank ❤")));
+      description.clear();
+      header.clear();
+      answerAddress.clear();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              "Leider ist ein Fehler aufgetreten, versuche es später erneut!")));
+    }
   }
 
   @override

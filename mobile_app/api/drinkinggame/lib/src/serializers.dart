@@ -49,6 +49,10 @@ Serializers serializers = (_$serializers.toBuilder()
         () => ListBuilder<CardSetBasicDto>(),
       )
       ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(CardSetVersionDto)]),
+        () => ListBuilder<CardSetVersionDto>(),
+      )
+      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(CardSetDto)]),
         () => ListBuilder<CardSetDto>(),
       )

@@ -1,9 +1,8 @@
 import 'package:drinkinggame_api/drinkinggame_api.dart';
 import 'package:your_drinking_game_app/openapi/api_client.dart';
-import 'package:your_drinking_game_app/viewmodel/async_viewmodel_base.dart';
+import 'package:your_drinking_game_app/viewmodel/async_view_model_base.dart';
 
-class CurrentWorkshopCardSetViewmodel extends AsyncViewmodelBase {
-
+class CurrentWorkshopCardSetViewmodel extends AsyncViewModelBase {
   CardSetDto? _cardSet;
 
   CardSetDto? get cardSet => _cardSet;
@@ -17,5 +16,4 @@ class CurrentWorkshopCardSetViewmodel extends AsyncViewmodelBase {
     }
     setFinished();
   }
-
 }

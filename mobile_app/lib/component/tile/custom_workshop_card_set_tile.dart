@@ -23,22 +23,27 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(8),
       child: ListTile(
-        title: Text(cardSet.name!),
-        subtitle: Text(cardSet.description!),
-        trailing: IconButton(
+          title: Text(cardSet.name!),
+          subtitle: Text(cardSet.description!),
+          trailing: IconButton(
             icon: const Icon(Icons.file_download),
             onPressed: isLocal
                 ? null
                 : () async {
-                  var result;
-                  try {
-                    result = await context
-                      .read<LocalCardSetsViewmodel>()
-                      .importCardSetFromWorkshop(cardSet);
-                    context.read<WorkshopCardSetViewmodel>().refreshCardSetLocalById(cardSet.id!, isLocal: result,);
-                  } catch (e) {
-                    result = null;
-                  }
+                    var result;
+                    try {
+                      result = await context
+                          .read<LocalCardSetsViewmodel>()
+                          .importCardSetFromWorkshop(cardSet);
+                      context
+                          .read<WorkshopCardSetViewModel>()
+                          .refreshCardSetLocalById(
+                            cardSet.id!,
+                            isLocal: result,
+                          );
+                    } catch (e) {
+                      result = null;
+                    }
                     if (result != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -48,23 +53,22 @@ class CustomWorkshopCardSetTile extends StatelessWidget {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Kartenset konnte nicht hinzugefügt werden!"),
+                          content: Text(
+                              "Kartenset konnte nicht hinzugefügt werden!"),
                         ),
                       );
                     }
                   },
           ),
-        onTap: () => {
-          context.read<CurrentWorkshopCardSetViewmodel>()
-            .setCardSet(
-              cardSet.id!,
-            ),
-          Navigator.pushNamed(
-            context,
-            WorkshopCardView.routeName,
-          ),
-        }
-      ),
+          onTap: () => {
+                context.read<CurrentWorkshopCardSetViewmodel>().setCardSet(
+                      cardSet.id!,
+                    ),
+                Navigator.pushNamed(
+                  context,
+                  WorkshopCardView.routeName,
+                ),
+              }),
     );
   }
 }

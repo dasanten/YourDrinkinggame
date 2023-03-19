@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1079576483928-1ehqircuie2pnu9l3cil12v9o8bimrup.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1079576483928-1ehqircuie2pnu9l3cil12v9o8bimrup</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1079576483928-0fr2mct058gp34tmhehivlj67cbhqog1.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA8neOtD61ICPC9Nz8_Qj3nG9uotQpBIKI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1079576483928</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>de.dasanten.deinTrinkspiel</string>
+	<key>PROJECT_ID</key>
+	<string>your-drinkinggame</string>
+	<key>STORAGE_BUCKET</key>
+	<string>your-drinkinggame.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1079576483928:ios:22f449dced9d3ec3c2922d</string>
+</dict>
+</plist>

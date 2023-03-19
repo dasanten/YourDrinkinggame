@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:your_drinking_game_app/data_base/model/user_entity.dart';
 import 'package:your_drinking_game_app/page/form/feedback/feedback_page.dart';
+import 'package:your_drinking_game_app/page/option/option_page.dart';
 import 'package:your_drinking_game_app/page/tab/card_sets_tab_view.dart';
 import 'package:your_drinking_game_app/services/user_service.dart';
 
 List<Widget> menuDrawer(BuildContext context) => [
       DrawerHeader(
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+        ),
         child: Row(
           children: [
             Icon(Icons.account_circle),
@@ -54,9 +58,12 @@ List<Widget> menuDrawer(BuildContext context) => [
       const Divider(),
       ListTile(
           title: const Text(
-            "Optionen !IN DEVELOPMENT!",
+            'Optionen',
             style: TextStyle(fontSize: 17),
           ),
           trailing: const Icon(Icons.settings),
-          onTap: () {}),
+          onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OptionPage()),
+              )),
     ];
