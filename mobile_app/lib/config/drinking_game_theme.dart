@@ -8,6 +8,10 @@ class DrinkingGameTheme {
 
   static ThemeData light() {
     return ThemeData.light().setStandard().copyWith(
+      tabBarTheme: TabBarTheme(
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.black,
+      ),
           colorScheme: ColorScheme(
             brightness: Brightness.light,
             primary: secondary,
@@ -21,13 +25,20 @@ class DrinkingGameTheme {
             surface: secondary,
             onSurface: Colors.black,
           ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
+      drawerTheme: DrawerThemeData(backgroundColor: Colors.white),
+    chipTheme: ChipThemeData(
+    backgroundColor: Colors.grey.shade300,
+    ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
                   backgroundColor: primary,
                   foregroundColor: Colors.white,
                   textStyle: TextStyle(
                     color: Colors.white,
-                  ))),
+                  ),
+              ),
+      ),
+
         );
   }
 
