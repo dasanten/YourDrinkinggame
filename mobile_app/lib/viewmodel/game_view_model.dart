@@ -13,8 +13,7 @@ class GameViewModel extends AsyncViewModelBase {
     loadCards();
   }
 
-  CardEntity _displayedCard = CardEntity(
-      content: "Don't drink and drive", active: true, cardSetId: null);
+  late CardEntity _displayedCard;
 
   Color get currentColor => _displayedCard.color;
 
@@ -44,6 +43,8 @@ class GameViewModel extends AsyncViewModelBase {
   }
 
   Future<Null> loadCards() async {
+    _displayedCard = CardEntity(
+        content: "Don't drink and drive", active: true, cardSetId: null);
     setLoading();
     _cards = await getActiveCards();
     setFinished();
@@ -99,7 +100,7 @@ class GameViewModel extends AsyncViewModelBase {
   }
 
   bool _enoughPlayersForCard(CardEntity cardEntity) =>
-      cardEntity.content.allMatches(replaceString).length < players.length &&
-      (cardEntity.card?.content.allMatches(replaceString).length ?? 0) <
+      replaceString.allMatches(cardEntity.content).length < players.length &&
+      replaceString.allMatches(cardEntity.card?.content ?? '').length <
           players.length;
 }
