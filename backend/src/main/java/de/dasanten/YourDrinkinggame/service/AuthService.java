@@ -20,13 +20,9 @@ public class AuthService {
         String userId = SecurityUtil.getAuthId();
         String eMail = SecurityUtil.getMail();
         Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
-        if(userEntityOptional.isPresent()) {
+        if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
-            if (!eMail.equals(userEntity.getEMail())) {
-                userEntity.setEMail(eMail);
-                userEntity = userRepository.save(userEntity);
-            }
-            return userEntity.getEMail();
+            return userEntity.getId();
         } else {
             throw new NoSuchElementException("User does not exist");
         }
@@ -43,7 +39,6 @@ public class AuthService {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userId);
         userEntity.setBanned(false);
-        userEntity.setEMail(SecurityUtil.getMail());
         userEntity.setUsername(username);
         userEntity.setRole(UserRole.USER);
         userRepository.save(userEntity);

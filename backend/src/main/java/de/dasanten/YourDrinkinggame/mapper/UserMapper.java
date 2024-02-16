@@ -18,6 +18,7 @@ public interface UserMapper {
     @Mapping(target = "strikes", ignore = true)
     UserEntity toEntity(UserDto userDto);
 
+    @Mapping(target = "eMail", ignore = true)
     UserDto toDto(UserEntity userEntity);
 
     UserBasicDto toBasicDto(UserEntity userEntity);
