@@ -32,6 +32,11 @@ services:
     ports:
     - "8080:8080"
     restart: unless-stopped
+  certbot:
+      image: certbot/certbot
+      volumes:
+        - /etc/letsencrypt
+      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   mysql: ~

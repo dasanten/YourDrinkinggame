@@ -19,8 +19,6 @@ public class UserEntity {
 
     private String username;
 
-    private String eMail;
-
     private boolean banned;
 
     private int strikes;
