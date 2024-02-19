@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:your_drinking_game_app/component/list/menu_drawer.dart';
 import 'package:your_drinking_game_app/page/login/login_page.dart';
+import 'package:your_drinking_game_app/page/menu/menu_page.dart';
 import 'package:your_drinking_game_app/viewmodel/game_view_model.dart';
 
 import '../game/card_display.dart';
+import '../option/option_page.dart';
 
 class PlayerInput extends StatefulWidget {
   @override
@@ -31,20 +32,22 @@ class _PlayerInputState extends State<PlayerInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: menuNavigationBar(context),
       appBar: MediaQuery.of(context).orientation == Orientation.portrait
           ? AppBar(
               title: const Text("Spieler Auswahl"),
               actions: [
-                _loginButton(context),
+                // _loginButton(context),
+                _optionsButton(context)
               ],
             )
           : null,
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: menuDrawer(context),
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     padding: EdgeInsets.zero,
+      //     children: menuDrawer(context),
+      //   ),
+      // ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: _body(context),
@@ -151,6 +154,15 @@ class _PlayerInputState extends State<PlayerInput> {
     return IconButton(
       icon: const Icon(Icons.login),
       onPressed: () => _login(context),
+    );
+  }
+
+  _optionsButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.settings),
+      onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => OptionPage(),
+      )),
     );
   }
 

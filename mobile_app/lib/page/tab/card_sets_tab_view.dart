@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../list/dto/workshop_card_sets_view.dart';
 import '../list/entity/local_card_sets_view.dart';
+import '../menu/menu_page.dart';
 
 class CardSetsTabView extends StatelessWidget {
   @override
@@ -9,6 +10,7 @@ class CardSetsTabView extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        bottomNavigationBar: menuNavigationBar(context),
         appBar: AppBar(
           title: const Text("Card Sets"),
           bottom: const TabBar(
